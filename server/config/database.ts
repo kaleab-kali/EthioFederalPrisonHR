@@ -1,6 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 import colors from 'colors';
-require('dotenv').config();
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const connectDB = (): void => {
   mongoose.connect(process.env.MONGODB_URI as string, {
     family: 4,
@@ -15,4 +18,4 @@ const connectDB = (): void => {
   });
 };
 
-module.exports = connectDB;
+export default connectDB;
