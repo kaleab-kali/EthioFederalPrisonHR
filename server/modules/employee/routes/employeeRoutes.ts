@@ -1,5 +1,6 @@
 // Employee module API routes
 import { Router } from 'express';
+import { getEmployees } from '../controllers/employeeController';
 const router = Router();
-router.get('/', getEmployee);
+router.get('/', getEmployees);
 export default router;
