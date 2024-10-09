@@ -1,13 +1,6 @@
 import { Schema, Document, model } from 'mongoose';
+import { IEmployee } from '../types/employeeTypes';
 
-interface IEmployee extends Document {
-    firstName: string;
-    lastName: string;
-    age: number;
-    position: string;
-}
-
-// Define the employee schema
 const employeeSchema = new Schema<IEmployee>({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },

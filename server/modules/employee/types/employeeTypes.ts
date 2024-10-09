@@ -1,2 +1,7 @@
 // Types for employee module
-export interface EmployeeType { id: number; name: string; }
+export interface IEmployee extends Document {
+  firstName: string;
+  lastName: string;
+  age: number;
+  position: string;
+}
