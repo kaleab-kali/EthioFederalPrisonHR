@@ -1,7 +1,10 @@
-import  { Request, Response } from 'express';
+import { Request, Response } from 'express';
 const express = require('express');
 const app = express();
+const connectDB = require('./config/database');
+
 const port = 3000;
+connectDB();
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, world!');
