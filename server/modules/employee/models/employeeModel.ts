@@ -1,4 +1,4 @@
-import { Schema,model,Document } from "mongoose";
+import mongoose, { Schema,model,Document } from "mongoose";
 import { Education, IEmployee, Roles } from "../types/employeeTypes";
 
 // Schema for Education
@@ -114,7 +114,6 @@ const employeeSchema = new Schema<IEmployee>(
   { timestamps: true },
 );
 
-export const Employee = model<IEmployee>('Employee', employeeSchema);
 employeeSchema.pre<IEmployee>('save', async function (next) {
   if (!this.empId) {
     const lastEmployee = await Employee.findOne(
@@ -130,3 +129,6 @@ employeeSchema.pre<IEmployee>('save', async function (next) {
   }
   next();
 });
+
+const Employee = mongoose.model<IEmployee>('Employee', employeeSchema);
+export default Employee;
