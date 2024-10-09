@@ -1,0 +1,1 @@
+export const HomeComponent = () => <div>Home Component</div>;

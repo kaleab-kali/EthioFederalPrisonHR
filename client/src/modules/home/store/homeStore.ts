@@ -1,0 +1,1 @@
+export const useHomeStore = () => {}; // React Query store setup here

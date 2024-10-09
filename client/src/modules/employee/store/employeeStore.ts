@@ -1,0 +1,1 @@
+export const useEmployeeStore = () => {}; // React Query store setup here

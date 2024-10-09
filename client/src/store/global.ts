@@ -1,0 +1,1 @@
+export const useGlobalStore = () => {}; // React Query global store setup here

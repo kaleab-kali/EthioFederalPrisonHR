@@ -1,0 +1,1 @@
+export const HomeLayout = ({children}) => <div>{children}</div>;
