@@ -13,7 +13,7 @@ export interface IEmployee {
   department: string;
   photo?: string;
   ethnicity: string;
-  centerId?: string;
+  centerName?: string;
   phoneNumber: {
     prefix: string;
     number: string;
@@ -84,13 +84,13 @@ export interface IEmployee {
   role: Roles;
   retirementDate?: Date;
   status: 'active' | 'inactive';
-  skinColor: string; 
-  noseStructure: string; 
-  eyeColor: string; 
-  hairTexture: string; 
-  height: string; 
-  religion: string; 
-  nationality: string; 
+  skinColor: string;
+  noseStructure: string;
+  eyeColor: string;
+  hairTexture: string;
+  height: string;
+  religion: string;
+  nationality: string;
   employmentDate: Date;
 }
 

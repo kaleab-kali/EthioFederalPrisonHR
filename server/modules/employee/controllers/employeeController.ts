@@ -12,11 +12,11 @@ const getEmployees = async (req: Request, res: Response) => {
 const addEmployee = async (req: Request, res: Response) => {
   try {
     const employee = new Employee(req.body);
-
     const newEmployee = await employee.save();
+    console.log(newEmployee)
 
     res.status(201).json(newEmployee);
-    console.log('employee added');
+    console.log('employee added'.bgYellow);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
