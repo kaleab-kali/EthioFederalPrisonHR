@@ -15,6 +15,7 @@ const employeeSchema = new Schema<IEmployee>(
     empId: { type: String },
     firstName: { type: String, required: true },
     centerName: { type: String },
+    userName: { type: String,default: 'user' },
     middleName: { type: String },
     lastName: { type: String, required: true },
     birthday: { type: Date, required: true },

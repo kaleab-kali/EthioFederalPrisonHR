@@ -1,4 +1,3 @@
-
 // Types for the employee module
 export interface IEmployee {
   firstName: string;
@@ -8,6 +7,7 @@ export interface IEmployee {
   title: string;
   empId?: string;
   middleName?: string;
+  userName?: string;
   birthday: Date;
   gender: string;
   department: string;
