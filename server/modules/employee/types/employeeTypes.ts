@@ -13,7 +13,7 @@ export interface IEmployee {
   department: string;
   photo?: string;
   ethnicity: string;
-  centerId?: string;
+  centerName?: string;
   phoneNumber: {
     prefix: string;
     number: string;
@@ -80,6 +80,7 @@ export interface IEmployee {
   divorcedInfo?: {
     divorceDate?: Date;
   };
+  userName: string;
   password: string;
   role: Roles;
   retirementDate?: Date;

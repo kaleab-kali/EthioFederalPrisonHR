@@ -14,7 +14,7 @@ const employeeSchema = new Schema<IEmployee>(
     title: { type: String, required: true },
     empId: { type: String },
     firstName: { type: String, required: true },
-    centerId: { type: String },
+    centerName: { type: String },
     middleName: { type: String },
     lastName: { type: String, required: true },
     birthday: { type: Date, required: true },
@@ -89,9 +89,9 @@ const employeeSchema = new Schema<IEmployee>(
     divorcedInfo: {
       divorceDate: { type: Date },
     },
+    userName: {type: String},
     password: {
       type: String,
-      required: true,
     },
     role: {
       type: String,
