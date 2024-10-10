@@ -1,5 +1,5 @@
-import mongoose, { Schema, model, Document } from 'mongoose';
-import { Education, IEmployee, Roles } from '../types/employeeTypes';
+import mongoose, { Schema,model,Document } from "mongoose";
+import { Education, IEmployee, Roles } from "../types/employeeTypes";
 
 export const educationSchema = new Schema<Education>({
   id: { type: String },
@@ -15,7 +15,7 @@ const employeeSchema = new Schema<IEmployee>(
     empId: { type: String },
     firstName: { type: String, required: true },
     centerName: { type: String },
-    userName: { type: String, default: 'user' },
+    userName: { type: String,default: 'user' },
     middleName: { type: String },
     lastName: { type: String, required: true },
     birthday: { type: Date, required: true },
@@ -90,7 +90,6 @@ const employeeSchema = new Schema<IEmployee>(
     divorcedInfo: {
       divorceDate: { type: Date },
     },
-    userName: { type: String },
     password: {
       type: String,
     },

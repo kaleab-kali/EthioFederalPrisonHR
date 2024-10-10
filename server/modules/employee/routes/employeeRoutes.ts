@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   addEmployee,
+  assignCredentials,
   getEmployees,
   loginUser,
 } from '../controllers/employeeController';
