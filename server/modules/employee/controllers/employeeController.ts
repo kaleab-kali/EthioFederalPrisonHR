@@ -1,5 +1,16 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import Employee from '../models/employeeModel';
+import 'dotenv';
+
+// Login validation
+const generateToken = (id: string) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET!, {
+    expiresIn: '1h',
+  });
+};
 
 const getEmployees = async (req: Request, res: Response) => {
   try {
@@ -9,17 +20,57 @@ const getEmployees = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 const addEmployee = async (req: Request, res: Response) => {
   try {
     const employee = new Employee(req.body);
     const newEmployee = await employee.save();
-    console.log(newEmployee)
+    console.log(newEmployee);
 
     res.status(201).json(newEmployee);
-    console.log('employee added'.bgYellow);
+    console.log('employee added');
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-export { getEmployees, addEmployee };
+const loginUser = async (req: Request, res: Response) => {
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   const errorMessages = errors.array().map((error) => error.msg); // Extract just the message
+  //   res.status(400).json({ message: errorMessages.join(', ') }); //  a string of messages
+  // }
+
+  const { userName, password } = req.body;
+  try {
+    const employee = await Employee.findOne({ userName });
+    if (!employee) {
+      res.status(400).json({ message: 'Invalid credentials' });
+      return;
+    }
+
+    const isMatch = employee && bcrypt.compare(password, employee.password);
+    if (!isMatch) {
+      res.status(400).json({ message: 'Invalid credentials' });
+      return;
+    }
+
+    const token = generateToken(employee?.id);
+
+    res.status(200).json({
+      employee: {
+        id: employee?.id,
+        name: employee?.firstName,
+        email: employee?.email,
+        token: token,
+        role: employee?.role,
+      },
+    });
+    return;
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+    return;
+  }
+};
+
+export { getEmployees, addEmployee, loginUser };
