@@ -80,6 +80,7 @@ export interface IEmployee {
   divorcedInfo?: {
     divorceDate?: Date;
   };
+  userName: string;
   password: string;
   role: Roles;
   retirementDate?: Date;
