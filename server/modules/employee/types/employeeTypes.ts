@@ -13,6 +13,7 @@ export interface IEmployee {
   department: string;
   photo?: string;
   ethnicity: string;
+  centerId?: string;
   phoneNumber: {
     prefix: string;
     number: string;
@@ -105,6 +106,8 @@ export interface Education {
 // Enum for roles
 export enum Roles {
   Employee = 'employee',
-  Manager = 'manager',
-  DepartmentHead = 'department head',
+  Manager = 'hrManager',
+  Staff = 'hrStaff',
+  DocumentStaff = 'documentStaff',
+  Admin = 'admin',
 }

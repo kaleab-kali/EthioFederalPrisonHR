@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import connectDB from './config/database';
 import employeeRoute from './modules/employee/routes/employeeRoutes';
+import centerRoute from './modules/centers/routes/centerRoute';
 
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/employees', employeeRoute);
+app.use('/api/centers', centerRoute);
 
 
 app.listen(port, () => {
