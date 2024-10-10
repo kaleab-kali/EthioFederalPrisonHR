@@ -1,7 +1,6 @@
 import mongoose, { Schema,model,Document } from "mongoose";
 import { Education, IEmployee, Roles } from "../types/employeeTypes";
 
-// Schema for Education
 export const educationSchema = new Schema<Education>({
   id: { type: String },
   fieldofstudy: { type: String },
