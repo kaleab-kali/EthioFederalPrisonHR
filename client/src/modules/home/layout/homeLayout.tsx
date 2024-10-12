@@ -1,1 +1,3 @@
-export const HomeLayout = ({children}:any) => <div>{children}</div>;
+import { ReactNode } from "react";
+
+export const HomeLayout = ({ children }: { children: ReactNode }) => <div>{children}</div>;
