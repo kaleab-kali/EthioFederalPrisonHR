@@ -1,0 +1,1 @@
+export const useAdminStore = () => {}; // React Query store setup here

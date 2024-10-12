@@ -1,1 +1,1 @@
-export const HomeLayout = ({children}) => <div>{children}</div>;
+export const HomeLayout = ({children}:any) => <div>{children}</div>;
