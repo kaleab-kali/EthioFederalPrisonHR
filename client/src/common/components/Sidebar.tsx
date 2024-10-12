@@ -46,9 +46,9 @@ const menuItems = [
         allowedRoles: ["admin", "manager"],
       },
       {
-        name: "Add",
+        name: "Registration",
         icon: FaUserCheck,
-        route: "/employee/add",
+        route: "/employee/registration",
         allowedRoles: ["admin", "manager"],
       },
     ],
@@ -90,6 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
 
   // Toggle the submenu if the menu has submenus
   const handleMenuClick = (menu: string, hasSubmenus: boolean) => {
+    console.log("Menu clicked:", menu);
     if (hasSubmenus) {
       // Toggle submenu if it exists
       setOpenMenu(openMenu === menu ? null : menu);
@@ -125,32 +126,53 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
             .filter((menu) => canAccess(menu.allowedRoles, userRole)) // Filter menu items based on role
             .map((menu) => (
               <li key={menu.name} className="relative">
-                <div
-                  onClick={() =>
-                    handleMenuClick(menu.name, menu.submenus.length > 0)
-                  }
-                  className="flex items-center justify-between p-3 text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer"
-                >
-                  <div className="flex items-center space-x-2">
-                    <menu.icon className="text-blue-500" />
-                    {!isCollapsed && (
-                      <span className="font-semibold">{menu.name}</span>
+                {menu.submenus.length > 0 ? (
+                  // If there are submenus, use a div and handle click as before
+                  <div
+                    onClick={() =>
+                      handleMenuClick(menu.name, menu.submenus.length > 0)
+                    }
+                    className="flex items-center justify-between p-3 text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <menu.icon className="text-blue-500" />
+                      {!isCollapsed && (
+                        <span className="font-semibold text-sm ">{menu.name}</span>
+                      )}
+                    </div>
+                    {/* Conditionally render the dropdown arrow only if there are submenus */}
+                    {!isCollapsed && menu.submenus.length > 0 && (
+                      <FaChevronDown
+                        className={`transition-transform text-xs ${
+                          openMenu === menu.name ? "rotate-180" : ""
+                        }`}
+                      />
                     )}
                   </div>
-                  {/* Conditionally render the dropdown arrow only if there are submenus */}
-                  {!isCollapsed && menu.submenus.length > 0 && (
-                    <FaChevronDown
-                      className={`transition-transform ${
-                        openMenu === menu.name ? "rotate-180" : ""
-                      }`}
-                    />
-                  )}
-                </div>
+                ) : (
+                  // If there are no submenus, use NavLink for navigation
+                  <NavLink
+                    to={menu.route ?? "#"} // Set the route for the Dashboard link
+                    onClick={() => setOpenMenu(null)}
+                    className={({ isActive }) =>
+                      `flex items-center justify-between p-3 text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer ${
+                        isActive ? "bg-blue-100" : ""
+                      }`
+                    }
+                  >
+                    <div className="flex items-center space-x-2">
+                      <menu.icon className="text-blue-500" />
+                      {!isCollapsed && (
+                        <span className="font-semibold text-sm ">{menu.name}</span>
+                      )}
+                    </div>
+                  </NavLink>
+                )}
 
                 {/* Submenu rendering for collapsed and expanded sidebar */}
                 {openMenu === menu.name && menu.submenus.length > 0 && (
                   <ul
-                    className={`ml-6 mt-2 space-y-1 ${
+                    className={`ml-8 mt-2 space-y-1 ${
                       isCollapsed
                         ? "absolute top-0 left-full transform -translate-x-2 bg-white shadow-lg rounded-md p-2"
                         : ""
@@ -165,7 +187,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                         <li key={submenu.name}>
                           <NavLink
                             to={submenu.route}
-                            onClick={() => setOpenMenu(null)} // Ensure menu closes on submenu click
+                            // onClick={() => setOpenMenu(null)} // Ensure menu closes on submenu click
                             className={({ isActive }) =>
                               `block p-2 text-sm text-gray-600 hover:bg-blue-50 rounded ${
                                 isActive ? "bg-blue-100" : ""

@@ -17,7 +17,7 @@ const MainLayout: React.FC = () => {
         <Header onToggleSidebar={handleToggleSidebar} />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar isCollapsed={isSidebarCollapsed} userRole={userRole} />
-          <main className="flex-1 p-6 bg-white shadow-md rounded-tl-2xl overflow-y-auto">
+          <main className="flex-1 p-6 bg-grey shadow-md rounded-tl-2xl overflow-y-auto">
             <Outlet />
           </main>
         </div>
