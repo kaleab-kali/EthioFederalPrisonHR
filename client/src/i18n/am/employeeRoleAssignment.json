@@ -1,0 +1,20 @@
+{
+  "title": "የሰራተኞች ሚና መመደቢያ",
+  "searchPlaceholder": "በስም ወይም ኢሜል ፈልግ",
+  "profile": "መገለጫ",
+  "name": "ስም",
+  "email": "ኢሜል",
+  "currentRole": "አሁን ያለው ሚና",
+  "assignNewRole": "አዲስ ሚና መስጠት",
+  "assignRoleButton": "ሚና መስጠት",
+  "paginationInfo": "ከ {{start}} እስከ {{end}} ከ {{total}} ሰራተኞችን ማሳያ ነው",
+  "roles": {
+    "All": "ሁሉም",
+    "Developer": "አቀናቢ",
+    "Manager": "አስተዳዳሪ",
+    "Designer": "ንድፍ አቀናቢ",
+    "Admin": "አስተዳዳሪ",
+    "HR": "የሰው ኃይል"
+  },
+  "roleChangeAlert": "የ {{name}} ሚና ወደ {{role}} ተቀይሯል።"
+}

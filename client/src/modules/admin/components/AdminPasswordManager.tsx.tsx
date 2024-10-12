@@ -1,50 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
-
-type Language = "en" | "am";
-
-const translations = {
-  en: {
-    title: "Admin Password Manager",
-    searchPlaceholder: "Search employee by name, email, or role...",
-    departmentLabel: "Department",
-    titleLabel: "Title",
-    searchButton: "Search",
-    name: "Name",
-    email: "Email",
-    role: "Role",
-    department: "Department",
-    actions: "Actions",
-    updatePassword: "Update Password",
-    addPassword: "Add Password",
-    newPassword: "New Password",
-    confirmPassword: "Confirm Password",
-    cancel: "Cancel",
-    noEmployeesFound: "No employees found.",
-    resetPassword: "Reset Password",
-    selectAll: "Select All",
-  },
-  am: {
-    title: "አድሚን የመግቢያ ቃል አስተዳደር",
-    searchPlaceholder: "ተጠቃሚን በስም፣ ኢሜይል፣ ወይም ሚና ፈልግ...",
-    departmentLabel: "መምሪያ ክፍል",
-    titleLabel: "ሚና",
-    searchButton: "ፈልግ",
-    name: "ስም",
-    email: "ኢሜይል",
-    role: "ሚና",
-    department: "መምሪያ ክፍል",
-    actions: "እርምጃዎች",
-    updatePassword: "የመግቢያ ቃል አዘምን",
-    addPassword: "መግቢያ ቃል ጨምር",
-    newPassword: "አዲስ የመግቢያ ቃል",
-    confirmPassword: "አረጋግጥ",
-    cancel: "ይቅር",
-    noEmployeesFound: "ምንም ተጠቃሚዎች አልተገኙም።",
-    resetPassword: "የመግቢያ ቃል አስጀምር",
-    selectAll: "ሁሉንም ይምረጡ",
-  },
-};
+import { useTranslation } from "react-i18next";
 
 interface Employee {
   id: number;
@@ -88,6 +44,7 @@ const employees: Employee[] = [
 ];
 
 const AdminPasswordManager: React.FC = () => {
+  const { t} = useTranslation("adminPassChange");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployees, setFilteredEmployees] =
     useState<Employee[]>(employees);
@@ -97,13 +54,9 @@ const AdminPasswordManager: React.FC = () => {
   const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([]);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [language, setLanguage] = useState<Language>("en");
-
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Set your desired items per page here
+  const itemsPerPage = 10;
 
-  const t = translations[language];
 
   useEffect(() => {
     setFilteredEmployees(
@@ -120,7 +73,6 @@ const AdminPasswordManager: React.FC = () => {
     );
   }, [searchTerm, selectedDepartment, selectedTitle]);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
   const currentEmployees = filteredEmployees.slice(
     (currentPage - 1) * itemsPerPage,
@@ -145,18 +97,16 @@ const AdminPasswordManager: React.FC = () => {
 
   const handleSubmitPassword = () => {
     if (newPassword !== confirmPassword) {
-      alert("Passwords do not match!");
+      alert(t("passwordMismatch"));
       return;
     }
-
     selectedEmployees.forEach((employee) => {
       alert(
-        `Password ${employee.hasPassword ? "updated" : "added"} for employee ${
-          employee.name
-        }`
+        t(employee.hasPassword ? "passwordUpdated" : "passwordAdded", {
+          name: employee.name,
+        })
       );
     });
-
     setIsModalOpen(false);
     setSelectedEmployees([]);
   };
@@ -164,37 +114,14 @@ const AdminPasswordManager: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <div className="flex justify-end space-x-4 mb-4">
-          <button
-            onClick={() => setLanguage("en")}
-            className={`px-4 py-2 rounded-lg ${
-              language === "en"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            English
-          </button>
-          <button
-            onClick={() => setLanguage("am")}
-            className={`px-4 py-2 rounded-lg ${
-              language === "am"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            አማርኛ
-          </button>
-        </div>
-
-        <h1 className="text-2xl font-bold text-gray-700 mb-6">{t.title}</h1>
+        <h1 className="text-2xl font-bold text-gray-700 mb-6">{t("title")}</h1>
 
         <div className="flex space-x-4 mb-4">
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={t.searchPlaceholder}
+            placeholder={t("searchPlaceholder")}
             className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
           />
           <select
@@ -202,7 +129,7 @@ const AdminPasswordManager: React.FC = () => {
             onChange={(e) => setSelectedDepartment(e.target.value)}
             className="p-3 border border-gray-300 rounded-lg shadow-sm"
           >
-            <option value="">{t.departmentLabel}</option>
+            <option value="">{t("departmentLabel")}</option>
             <option value="HR">HR</option>
             <option value="Engineering">Engineering</option>
             <option value="Marketing">Marketing</option>
@@ -212,7 +139,7 @@ const AdminPasswordManager: React.FC = () => {
             onChange={(e) => setSelectedTitle(e.target.value)}
             className="p-3 border border-gray-300 rounded-lg shadow-sm"
           >
-            <option value="">{t.titleLabel}</option>
+            <option value="">{t("titleLabel")}</option>
             <option value="Senior Manager">Senior Manager</option>
             <option value="Software Engineer">Software Engineer</option>
             <option value="Graphic Designer">Graphic Designer</option>
@@ -229,10 +156,10 @@ const AdminPasswordManager: React.FC = () => {
                   checked={selectedEmployees.length === currentEmployees.length}
                 />
               </th>
-              <th className="text-left py-3 px-4">{t.name}</th>
-              <th className="text-left py-3 px-4">{t.email}</th>
-              <th className="text-left py-3 px-4">{t.role}</th>
-              <th className="text-left py-3 px-4">{t.department}</th>
+              <th className="text-left py-3 px-4">{t("name")}</th>
+              <th className="text-left py-3 px-4">{t("email")}</th>
+              <th className="text-left py-3 px-4">{t("role")}</th>
+              <th className="text-left py-3 px-4">{t("department")}</th>
             </tr>
           </thead>
           <tbody>
@@ -254,17 +181,16 @@ const AdminPasswordManager: React.FC = () => {
           </tbody>
         </table>
 
-        {/* Pagination Controls */}
         <div className="flex justify-between items-center mt-4">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
             className="px-4 py-2 bg-gray-200 rounded-lg"
           >
-            Previous
+            {t("previous")}
           </button>
           <span>
-            Page {currentPage} of {totalPages}
+            {t("page")} {currentPage} {t("of")} {totalPages}
           </span>
           <button
             onClick={() =>
@@ -273,7 +199,7 @@ const AdminPasswordManager: React.FC = () => {
             disabled={currentPage === totalPages}
             className="px-4 py-2 bg-gray-200 rounded-lg"
           >
-            Next
+            {t("next")}
           </button>
         </div>
 
@@ -284,8 +210,8 @@ const AdminPasswordManager: React.FC = () => {
             disabled={selectedEmployees.length === 0}
           >
             {selectedEmployees.some((emp) => emp.hasPassword)
-              ? t.updatePassword
-              : t.addPassword}
+              ? t("updatePassword")
+              : t("addPassword")}
           </button>
         </div>
 
@@ -295,35 +221,33 @@ const AdminPasswordManager: React.FC = () => {
             <Dialog.Panel className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
               <Dialog.Title className="text-xl font-bold mb-4">
                 {selectedEmployees.some((emp) => emp.hasPassword)
-                  ? t.updatePassword
-                  : t.addPassword}
+                  ? t("updatePassword")
+                  : t("addPassword")}
               </Dialog.Title>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder={t.newPassword}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
-              />
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder={t.confirmPassword}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
-              />
-              <div className="flex justify-end space-x-4">
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-gray-300 rounded-lg"
-                >
-                  {t.cancel}
-                </button>
+              <div className="mb-4">
+                <label className="block mb-1">{t("newPassword")}</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1">{t("confirmPassword")}</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+                />
+              </div>
+              <div className="flex justify-end">
                 <button
                   onClick={handleSubmitPassword}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                  className="px-6 py-2 bg-blue-500 text-white rounded-lg"
                 >
-                  {t.confirmPassword}
+                  {t("confirm")}
                 </button>
               </div>
             </Dialog.Panel>

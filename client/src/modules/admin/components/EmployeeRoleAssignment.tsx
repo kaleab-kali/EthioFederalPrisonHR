@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Employee type definition
 interface Employee {
@@ -46,6 +47,7 @@ const employees: Employee[] = [
 const roles = ["All", "Developer", "Manager", "Designer", "Admin", "HR"];
 
 const EmployeeRoleAssignment: React.FC = () => {
+  const { t } = useTranslation("employeeRole");
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
@@ -55,7 +57,6 @@ const EmployeeRoleAssignment: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const employeesPerPage = 5;
 
-  // Filter employees by search term and role
   const filteredEmployees = employees
     .filter(
       (employee) =>
@@ -66,7 +67,6 @@ const EmployeeRoleAssignment: React.FC = () => {
       roleFilter === "All" ? true : employee.role === roleFilter
     );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredEmployees.length / employeesPerPage);
   const paginatedEmployees = filteredEmployees.slice(
     (currentPage - 1) * employeesPerPage,
@@ -75,7 +75,7 @@ const EmployeeRoleAssignment: React.FC = () => {
 
   const handleEmployeeSelect = (employee: Employee) => {
     setSelectedEmployee(employee);
-    setNewRole(employee.role); // Set the current role as default
+    setNewRole(employee.role);
   };
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -85,9 +85,8 @@ const EmployeeRoleAssignment: React.FC = () => {
   const handleSubmit = () => {
     if (selectedEmployee) {
       alert(
-        `Role of employee ${selectedEmployee.name} has been changed to ${newRole}`
+        t("roleChangeAlert", { name: selectedEmployee.name, role: newRole })
       );
-      // API call to update employee role can be made here
       setSelectedEmployee(null);
       setNewRole("");
     }
@@ -100,15 +99,12 @@ const EmployeeRoleAssignment: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">
-          Employee Role Assignment
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">{t("title")}</h1>
 
-        {/* Search Filter */}
         <div className="flex justify-between mb-6">
           <input
             type="text"
-            placeholder="Search employees by name or email"
+            placeholder={t("searchPlaceholder")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
@@ -120,22 +116,21 @@ const EmployeeRoleAssignment: React.FC = () => {
           >
             {roles.map((role) => (
               <option key={role} value={role}>
-                {role}
+                {t(`roles.${role}`)}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Employee Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
             <thead className="bg-blue-500 text-white">
               <tr>
-                <th className="py-2 px-4">Profile</th>
-                <th className="py-2 px-4">Name</th>
-                <th className="py-2 px-4">Email</th>
-                <th className="py-2 px-4">Current Role</th>
-                <th className="py-2 px-4">Assign New Role</th>
+                <th className="py-2 px-4">{t("profile")}</th>
+                <th className="py-2 px-4">{t("name")}</th>
+                <th className="py-2 px-4">{t("email")}</th>
+                <th className="py-2 px-4">{t("currentRole")}</th>
+                <th className="py-2 px-4">{t("assignNewRole")}</th>
               </tr>
             </thead>
             <tbody>
@@ -166,7 +161,7 @@ const EmployeeRoleAssignment: React.FC = () => {
                           .filter((role) => role !== "All")
                           .map((role) => (
                             <option key={role} value={role}>
-                              {role}
+                              {t(`roles.${role}`)}
                             </option>
                           ))}
                       </select>
@@ -178,17 +173,19 @@ const EmployeeRoleAssignment: React.FC = () => {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="flex justify-between items-center mt-6">
           <div>
-            Showing{" "}
-            {Math.min(
-              (currentPage - 1) * employeesPerPage + 1,
-              filteredEmployees.length
-            )}{" "}
-            to{" "}
-            {Math.min(currentPage * employeesPerPage, filteredEmployees.length)}{" "}
-            of {filteredEmployees.length} employees
+            {t("paginationInfo", {
+              start: Math.min(
+                (currentPage - 1) * employeesPerPage + 1,
+                filteredEmployees.length
+              ),
+              end: Math.min(
+                currentPage * employeesPerPage,
+                filteredEmployees.length
+              ),
+              total: filteredEmployees.length,
+            })}
           </div>
           <div className="flex space-x-2">
             {Array.from({ length: totalPages }, (_, index) => index + 1).map(
@@ -209,14 +206,13 @@ const EmployeeRoleAssignment: React.FC = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
         {selectedEmployee && (
           <div className="mt-8 text-right">
             <button
               onClick={handleSubmit}
               className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow-sm hover:bg-blue-600"
             >
-              Assign Role
+              {t("assignRoleButton")}
             </button>
           </div>
         )}

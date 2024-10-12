@@ -28,7 +28,7 @@ const SignIn: React.FC = () => {
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900"
                 >
-                  Your email
+                  ኢሜል
                 </label>
                 <input
                   type="email"
@@ -44,7 +44,7 @@ const SignIn: React.FC = () => {
                   htmlFor="password"
                   className="block mb-2 text-sm font-medium text-gray-900"
                 >
-                  Password
+                  የይለፍ ቃል
                 </label>
                 <input
                   type="password"
