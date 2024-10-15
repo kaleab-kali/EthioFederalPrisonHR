@@ -8,7 +8,6 @@ const OrganizationModule: React.FC = () => {
     <Routes>
       <Route path="/departments" element={<OrgHome />} />
     </Routes>
-    //   <Route path="dashboard" element={<HomeComponent />} />
    
   );
 };

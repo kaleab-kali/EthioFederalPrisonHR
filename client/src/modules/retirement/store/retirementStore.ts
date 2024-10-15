@@ -1,0 +1,1 @@
+export const useRetirementStore = () => {}; // React Query store setup here

@@ -1,0 +1,1 @@
+export const useCenterdocumentStore = () => {}; // React Query store setup here
