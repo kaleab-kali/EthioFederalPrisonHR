@@ -1,8 +1,10 @@
 import React from 'react'
+import EmployeeProfilePage from './EmpolyeeProfile'
 
 const HomeComponent = () => {
   return (
-    <div>HomeComponent</div>
+    // <div>HomeComponent</div>
+    <EmployeeProfilePage />
   )
 }
 
