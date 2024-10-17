@@ -73,6 +73,7 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 const assignCredentials = async (req: Request, res: Response) => {
+  
   const { employeeId, userName, password } = req.body;
 
   try {
