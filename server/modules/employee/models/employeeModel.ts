@@ -1,5 +1,5 @@
-import mongoose, { Schema,model,Document } from "mongoose";
-import { Education, IEmployee, Roles } from "../types/employeeTypes";
+import mongoose, { Schema, model, Document } from 'mongoose';
+import { Education, IEmployee, Roles } from '../types/employeeTypes';
 
 export const educationSchema = new Schema<Education>({
   id: { type: String },
@@ -15,7 +15,8 @@ const employeeSchema = new Schema<IEmployee>(
     empId: { type: String },
     firstName: { type: String, required: true },
     centerName: { type: String },
-    userName: { type: String,default: 'user' },
+    pendingCenterName: { type: String },
+    userName: { type: String, default: 'user' },
     middleName: { type: String },
     lastName: { type: String, required: true },
     birthday: { type: Date, required: true },
@@ -110,9 +111,12 @@ const employeeSchema = new Schema<IEmployee>(
     religion: { type: String, required: true },
     nationality: { type: String, required: true },
     employmentDate: { type: Date },
+    transferStatus: { type: String },
+    rejectionReason: { type: String },
   },
   { timestamps: true },
 );
+
 
 employeeSchema.pre<IEmployee>('save', async function (next) {
   if (!this.empId) {

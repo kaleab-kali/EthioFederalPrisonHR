@@ -17,7 +17,7 @@ const authenticate = async (
     console.log('user', req.headers.authorization);
 
     if (!token) {
-      res.status(401).json({ message: 'Unauthorized' }); // Return here
+      res.status(401).json({ message: 'Unauthorized' }); 
       return;
     }
 
@@ -26,14 +26,14 @@ const authenticate = async (
       process.env.JWT_SECRET as any,
     ) as { id: string } | undefined;
     if (!decodedToken || !decodedToken.id) {
-      res.status(401).json({ message: 'Invalid token' }); // Return here
+      res.status(401).json({ message: 'Invalid token' }); 
       return;
     }
 
     const employee = await Employee.findById(decodedToken.id);
 
     if (!employee) {
-      res.status(401).json({ message: 'Unauthorized' }); // Return here
+      res.status(401).json({ message: 'Unauthorized' }); 
       return;
     }
 
@@ -41,7 +41,7 @@ const authenticate = async (
     console.log('authorized!');
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Unauthorized' }); // Return here as well
+    res.status(401).json({ message: 'Unauthorized' });
     return;
   }
 };
