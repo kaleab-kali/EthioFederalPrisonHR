@@ -14,6 +14,7 @@ export interface IEmployee {
   photo?: string;
   ethnicity: string;
   centerName?: string;
+  pendingCenterName?: string;
   phoneNumber: {
     prefix: string;
     number: string;
@@ -92,6 +93,8 @@ export interface IEmployee {
   religion: string;
   nationality: string;
   employmentDate: Date;
+  transferStatus?: string;
+  rejectionReason?: string;
 }
 
 // Types for the Education schema

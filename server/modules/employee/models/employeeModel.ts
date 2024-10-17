@@ -15,6 +15,7 @@ const employeeSchema = new Schema<IEmployee>(
     empId: { type: String },
     firstName: { type: String, required: true },
     centerName: { type: String },
+    pendingCenterName: {type: String},
     userName: { type: String,default: 'user' },
     middleName: { type: String },
     lastName: { type: String, required: true },
@@ -110,6 +111,8 @@ const employeeSchema = new Schema<IEmployee>(
     religion: { type: String, required: true },
     nationality: { type: String, required: true },
     employmentDate: { type: Date },
+    transferStatus: {type: String},
+    rejectionReason: {type: String},
   },
   { timestamps: true },
 );
