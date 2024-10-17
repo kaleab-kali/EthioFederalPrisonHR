@@ -7,6 +7,7 @@ export interface IEmployee {
   title: string;
   empId?: string;
   middleName?: string;
+  userName?: string;
   birthday: Date;
   gender: string;
   department: string;
@@ -79,7 +80,6 @@ export interface IEmployee {
   divorcedInfo?: {
     divorceDate?: Date;
   };
-  userName: string;
   password: string;
   role: Roles;
   retirementDate?: Date;
