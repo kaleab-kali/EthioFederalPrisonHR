@@ -49,12 +49,12 @@ const loginUser = async (req: Request, res: Response) => {
       return;
     }
 
-    const isMatch = employee && bcrypt.compare(password, employee.password);
+    const isMatch = employee && await bcrypt.compare(password, employee.password);
     if (!isMatch) {
       res.status(400).json({ message: 'Invalid credentials' });
       return;
     }
-
+    console.log(isMatch);
     const token = generateToken(employee?.id);
 
     res.status(200).json({
@@ -77,10 +77,6 @@ const assignCredentials = async (req: Request, res: Response) => {
 
   try {
     const employee = await Employee.findOne({ empId: employeeId });
-    console.log('Received employeeId:', employeeId);
-
-    console.log('Employee found:', employee);
-
     if (!employee) {
       res.status(404).send('Employee not found');
       return;
@@ -100,5 +96,4 @@ const assignCredentials = async (req: Request, res: Response) => {
   }
 };
 
-
-export { getEmployees, addEmployee, loginUser ,assignCredentials};
+export { getEmployees, addEmployee, loginUser, assignCredentials };
