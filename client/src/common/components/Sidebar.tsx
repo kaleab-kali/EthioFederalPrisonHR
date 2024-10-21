@@ -3,9 +3,17 @@ import { NavLink } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaBuilding,
-  FaUserCheck,
+  FaUserTie,
   FaChevronDown,
+  FaUsers,
+  FaCalendarAlt,
+  FaClipboardList,
+  FaChartLine,
+  FaMoneyBill,
+  FaUserClock,
+  FaExclamationTriangle,
 } from "react-icons/fa";
+import { MdOutlineAppRegistration, MdAccountBalance } from "react-icons/md";
 
 // structure and permissions for each item
 const menuItems = [
@@ -14,7 +22,7 @@ const menuItems = [
     icon: FaTachometerAlt,
     route: "/home/dashboard",
     submenus: [],
-    allowedRoles: ["admin", "user", "manager"], // Example roles that can access
+    allowedRoles: ["admin", "user", "manager"],
   },
   {
     name: "Organization",
@@ -28,153 +36,152 @@ const menuItems = [
       },
       {
         name: "Teams",
-        icon: FaBuilding,
+        icon: FaUsers,
         route: "/organization/teams",
         allowedRoles: ["admin", "manager"],
       },
     ],
-    allowedRoles: ["admin", "manager"], // Only admins and managers can access "Organization"
+    allowedRoles: ["admin", "manager"],
   },
   {
     name: "Employees",
-    icon: FaUserCheck,
+    icon: FaUserTie,
     submenus: [
       {
         name: "List",
-        icon: FaUserCheck,
+        icon: FaUserTie,
         route: "/employee/list",
         allowedRoles: ["admin", "manager"],
       },
       {
         name: "Registration",
-        icon: FaUserCheck,
+        icon: MdOutlineAppRegistration,
         route: "/employee/registration",
         allowedRoles: ["admin", "manager"],
       },
     ],
-    allowedRoles: ["admin", "manager"], // Only admins and managers can access
+    allowedRoles: ["admin", "manager"],
   },
   {
     name: "Leaves",
-    icon: FaUserCheck,
+    icon: FaCalendarAlt,
     submenus: [
       {
         name: "Request Leave",
-        icon: FaUserCheck,
+        icon: FaCalendarAlt,
         route: "/leave/request",
         allowedRoles: ["admin", "user"],
       },
       {
         name: "Leave Balance",
-        icon: FaUserCheck,
+        icon: MdAccountBalance,
         route: "/leave/balance",
         allowedRoles: ["admin", "user"],
       },
     ],
-    allowedRoles: ["admin", "user"], // Only these roles can access "Leaves"
+    allowedRoles: ["admin", "user"],
   },
   {
-    name: "attendance",
-    icon: FaUserCheck,
+    name: "Attendance",
+    icon: FaUserClock,
     submenus: [
       {
-        name: "daily",
-        icon: FaUserCheck,
+        name: "Daily",
+        icon: FaClipboardList,
         route: "/attendance/daily",
         allowedRoles: ["admin", "user"],
       },
       {
-        name: "weekly",
-        icon: FaUserCheck,
+        name: "Weekly",
+        icon: FaClipboardList,
         route: "/attendance/weekly",
         allowedRoles: ["admin", "user"],
       },
       {
-        name: "missing",
-        icon: FaUserCheck,
+        name: "Missing",
+        icon: FaExclamationTriangle,
         route: "/attendance/missing",
         allowedRoles: ["admin", "user"],
       },
     ],
-    allowedRoles: ["admin", "user"], // Only these roles can access "Leaves"
+    allowedRoles: ["admin", "user"],
   },
   {
     name: "Appraisal",
-    icon: FaUserCheck,
+    icon: FaChartLine,
     submenus: [
       {
-        name: "candidates",
-        icon: FaUserCheck,
+        name: "Candidates",
+        icon: FaUsers,
         route: "/appraisal/candidates",
         allowedRoles: ["admin", "user"],
       },
       {
-        name: "form",
-        icon: FaUserCheck,
+        name: "Form",
+        icon: FaClipboardList,
         route: "/appraisal/form",
         allowedRoles: ["admin", "user"],
       },
       {
-        name: "approved list",
-        icon: FaUserCheck,
+        name: "Approved List",
+        icon: FaClipboardList,
         route: "/appraisal/approved",
         allowedRoles: ["admin", "user"],
       },
     ],
-    allowedRoles: ["admin", "user"], // Only these roles can access "Leaves"
+    allowedRoles: ["admin", "user"],
   },
   {
     name: "Salary Raise",
-    icon: FaUserCheck,
+    icon: FaMoneyBill,
     submenus: [
       {
-        name: "list",
-        icon: FaUserCheck,
+        name: "List",
+        icon: FaMoneyBill,
         route: "/salaryRaise/list",
         allowedRoles: ["admin", "user"],
       },
     ],
-    allowedRoles: ["admin", "user"], // Only these roles can access "Leaves"
+    allowedRoles: ["admin", "user"],
   },
   {
     name: "Retirement",
-    icon: FaUserCheck,
+    icon: FaUserClock,
     submenus: [
       {
         name: "Request Number",
-        icon: FaUserCheck,
+        icon: FaClipboardList,
         route: "/retirement/requestNumber",
         allowedRoles: ["admin", "user"],
       },
       {
         name: "Form",
-        icon: FaUserCheck,
+        icon: FaClipboardList,
         route: "/retirement/form",
         allowedRoles: ["admin", "user"],
       },
     ],
-    allowedRoles: ["admin", "user"], // Only these roles can access "Leaves"
+    allowedRoles: ["admin", "user"],
   },
   {
     name: "Complaint",
-    icon: FaUserCheck,
+    icon: FaExclamationTriangle,
     submenus: [
       {
-        name: "application",
-        icon: FaUserCheck,
+        name: "Application",
+        icon: FaExclamationTriangle,
         route: "/complaint/apply",
         allowedRoles: ["admin", "user"],
       },
       {
-        name: "received candidates",
-        icon: FaUserCheck,
+        name: "Received Candidates",
+        icon: FaUsers,
         route: "/complaint/list",
         allowedRoles: ["admin", "user"],
       },
     ],
-    allowedRoles: ["admin", "user"], // Only these roles can access "Leaves"
-  }
-
+    allowedRoles: ["admin", "user"],
+  },
 ];
 
 interface SidebarProps {

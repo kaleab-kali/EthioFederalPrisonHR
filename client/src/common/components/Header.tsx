@@ -38,7 +38,7 @@ const Header : React.FC<HeaderProps> = ({ onToggleSidebar }) => {
 
       {/* Center Section: Branch Name */}
       <div className="flex-grow text-center">
-        <span className="text-gray-700 text-lg font-medium">Branch Name</span>
+        <span className="text-gray-700 text-lg font-medium">Headquarter</span>
       </div>
 
       {/* Right Section: Notifications, Language Selector, User Profile */}
