@@ -228,7 +228,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
       className={`bg-white shadow-lg transition-all duration-300 pb-8 ${
         isCollapsed ? "w-20" : "w-56"
       } h-full relative z-1`}
-      style={{ overflowY: "auto" }}
+      // style={{ overflowY: "auto" }}
     >
       <nav className="mt-4 px-4">
         <ul className="space-y-2">

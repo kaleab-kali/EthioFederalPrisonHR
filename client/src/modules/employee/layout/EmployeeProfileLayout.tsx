@@ -18,11 +18,12 @@ interface Employee {
   picture: string;
   name: string;
   id: string;
+  age:string;
   title: string;
   active: string;
   manager: string;
   projects: string[];
-  performance: string;
+  performance: { date: string; result30: number; result70: number; }[];
   documents: string[];
   education?: Education[]; // Add education field
 }
@@ -36,11 +37,12 @@ const dummyEmployeeData: Record<EmployeeId, Employee> = {
     picture: 'https://via.placeholder.com/150',
     name: 'John Doe',
     id: 'EMP001',
+    age:"20",
     title: 'Software Engineer',
     active: 'Active',
     manager: 'Jane Smith',
     projects: ['Project Alpha', 'Project Beta'],
-    performance: 'Exceeds Expectations',
+    
     documents: ['Resume.pdf', 'ID_Card.pdf'],
     education: [
       {
@@ -51,6 +53,11 @@ const dummyEmployeeData: Record<EmployeeId, Employee> = {
         educationLevel: 'Bachelor\'s',
       },
     ],
+    performance: [
+      { date: "Jan - June 2024", result30: 25, result70: 65 },
+      { date: "July - Dec 2023", result30: 28, result70: 60 },
+      { date: "Jan - June 2023", result30: 22, result70: 70 },
+    ],
   },
   // Add education to other employees as well, if needed
   EMP002: {
@@ -59,9 +66,14 @@ const dummyEmployeeData: Record<EmployeeId, Employee> = {
     id: 'EMP002',
     title: 'Project Manager',
     active: 'Active',
+    age: "25",
     manager: 'Tom Johnson',
     projects: ['Project Gamma'],
-    performance: 'Meets Expectations',
+    performance: [
+      { date: "Jan - June 2024", result30: 25, result70: 65 },
+      { date: "July - Dec 2023", result30: 28, result70: 60 },
+      { date: "Jan - June 2023", result30: 22, result70: 70 },
+    ],
     documents: ['Certificate.pdf', 'ID_Card.pdf'],
     education: [],
   },
@@ -72,8 +84,13 @@ const dummyEmployeeData: Record<EmployeeId, Employee> = {
     title: 'UX Designer',
     active: 'Inactive',
     manager: 'John Doe',
+    age: "36",
     projects: ['Project Delta'],
-    performance: 'Needs Improvement',
+    performance: [
+      { date: "Jan - June 2024", result30: 25, result70: 65 },
+      { date: "July - Dec 2023", result30: 28, result70: 60 },
+      { date: "Jan - June 2023", result30: 22, result70: 70 },
+    ],
     documents: ['Resume.pdf'],
     education: [
       {

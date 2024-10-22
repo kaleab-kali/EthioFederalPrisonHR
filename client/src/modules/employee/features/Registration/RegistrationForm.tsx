@@ -102,7 +102,7 @@ const RegistrationForm = () => {
               {step === 0 && <Step0 onTypeSelect={handleTypeSelection} />}
               {step === 1 && <Step1 isMilitary={isMilitary} />}
               {step === 2 && <Step2 />}
-              {step === 3 && <Step3 />}
+              {step === 3 && <Step3 isMilitary={isMilitary} />}
     
               {/* Navigation Buttons */}
               <div className="flex justify-between mt-6">
