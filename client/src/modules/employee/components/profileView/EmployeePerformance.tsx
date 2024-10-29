@@ -1,18 +1,9 @@
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
-
-interface PerformanceRecord {
-  date: string;
-  result30: number;
-  result70: number;
-}
-
-interface Employee {
-  performance: PerformanceRecord[];
-}
+import { IEmployee } from '../../../../common/Types/Employee';
 
 const EmployeePerformance: React.FC = () => {
-  const employee = useOutletContext<Employee>();
+  const employee = useOutletContext<IEmployee>();
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -27,7 +18,7 @@ const EmployeePerformance: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {employee.performance.map((record, index) => (
+          {employee.performance?.map((record, index) => (
             <tr key={index} className="border-t">
               <td className="p-4">{record.date}</td>
               <td className="p-4">{record.result30}</td>

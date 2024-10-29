@@ -1,63 +1,9 @@
 import React, { useState } from 'react';
-
-// Define types for appraisals
-type Appraisal = {
-  previousTitle: string;
-  appraisedTitle: string;
-  date: string;
-  rating: 'Excellent' | 'Satisfactory' | 'Unsatisfactory' | 'Not Appraised';
-  performanceEvaluation?: {
-    primary: number; // Out of 70
-    secondary: number; // Out of 30
-  };
-  remarks?: string;
-  additionalInfo?: string;
-};
-
-// Dummy data for employee appraisals
-const appraisals: Appraisal[] = [
-  {
-    previousTitle: 'Lieutenant',
-    appraisedTitle: 'Captain',
-    date: '2023-06-12',
-    rating: 'Excellent',
-    performanceEvaluation: {
-      primary: 65, // out of 70
-      secondary: 28, // out of 30
-    },
-    remarks: 'Exceptional leadership and initiative in the field.',
-  },
-  {
-    previousTitle: 'Sergeant',
-    appraisedTitle: 'Lieutenant',
-    date: '2022-12-20',
-    rating: 'Satisfactory',
-    performanceEvaluation: {
-      primary: 50, // out of 70
-      secondary: 20, // out of 30
-    },
-    remarks: 'Consistently meets expectations. Needs improvement in communication.',
-  },
-  {
-    previousTitle: 'Corporal',
-    appraisedTitle: 'Sergeant',
-    date: '2022-07-05',
-    rating: 'Unsatisfactory',
-    performanceEvaluation: {
-      primary: 40, // out of 70
-      secondary: 10, // out of 30
-    },
-    remarks: 'Underperformed in key operations. Needs additional training.',
-  },
-  {
-    previousTitle: 'Private',
-    appraisedTitle: 'Corporal',
-    date: '2021-03-10',
-    rating: 'Not Appraised',
-  },
-];
+import { useOutletContext } from 'react-router-dom';
+import { IEmployee } from '../../../../common/Types/Employee';
 
 const EmployeeAppraisal: React.FC = () => {
+  const employee = useOutletContext<IEmployee>();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleDetails = (index: number) => {
@@ -93,7 +39,7 @@ const EmployeeAppraisal: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {appraisals.map((appraisal, index) => (
+          {employee.appraisalRecords?.map((appraisal, index) => (
             <React.Fragment key={index}>
               <tr className="hover:bg-blue-50 cursor-pointer" onClick={() => toggleDetails(index)}>
                 <td className="py-4 px-6 border-b border-gray-200 text-sm">{appraisal.previousTitle}</td>

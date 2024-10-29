@@ -11,7 +11,7 @@ const RegistrationForm = () => {
       });
       const { isValid } = methods.formState; // Get form validation state
       const [step, setStep] = useState(0); // Start from Step 0
-      const [isMilitary, setIsMilitary] = useState<boolean | null>(null); // Track if user is military or civil
+      const [isMilitary, setIsMilitary] = useState<boolean | null>(null); 
     
       const nextStep = () => setStep((prev) => prev + 1);
       const prevStep = () => setStep((prev) => prev - 1);

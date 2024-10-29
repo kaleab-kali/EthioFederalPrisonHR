@@ -36,6 +36,7 @@ import React from 'react';
 import Field from '../../Field';
 import { IEmployee } from '../../../../../common/Types/Employee';
 
+
 interface MotherInfoCardProps {
   employee: IEmployee;
   isEditable: boolean;
@@ -50,28 +51,28 @@ const MotherInfoCard: React.FC<MotherInfoCardProps> = ({ employee, isEditable, o
     <div className="grid grid-cols-3 gap-6 flex-grow">
       <Field
         label="Mother's First Name"
-        value={employee.motherInformation?.firstName || 'N/A'}
+        value={employee.motherInformation?.firstName}
         name="motherInformation.firstName"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Mother's Middle Name"
-        value={employee.motherInformation?.middleName || 'N/A'}
+        value={employee.motherInformation?.middleName}
         name="motherInformation.middleName"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Mother's Last Name"
-        value={employee.motherInformation?.lastName || 'N/A'}
+        value={employee.motherInformation?.lastName}
         name="motherInformation.lastName"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Mother's Phone Number"
-        value={employee.motherInformation?.phoneNumber?.number || 'N/A'}
+        value={employee.motherInformation?.phoneNumber?.number}
         name="motherInformation.phoneNumber.number"
         editable={isEditable}
         onChange={onChange}
@@ -89,4 +90,3 @@ const MotherInfoCard: React.FC<MotherInfoCardProps> = ({ employee, isEditable, o
 );
 
 export default MotherInfoCard;
-

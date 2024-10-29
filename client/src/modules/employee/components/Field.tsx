@@ -15,12 +15,12 @@ const Field: React.FC<FieldProps> = ({ label, value, name, editable, onChange })
       <input
         type="text"
         name={name}
-        value={value || ''}
+        value={value !== undefined && value !== null && value !== 'N/A' ? value : ''}
         onChange={onChange}
         className="w-full p-1 mt-1 border rounded text-gray-700 font-bold"
       />
     ) : (
-      <p className="text-base font-bold mt-1 font-roboto">{value}</p>
+      <p className="text-base font-bold mt-1 font-roboto">{value !== undefined && value !== null ? value : 'N/A'}</p>
     )}
   </div>
 );

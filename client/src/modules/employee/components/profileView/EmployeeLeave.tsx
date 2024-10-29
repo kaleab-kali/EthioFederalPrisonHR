@@ -1,37 +1,13 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
+import { IEmployee } from '../../../../common/Types/Employee';
 
 const EmployeeLeave: React.FC = () => {
-  const leaveHistory = [
-    {
-      dateFrom: '2024-10-01',
-      dateTo: '2024-10-10',
-      leaveType: 'Sick Leave',
-      reason: 'Medical reasons',
-      delegatedTo: 'John Doe',
-      status: 'Accepted',
-    },
-    {
-      dateFrom: '2024-09-05',
-      dateTo: '2024-09-08',
-      leaveType: 'Annual Leave',
-      reason: 'Family event',
-      delegatedTo: 'Jane Smith',
-      status: 'Rejected',
-    },
-    {
-      dateFrom: '2024-08-12',
-      dateTo: '2024-08-15',
-      leaveType: 'Casual Leave',
-      reason: 'Personal reasons',
-      delegatedTo: 'Mary Johnson',
-      status: 'Accepted',
-    },
-  ];
-
+  const employee = useOutletContext<IEmployee>();
   return (
     <div className="max-w-4xl mx-auto">
-      {leaveHistory.length > 0 ? (
-        leaveHistory.map((leave, index) => (
+      {employee.leaveRecords && employee.leaveRecords.length > 0 ? (
+        employee.leaveRecords.map((leave, index) => (
           <div
             key={index}
             className="relative bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-lg transition-shadow duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0 sm:space-x-6"

@@ -1,19 +1,12 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
+import { IEmployee } from '../../../../common/Types/Employee';
 
-interface AttendanceRecord {
-  date: string;
-  totalDays: number;
-  presentDays: number;
-}
 
 const EmployeeAttendance: React.FC = () => {
-  // Dummy attendance data
-  const attendanceHistory: AttendanceRecord[] = [
-    { date: 'October 2024', totalDays: 22, presentDays: 20 },
-    { date: 'September 2024', totalDays: 20, presentDays: 18 },
-    { date: 'August 2024', totalDays: 23, presentDays: 21 },
-  ];
 
+  const employee = useOutletContext<IEmployee>();
+  
   return (
     <div className="max-w-4xl mx-auto">
       
@@ -27,7 +20,7 @@ const EmployeeAttendance: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {attendanceHistory.map((record, index) => (
+          {employee.attendanceRecords?.map((record, index) => (
             <tr key={index} className="border-t">
               <td className="p-4">{record.date}</td>
               <td className="p-4">{record.totalDays}</td>

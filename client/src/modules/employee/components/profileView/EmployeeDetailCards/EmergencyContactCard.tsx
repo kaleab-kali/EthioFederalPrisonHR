@@ -100,43 +100,78 @@ const EmergencyContactCard: React.FC<EmergencyContactCardProps> = ({
     <div className="grid grid-cols-3 gap-6 flex-grow">
       <Field
         label="First Name"
-        value={emergencyContact?.info?.firstName || 'N/A'}
+        value={emergencyContact?.info?.firstName}
         name="emergencyContact.info.firstName"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Middle Name"
-        value={emergencyContact?.info?.middleName || 'N/A'}
+        value={emergencyContact?.info?.middleName}
         name="emergencyContact.info.middleName"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Last Name"
-        value={emergencyContact?.info?.lastName || 'N/A'}
+        value={emergencyContact?.info?.lastName}
         name="emergencyContact.info.lastName"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Phone Number"
-        value={emergencyContact?.info?.phoneNumber || 'N/A'}
+        value={emergencyContact?.info?.phoneNumber}
         name="emergencyContact.info.phoneNumber"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Relationship"
-        value={emergencyContact?.info?.relationship || 'N/A'}
+        value={emergencyContact?.info?.relationship}
         name="emergencyContact.info.relationship"
         editable={isEditable}
         onChange={onChange}
       />
       <Field
         label="Email"
-        value={emergencyContact?.info?.email || 'N/A'}
+        value={emergencyContact?.info?.email}
         name="emergencyContact.info.email"
+        editable={isEditable}
+        onChange={onChange}
+      />
+      <Field
+        label="Region"
+        value={emergencyContact?.address?.region}
+        name="emergencyContact.address.region"
+        editable={isEditable}
+        onChange={onChange}
+      />
+      <Field
+        label="Subcity"
+        value={emergencyContact?.address?.subcity}
+        name="emergencyContact.address.subcity"
+        editable={isEditable}
+        onChange={onChange}
+      />
+      <Field
+        label="Woreda"
+        value={emergencyContact?.address?.woreda}
+        name="emergencyContact.address.woreda"
+        editable={isEditable}
+        onChange={onChange}
+      />
+      <Field
+        label="House Number"
+        value={emergencyContact?.address?.houseNumber}
+        name="emergencyContact.address.houseNumber"
+        editable={isEditable}
+        onChange={onChange}
+      />
+      <Field
+        label="Leyu Bota"
+        value={emergencyContact?.address?.leyuBota}
+        name="emergencyContact.address.leyuBota"
         editable={isEditable}
         onChange={onChange}
       />

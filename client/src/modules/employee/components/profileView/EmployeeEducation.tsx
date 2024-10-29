@@ -1,23 +1,11 @@
 import React, { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { IEmployee, Education } from '../../../../common/Types/Employee';
 
-interface Education {
-  id?: string;
-  fieldofstudy?: string;
-  institution: string;
-  graduationYear: number;
-  educationLevel: string;
-}
-
-interface Employee {
-  name: string;
-  id: string;
-  title: string;
-  education?: Education[];
-}
 
 const EmployeeEducation: React.FC = () => {
-  const employee = useOutletContext<Employee>();
+  const employee = useOutletContext<IEmployee>();
+  console.log("current employee info", employee)
   
   const [editableCardId, setEditableCardId] = useState<string | null>(null);
   const [newEducation, setNewEducation] = useState<Education | null>(null);
