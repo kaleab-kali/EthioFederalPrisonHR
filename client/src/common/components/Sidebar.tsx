@@ -236,8 +236,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
 
   return (
     <div
-      tabIndex={0} 
-      onBlur={isCollapsed? handleBlur: undefined} 
+      tabIndex={0}
+      onBlur={isCollapsed ? handleBlur : undefined}
       className={`bg-white shadow-lg transition-all duration-300 pb-8 ${
         isCollapsed ? "w-20" : "w-56"
       } h-full relative z-1`}
@@ -260,7 +260,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                     <div className="flex items-center space-x-2">
                       <menu.icon className="text-blue-500" />
                       {!isCollapsed && (
-                        <span className="font-semibold text-sm ">{menu.name}</span>
+                        <span className="font-semibold text-sm ">
+                          {t(menu.name)}
+                        </span>
                       )}
                     </div>
                     {/* Conditionally render the dropdown arrow only if there are submenus */}
@@ -286,7 +288,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                     <div className="flex items-center space-x-2">
                       <menu.icon className="text-blue-500" />
                       {!isCollapsed && (
-                        <span className="font-semibold text-sm ">{menu.name}</span>
+                        <span className="font-semibold text-sm ">
+                          {t(menu.name)}
+                        </span>
                       )}
                     </div>
                   </NavLink>

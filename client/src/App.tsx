@@ -6,10 +6,10 @@ import './App.css';
 import "./i18n/i18n";
 import SignIn from './modules/admin/components/SignIn';
 
-
+const Admin = lazy(() => import("./modules/admin"));
 const HomeModule = lazy(() => import('./modules/home'));
 const EmployeeModule = lazy(() => import('./modules/employee'));
-const OrganizationModule = lazy(()=> import ('./modules/organization'))
+// const OrganizationModule = lazy(()=> import ('./modules/organization'))
 const CenterDocumentModule = lazy(()=> import ('./modules/centerDocument'))
 const SalaryRaiseModule = lazy(()=> import('./modules/salaryRaise'))
 const LeaveModule = lazy(()=> import('./modules/leave'))
@@ -32,7 +32,7 @@ const App = () => {
             {/* Home module routes */}
             <Route path="home/*" element={<HomeModule />} />
             <Route path="employee/*" element={<EmployeeModule />} />
-            <Route path="organization/*" element={<OrganizationModule />} />
+            <Route path="organization/*" element={<Admin />} />
             <Route path="centerDocument/*" element={<CenterDocumentModule />} />
             <Route path="leave/*" element={<LeaveModule />} />
             <Route path="retirement/*" element={<RetirementModule />} />
