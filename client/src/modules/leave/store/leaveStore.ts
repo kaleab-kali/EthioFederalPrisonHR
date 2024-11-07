@@ -1,0 +1,1 @@
+export const useLeaveStore = () => {}; // React Query store setup here

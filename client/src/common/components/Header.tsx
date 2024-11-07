@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
       </div>
 
       <div className="flex-grow text-center">
-        <span className="text-gray-700 text-lg font-medium">Branch Name</span>
+        <span className="text-gray-700 text-lg font-medium">Headquarter</span>
       </div>
 
       <div className="flex items-center space-x-4">

@@ -3,12 +3,20 @@ import { NavLink } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaBuilding,
-  FaUserCheck,
+  FaUserTie,
   FaChevronDown,
+  FaUsers,
+  FaCalendarAlt,
+  FaClipboardList,
+  FaChartLine,
+  FaMoneyBill,
+  FaUserClock,
+  FaExclamationTriangle,
 } from "react-icons/fa";
+import { MdOutlineAppRegistration, MdAccountBalance } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
-// Define the menu structure and permissions for each item
+// structure and permissions for each item
 const menuItems = [
   {
     name: "Dashboard",
@@ -29,7 +37,7 @@ const menuItems = [
       },
       {
         name: "Teams",
-        icon: FaBuilding,
+        icon: FaUsers,
         route: "/organization/teams",
         allowedRoles: ["admin", "manager"],
       },
@@ -50,18 +58,18 @@ const menuItems = [
   },
   {
     name: "Employees",
-    icon: FaUserCheck,
+    icon: FaUserTie,
     submenus: [
       {
         name: "List",
-        icon: FaUserCheck,
+        icon: FaUserTie,
         route: "/employee/list",
         allowedRoles: ["admin", "manager"],
       },
       {
-        name: "Add",
-        icon: FaUserCheck,
-        route: "/employee/add",
+        name: "Registration",
+        icon: MdOutlineAppRegistration,
+        route: "/employee/registration",
         allowedRoles: ["admin", "manager"],
       },
     ],
@@ -69,18 +77,119 @@ const menuItems = [
   },
   {
     name: "Leaves",
-    icon: FaUserCheck,
+    icon: FaCalendarAlt,
     submenus: [
       {
         name: "Request Leave",
-        icon: FaUserCheck,
-        route: "/leaves/request",
+        icon: FaCalendarAlt,
+        route: "/leave/request",
         allowedRoles: ["admin", "user"],
       },
       {
         name: "Leave Balance",
-        icon: FaUserCheck,
-        route: "/leaves/balance",
+        icon: MdAccountBalance,
+        route: "/leave/balance",
+        allowedRoles: ["admin", "user"],
+      },
+    ],
+    allowedRoles: ["admin", "user"],
+  },
+  {
+    name: "Attendance",
+    icon: FaUserClock,
+    submenus: [
+      {
+        name: "Daily",
+        icon: FaClipboardList,
+        route: "/attendance/daily",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Weekly",
+        icon: FaClipboardList,
+        route: "/attendance/weekly",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Missing",
+        icon: FaExclamationTriangle,
+        route: "/attendance/missing",
+        allowedRoles: ["admin", "user"],
+      },
+    ],
+    allowedRoles: ["admin", "user"],
+  },
+  {
+    name: "Appraisal",
+    icon: FaChartLine,
+    submenus: [
+      {
+        name: "Candidates",
+        icon: FaUsers,
+        route: "/appraisal/candidates",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Form",
+        icon: FaClipboardList,
+        route: "/appraisal/form",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Approved List",
+        icon: FaClipboardList,
+        route: "/appraisal/approved",
+        allowedRoles: ["admin", "user"],
+      },
+    ],
+    allowedRoles: ["admin", "user"],
+  },
+  {
+    name: "Salary Raise",
+    icon: FaMoneyBill,
+    submenus: [
+      {
+        name: "List",
+        icon: FaMoneyBill,
+        route: "/salaryRaise/list",
+        allowedRoles: ["admin", "user"],
+      },
+    ],
+    allowedRoles: ["admin", "user"],
+  },
+  {
+    name: "Retirement",
+    icon: FaUserClock,
+    submenus: [
+      {
+        name: "Request Number",
+        icon: FaClipboardList,
+        route: "/retirement/requestNumber",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Form",
+        icon: FaClipboardList,
+        route: "/retirement/form",
+        allowedRoles: ["admin", "user"],
+      },
+    ],
+    allowedRoles: ["admin", "user"],
+  },
+  {
+    name: "Complaint",
+    icon: FaExclamationTriangle,
+    submenus: [
+      {
+        name: "Application",
+        icon: FaExclamationTriangle,
+        route: "/complaint/apply",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Received Candidates",
+        icon: FaUsers,
+        route: "/complaint/list",
         allowedRoles: ["admin", "user"],
       },
     ],
@@ -90,7 +199,7 @@ const menuItems = [
 
 interface SidebarProps {
   isCollapsed: boolean;
-  userRole: string;
+  userRole: string; 
 }
 
 const canAccess = (allowedRoles: string[], userRole: string): boolean => {
@@ -101,16 +210,23 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
   const { t } = useTranslation("sider");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
+  // Toggle the submenu if the menu has submenus
   const handleMenuClick = (menu: string, hasSubmenus: boolean) => {
+    console.log("Menu clicked:", menu);
     if (hasSubmenus) {
+      
       setOpenMenu(openMenu === menu ? null : menu);
     } else {
+      
       setOpenMenu(null);
     }
   };
 
+
   const handleBlur = (event: React.FocusEvent) => {
     const currentTarget = event.currentTarget;
+
+   
     setTimeout(() => {
       if (!currentTarget.contains(document.activeElement)) {
         setOpenMenu(null);
@@ -120,11 +236,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
 
   return (
     <div
-      tabIndex={0}
-      onBlur={handleBlur}
-      className={`bg-white shadow-lg transition-all duration-300 ${
+      tabIndex={0} 
+      onBlur={isCollapsed? handleBlur: undefined} 
+      className={`bg-white shadow-lg transition-all duration-300 pb-8 ${
         isCollapsed ? "w-20" : "w-56"
       } h-full relative z-1`}
+      // style={{ overflowY: "auto" }}
     >
       <nav className="mt-4 px-4">
         <ul className="space-y-2">
@@ -132,30 +249,52 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
             .filter((menu) => canAccess(menu.allowedRoles, userRole))
             .map((menu) => (
               <li key={menu.name} className="relative">
-                <div
-                  onClick={() =>
-                    handleMenuClick(menu.name, menu.submenus.length > 0)
-                  }
-                  className="flex items-center justify-between p-3 text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer"
-                >
-                  <div className="flex items-center space-x-2">
-                    <menu.icon className="text-blue-500" />
-                    {!isCollapsed && (
-                      <span className="font-semibold">{t(menu.name)}</span>
+                {menu.submenus.length > 0 ? (
+                  // If there are submenus, use a div and handle click as before
+                  <div
+                    onClick={() =>
+                      handleMenuClick(menu.name, menu.submenus.length > 0)
+                    }
+                    className="flex items-center justify-between p-3 text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <menu.icon className="text-blue-500" />
+                      {!isCollapsed && (
+                        <span className="font-semibold text-sm ">{menu.name}</span>
+                      )}
+                    </div>
+                    {/* Conditionally render the dropdown arrow only if there are submenus */}
+                    {!isCollapsed && menu.submenus.length > 0 && (
+                      <FaChevronDown
+                        className={`transition-transform text-xs ${
+                          openMenu === menu.name ? "rotate-180" : ""
+                        }`}
+                      />
                     )}
                   </div>
-                  {!isCollapsed && menu.submenus.length > 0 && (
-                    <FaChevronDown
-                      className={`transition-transform ${
-                        openMenu === menu.name ? "rotate-180" : ""
-                      }`}
-                    />
-                  )}
-                </div>
+                ) : (
+                  // If there are no submenus, use NavLink for navigation
+                  <NavLink
+                    to={menu.route ?? "#"} // Set the route for the Dashboard link
+                    onClick={() => setOpenMenu(null)}
+                    className={({ isActive }) =>
+                      `flex items-center justify-between p-3 text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer ${
+                        isActive ? "bg-blue-100" : ""
+                      }`
+                    }
+                  >
+                    <div className="flex items-center space-x-2">
+                      <menu.icon className="text-blue-500" />
+                      {!isCollapsed && (
+                        <span className="font-semibold text-sm ">{menu.name}</span>
+                      )}
+                    </div>
+                  </NavLink>
+                )}
 
                 {openMenu === menu.name && menu.submenus.length > 0 && (
                   <ul
-                    className={`ml-6 mt-2 space-y-1 ${
+                    className={`ml-8 mt-2 space-y-1 ${
                       isCollapsed
                         ? "absolute top-0 left-full transform -translate-x-2 bg-white shadow-lg rounded-md p-2"
                         : ""
@@ -170,7 +309,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                         <li key={submenu.name}>
                           <NavLink
                             to={submenu.route}
-                            onClick={() => setOpenMenu(null)}
+                            // onClick={() => setOpenMenu(null)} // Ensure menu closes on submenu click
                             className={({ isActive }) =>
                               `block p-2 text-sm text-gray-600 hover:bg-blue-50 rounded ${
                                 isActive ? "bg-blue-100" : ""

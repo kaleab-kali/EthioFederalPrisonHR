@@ -1,1 +1,0 @@
-export const SampleComponent = () => <div>Common Component</div>;
