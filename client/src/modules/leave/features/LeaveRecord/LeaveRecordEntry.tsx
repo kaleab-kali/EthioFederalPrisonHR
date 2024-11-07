@@ -1,6 +1,6 @@
 import React from 'react'
 import TableTan from '../../components/TableTan'
-import EmployeeListTable from '../../components/EmployeeListTable'
+import EmployeeListTable from '../../../employee/components/EmployeeListTable'
 
 const LeaveRecordEntry = () => {
   return (

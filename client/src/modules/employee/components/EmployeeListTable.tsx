@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from "react";
+import { IEmployeeListTable } from "../EmployeeList";
 import { useNavigate } from 'react-router-dom';
-import Breadcrumb from '../components/BreadCrumb';
-import { IEmployee } from '../../../common/Types/Employee';
+import {
+    FiUser    
+  } from "react-icons/fi";
+  import { LuArrowDownUp } from "react-icons/lu";
+  
+import {
+  useReactTable,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  Row,
+} from "@tanstack/react-table";
+import { IEmployee } from "../../../common/Types/Employee";
+
+
 
 const dummyEmployees: IEmployee[] = [
   {
@@ -262,44 +276,132 @@ const dummyEmployees: IEmployee[] = [
       }]
 }]
 
+const employeeList: IEmployeeListTable[] = dummyEmployees.map(employee => ({
+  empID: employee.empId,
+  title: employee.title,
+  firstName: employee.firstName,
+  lastName: employee.lastName,
+  department: employee.department,
+  position: employee.position
+}));
+const columnHelper = createColumnHelper<IEmployeeListTable>();
+const getColumns = (handleAction: (row: Row<IEmployeeListTable>) => void) => [
+  columnHelper.accessor("title", {
+    header: () => "Title",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("firstName", {
+    header: () => (
+      <span className="flex items-center">
+        <FiUser className="mr-2" size={16} /> First Name
+      </span>
+    ),
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("lastName", {
+    header: () => "Last Name",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("department", {
+    header: () => "Department",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("position", {
+    header: () => "Position",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.display({
+    header: "actions",
+    id: "action",
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        <button
+          onClick={() => handleAction(row)}
+          className="px-3 py-1 border border-blue-500 text-blue-500 font-medium rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300"
+        >
+          View
+        </button>
+        <button
+          onClick={() => handleAction(row)}
+          className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
+        >
+          Delete
+        </button>
+      </div>
+    ),
+  }),
+];
 
 
-const EmployeeListPage: React.FC = () => {
+const EmployeeListTable: React.FC = () => {
   const navigate = useNavigate();
+  
+  const [emplyees, setEmployees] = useState<IEmployeeListTable[]>([]);
 
-  const handleRowClick = (employeeId: string) => {
-    navigate(`profile/${employeeId}`);
+  const handleAction = (row: Row<IEmployeeListTable>) => {
+    console.log('Action button clicked for row:', row);
+    console.log('Action button data row:', row.original);
+    navigate(`profile/${row.original.empID}`);
   };
 
+  const columns = getColumns(handleAction); 
+  const table = useReactTable({
+    data: employeeList,
+    columns,
+    debugTable: true,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+
   return (
-    <div className="p-6 bg-white shadow-lg rounded-md h-full w-full">
-      <Breadcrumb />
-      <h1 className="text-2xl font-semibold mb-4">Employee List</h1>
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border-b">ID</th>
-            <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">Title</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dummyEmployees.map((employee) => (
-            <tr
-              key={employee.empId}
-              className="cursor-pointer hover:bg-gray-100"
-              onClick={() => handleRowClick(employee.empId)}
-            >
-              <td className="py-2 px-4 border-b">{employee.empId}</td>
-              <td className="py-2 px-4 border-b">{employee.firstName}</td>
-              <td className="py-2 px-4 border-b">{employee.title}</td>
+    <>
+    <div className="overflow-x-auto bg-white shadow-md rounded-xl">
+    <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id} className="">
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <div
+                      {...{
+                        className: header.column.getCanSort()
+                          ? "cursor-pointer select-none flex items-center"
+                          : "",
+                        onClick: header.column.getToggleSortingHandler(),
+                      }}
+                    >
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {header.column.columnDef.header !== "actions" && <LuArrowDownUp className="ml-1" size={12} />}
+                      
+                    </div>
+                  
+                </th>
+              ))}
             </tr>
           ))}
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+            {
+                table.getRowModel().rows.map((row) => (
+                    <tr key={row.id} className="hover:bg-gray-50">
+                        {row.getVisibleCells().map((cell) => (
+                            <td key={cell.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </td>
+                        ))}
+                    </tr>
+                ))
+            }
         </tbody>
       </table>
+
     </div>
+     
+    </>
   );
 };
 
-export default EmployeeListPage;
-
+export default EmployeeListTable;

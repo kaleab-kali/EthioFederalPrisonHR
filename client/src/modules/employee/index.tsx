@@ -13,6 +13,7 @@ import EmployeeMaterial from './components/profileView/EmployeeMaterial';
 import EmployeeAttendance from './components/profileView/EmployeeAttendance';
 import EmployeeEducation from './components/profileView/EmployeeEducation';
 import EmployeeHealth from './components/profileView/EmployeeHealth';
+import EmployeeListTable from './components/EmployeeListTable';
 
 
 const EmployeeModule: React.FC = () => {
@@ -20,7 +21,8 @@ const EmployeeModule: React.FC = () => {
     <Routes>
       {/* <Route path="/list" element={<EmployeeComponent />} /> */}
       
-      <Route path="list" element={<EmployeeListPage />} />
+      {/* <Route path="list" element={<EmployeeListPage />} /> */}
+      <Route path="list" element={<EmployeeListTable />} />
       <Route
         path="list/profile/:employeeId"
         element={<EmployeeProfileLayout />}
