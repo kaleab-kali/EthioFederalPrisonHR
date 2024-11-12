@@ -94,6 +94,7 @@ export interface IEmployee {
   employmentDate: Date;
   transferStatus?: string;
   rejectionReason?: string;
+  leaveBalances?: YearlyLeaveBalances[];
 }
 
 // Types for the Education schema
@@ -112,4 +113,14 @@ export enum Roles {
   Staff = 'hrStaff',
   DocumentStaff = 'documentStaff',
   Admin = 'admin',
+}
+interface YearlyLeaveBalances {
+  year: number;
+  balances: LeaveBalance[];
+}
+interface LeaveBalance {
+  leaveType: string;
+  credit: number;
+  used: number;
+  available: number;
 }

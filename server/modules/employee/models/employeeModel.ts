@@ -113,6 +113,7 @@ const employeeSchema = new Schema<IEmployee>(
     employmentDate: { type: Date },
     transferStatus: { type: String },
     rejectionReason: { type: String },
+    leaveBalances:[]
   },
   { timestamps: true },
 );

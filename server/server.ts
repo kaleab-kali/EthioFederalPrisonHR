@@ -3,6 +3,7 @@ import connectDB from './config/database';
 import employeeRoute from './modules/employee/routes/employeeRoutes';
 import centerRoute from './modules/centers/routes/centerRoute';
 import leaveBalanceRoute from './modules/leave/routes/leaveBalanceRoute';
+import leaveInfoRoute from './modules/leave/routes/leaveRoute';
 
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/employees', employeeRoute);
 app.use('/api/centers', centerRoute);
 app.use('/api/leavebalances', leaveBalanceRoute);
+app.use('/api/leaveinfo', leaveInfoRoute);
 
 
 app.listen(port, () => {

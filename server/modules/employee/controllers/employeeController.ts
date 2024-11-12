@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Employee from '../models/employeeModel';
 import 'dotenv';
+import LeaveBalanceModel from '../../leave/models/leaveBalanceModel';
 
 // Login validation
 const generateToken = (id: string) => {
@@ -23,7 +24,25 @@ const getEmployees = async (req: Request, res: Response) => {
 
 const addEmployee = async (req: Request, res: Response) => {
   try {
-    const employee = new Employee(req.body);
+    const newEmployeeData = req.body;
+
+    const employmentDate = new Date(newEmployeeData.employmentDate);
+    const currentYear = new Date().getFullYear();
+    const yearOffset = currentYear - employmentDate.getFullYear();
+    const leaveTypes = await LeaveBalanceModel.find(
+      {},
+      { leaveType: 1, credit: 1, _id: 0 },
+    );
+    const balances = leaveTypes.map((type) => ({
+      leaveType: type.leaveType,
+      credit: type.credit + yearOffset,
+      used: 0,
+      available: type.credit + yearOffset,
+    }));
+    const leaveBalances = [{ year: currentYear, balances }];
+    // Create new Employee instance
+
+    const employee = new Employee({ ...req.body, leaveBalances });
     const newEmployee = await employee.save();
     console.log(newEmployee);
 
@@ -49,7 +68,8 @@ const loginUser = async (req: Request, res: Response) => {
       return;
     }
 
-    const isMatch = employee && await bcrypt.compare(password, employee.password);
+    const isMatch =
+      employee && (await bcrypt.compare(password, employee.password));
     if (!isMatch) {
       res.status(400).json({ message: 'Invalid credentials' });
       return;
@@ -73,7 +93,6 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 const assignCredentials = async (req: Request, res: Response) => {
-  
   const { employeeId, userName, password } = req.body;
 
   try {
@@ -151,4 +170,11 @@ const handleTransfer = async (req: Request, res: Response) => {
   }
 };
 
-export { getEmployees, addEmployee, loginUser, assignCredentials ,requestTransfer, handleTransfer};
+export {
+  getEmployees,
+  addEmployee,
+  loginUser,
+  assignCredentials,
+  requestTransfer,
+  handleTransfer,
+};

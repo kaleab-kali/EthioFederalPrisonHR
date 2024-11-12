@@ -1,4 +1,6 @@
 export interface ILeaveInfo extends Document {
+  _id: any;
+  toObject(): any;
   employeeId?: string;
   leaveId?: string;
   from?: Date;

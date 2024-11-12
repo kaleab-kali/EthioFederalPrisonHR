@@ -6,7 +6,7 @@ const createLeaveBalance = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { leaveType, credit, used, available } = req.body;
+    const { leaveType, credit, used="", available="" } = req.body;
     console.log('Adding', req.body);
 
     const newLeaveBalance = new LeaveBalanceModel({
