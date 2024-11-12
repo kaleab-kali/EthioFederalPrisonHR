@@ -4,7 +4,7 @@ import Loader from './common/components/loader';
 import MainLayout from './layout/MainLayout';
 import './App.css';
 import "./i18n/i18n";
-import SignIn from './modules/admin/components/SignIn';
+import SignIn from './common/components/SignIn';
 
 const Admin = lazy(() => import("./modules/admin"));
 const HomeModule = lazy(() => import('./modules/home'));
@@ -25,26 +25,23 @@ const App = () => {
       <Routes>
         {/* Public Auth routes */}
         {/* <Route path="/auth/*" element={<AuthModule />} /> */}
+        <Route path="/login" element={<SignIn />} />
 
         {/* Protected routes */}
         {/* {isAuthenticated ? ( */}
-          <Route path="/" element={<MainLayout />}>
-            {/* Home module routes */}
-            <Route path="home/*" element={<HomeModule />} />
-            <Route path="employee/*" element={<EmployeeModule />} />
-            <Route path="organization/*" element={<Admin />} />
-            <Route path="centerDocument/*" element={<CenterDocumentModule />} />
-            <Route path="leave/*" element={<LeaveModule />} />
-            <Route path="retirement/*" element={<RetirementModule />} />
-            <Route path="appraisal/*" element={<AppraisalModule />} />
-            <Route path="salaryRaise/*" element={<SalaryRaiseModule />} />
-            <Route path="attendance/*" element={<AttendanceModule />} />
-            <Route path="complaint/*" element={<ComplaintModule />} />
-
-            
-
-            
-            {/* Employee (admin) module routes
+        <Route path="/" element={<MainLayout />}>
+          {/* Home module routes */}
+          <Route path="home/*" element={<HomeModule />} />
+          <Route path="employee/*" element={<EmployeeModule />} />
+          <Route path="organization/*" element={<Admin />} />
+          <Route path="centerDocument/*" element={<CenterDocumentModule />} />
+          <Route path="leave/*" element={<LeaveModule />} />
+          <Route path="retirement/*" element={<RetirementModule />} />
+          <Route path="appraisal/*" element={<AppraisalModule />} />
+          <Route path="salaryRaise/*" element={<SalaryRaiseModule />} />
+          <Route path="attendance/*" element={<AttendanceModule />} />
+          <Route path="complaint/*" element={<ComplaintModule />} />
+          {/* Employee (admin) module routes
             <Route path="employee/*" element={<PrivateRoute><EmployeeModule /></PrivateRoute>} /> */}
         </Route>
         {/* // ) : (

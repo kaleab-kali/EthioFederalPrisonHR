@@ -1,0 +1,20 @@
+{
+  "search": "Search",
+  "employee": {
+    "avatar": "Avatar",
+    "name": "Name",
+    "position": "Position",
+    "department": "Department",
+    "branch": "Branch",
+    "actions": "Actions",
+    "transfer": "Transfer",
+    "selectBranch": "Please select branch",
+    "reason": "Reason",
+    "enterReason": "Enter Reason",
+    "confirmTransfer": "Confirm Transfer",
+    "confirmationMessage": "Are you sure you want to transfer this employee?",
+    "yes": "Yes",
+    "cancel": "Cancel",
+    "confirm":"Confirm"
+  }
+}

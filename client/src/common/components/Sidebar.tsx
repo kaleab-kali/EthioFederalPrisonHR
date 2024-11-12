@@ -72,6 +72,12 @@ const menuItems = [
         route: "/employee/registration",
         allowedRoles: ["admin", "manager"],
       },
+      {
+        name: "Transfer",
+        icon: MdOutlineAppRegistration,
+        route: "/employee/transfer",
+        allowedRoles: ["admin", "manager"],
+      },
     ],
     allowedRoles: ["admin", "manager"],
   },

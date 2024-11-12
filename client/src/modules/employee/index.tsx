@@ -14,13 +14,14 @@ import EmployeeAttendance from './components/profileView/EmployeeAttendance';
 import EmployeeEducation from './components/profileView/EmployeeEducation';
 import EmployeeHealth from './components/profileView/EmployeeHealth';
 import EmployeeListTable from './components/EmployeeListTable';
+import TransferEmployeeTable from './components/TransferEmployeeTable';
 
 
 const EmployeeModule: React.FC = () => {
   return (
     <Routes>
       {/* <Route path="/list" element={<EmployeeComponent />} /> */}
-      
+
       {/* <Route path="list" element={<EmployeeListPage />} /> */}
       <Route path="list" element={<EmployeeListTable />} />
       <Route
@@ -42,9 +43,9 @@ const EmployeeModule: React.FC = () => {
 
       <Route path="/registration" element={<RegistrationForm />} />
       <Route path="/remove" element={<EmployeeComponent />} />
+      <Route path="/transfer" element={<TransferEmployeeTable />} />
     </Routes>
     //   <Route path="dashboard" element={<HomeComponent />} />
-   
   );
 };
 
