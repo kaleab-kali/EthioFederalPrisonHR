@@ -1,5 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  useReactTable,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  Row,
+} from "@tanstack/react-table";
+import { LuArrowDownUp } from 'react-icons/lu';
+import { IEmployeeRoleTable } from "../types/EmployeeRole";
 
 // Employee type definition
 interface Employee {
@@ -40,9 +49,43 @@ const employees: Employee[] = [
     role: "HR",
     profileUrl: "https://via.placeholder.com/40",
   },
-  // Add more employees for testing pagination...
+  
 ];
 
+
+const columnHelper = createColumnHelper<IEmployeeRoleTable>();
+const getColumns = (t: any) =>[
+  columnHelper.accessor('profile',{
+    header: () => t('profile'),
+    cell: (info) => info.getValue()
+  }),
+  columnHelper.accessor('empName',{
+    header: () => t('name'),
+    cell: (info) => info.getValue()
+  }),
+  columnHelper.accessor('empEmail',{
+    header: ()=> t('email'),
+    cell: (info) => info.getValue()
+  }),
+  
+  columnHelper.accessor('currentRole',{
+    header: ()=> t('currentRole'),
+    cell: (info)=> info.getValue()
+  }),
+  columnHelper.display({
+    id: 'updateRole',
+    header: ()=> t('assignNewRole'),
+  }
+  )
+]
+
+const data: IEmployeeRoleTable[] = employees.map(employee => ({
+  profile:employee.profileUrl,
+  empID: employee.id,
+  empName:employee.name,
+  empEmail:employee.email,
+  currentRole:employee.role
+}))
 // List of available roles
 const roles = ["All", "Developer", "Manager", "Designer", "Admin", "HR"];
 
@@ -96,6 +139,13 @@ const EmployeeRoleAssignment: React.FC = () => {
     setCurrentPage(page);
   };
 
+  const columns = getColumns(t); 
+ const table = useReactTable({
+  data: data,
+  columns,
+  getCoreRowModel:getCoreRowModel()
+ })
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-8">
@@ -122,16 +172,40 @@ const EmployeeRoleAssignment: React.FC = () => {
           </select>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead className="bg-blue-500 text-white">
-              <tr>
+        <div className="overflow-x-auto bg-white shadow-md rounded-xl">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              {/* <tr>
                 <th className="py-2 px-4">{t("profile")}</th>
                 <th className="py-2 px-4">{t("name")}</th>
                 <th className="py-2 px-4">{t("email")}</th>
                 <th className="py-2 px-4">{t("currentRole")}</th>
                 <th className="py-2 px-4">{t("assignNewRole")}</th>
-              </tr>
+              </tr> */}
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id} className="">
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div
+                          {...{
+                            className: header.column.getCanSort()
+                              ? "cursor-pointer select-none flex items-center"
+                              : "",
+                            onClick: header.column.getToggleSortingHandler(),
+                          }}
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                          {header.column.columnDef.header !== "actions" && <LuArrowDownUp className="ml-1" size={12} />}
+                          
+                        </div>
+                      
+                    </th>
+                  ))}
+                </tr>
+              ))}
             </thead>
             <tbody>
               {paginatedEmployees.map((employee) => (

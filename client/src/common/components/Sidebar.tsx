@@ -150,19 +150,27 @@ const menuItems = [
     ],
     allowedRoles: ["admin", "user"],
   },
+  // Reward
   {
-    name: "Salary Raise",
+    name: "Reward",
     icon: FaMoneyBill,
     submenus: [
       {
-        name: "List",
+        name: "Salary Raise",
         icon: FaMoneyBill,
-        route: "/salaryRaise/list",
+        route: "/reward/salaryRaise",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Service Reward",
+        icon: FaMoneyBill,
+        route: "/reward/serviceReward",
         allowedRoles: ["admin", "user"],
       },
     ],
     allowedRoles: ["admin", "user"],
   },
+  // Retirement
   {
     name: "Retirement",
     icon: FaUserClock,
@@ -182,6 +190,7 @@ const menuItems = [
     ],
     allowedRoles: ["admin", "user"],
   },
+  // Complaint
   {
     name: "Complaint",
     icon: FaExclamationTriangle,

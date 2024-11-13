@@ -1,0 +1,1 @@
+export const RewardComponent = () => <div>Reward Component</div>;
