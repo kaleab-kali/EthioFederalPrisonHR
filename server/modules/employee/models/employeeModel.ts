@@ -1,5 +1,5 @@
 import mongoose, { Schema,model,Document } from "mongoose";
-import { Education, IEmployee, Roles } from "../types/employeeTypes";
+import { Education, IEmployee, Roles,  RankChange, Evaluation} from "../types/employeeTypes";
 
 export const educationSchema = new Schema<Education>({
   id: { type: String },
@@ -7,6 +7,12 @@ export const educationSchema = new Schema<Education>({
   institution: { type: String, required: true },
   graduationYear: { type: Number, required: true },
   educationLevel: { type: String, required: true },
+});
+
+export const rankChangeSchema = new Schema<RankChange>({
+  oldRank: { type: String },
+  newRank: { type: String },
+  date: { type: Date, default: Date.now },
 });
 
 const employeeSchema = new Schema<IEmployee>(
@@ -113,6 +119,34 @@ const employeeSchema = new Schema<IEmployee>(
     employmentDate: { type: Date },
     transferStatus: {type: String},
     rejectionReason: {type: String},
+    rankChanges: [rankChangeSchema],
+    appraisalHistory: [
+      {
+        employeeId: { type: String },
+        currentLevel: { type: String },
+        nextLevel: { type: String },
+        scores: {
+          education: { type: Number },
+          service: { type: Number },
+          attitude: { type: Number },
+          behaviour: { type: Number },
+          workEfficiency: { type: Number },
+          disciplinary: { type: Number },
+        },
+        totalScore: { type: Number },
+        status: { type: String },
+        promotionDate: { type: Date },
+      },
+    ],
+    complaints: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Complaint' }],
+    evaluation:[ {
+      self: { type: Number, required: true },
+      colleague: { type: Number, required: true },
+      total: { type: Number, required: true },
+      remark: { type: String, required: true },
+      from: { type: Date, required: true },
+      to: { type: Date, required: true }, 
+  }],
   },
   { timestamps: true },
 );

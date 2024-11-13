@@ -5,7 +5,8 @@ import {
   getEmployees,
   loginUser,
   requestTransfer,
-  handleTransfer
+  handleTransfer,
+  createEvaluation, getEvaluationById
 } from '../controllers/employeeController';
 import  {authenticate}  from '../middlewares/authunticate';
 import { checkHrRole,checkAdminRole } from '../middlewares/checkRoles';
@@ -17,5 +18,7 @@ router.post('/', authenticate,checkHrRole ,addEmployee);
 router.post('/auth/login', loginUser);
 router.post('/transfer/request', requestTransfer);
 router.post('/transfer/handle', handleTransfer);
+router.post("/evaluation", createEvaluation);
+router.get("/evaluation/:employeeId", getEvaluationById);
 
 export default router;
