@@ -6,6 +6,8 @@ export interface IDocument extends Document {
   from: string;
   to: string;
   shelf: string;
+  docReceiverId: string;
+  docSenderId: string;
   date: Date;
   title: string;
   topic: string;
