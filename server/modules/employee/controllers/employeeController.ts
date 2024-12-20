@@ -28,7 +28,10 @@ const addEmployee = async (req: Request, res: Response) => {
 
     const employmentDate = new Date(newEmployeeData.employmentDate);
     const currentYear = new Date().getFullYear();
-    const yearOffset = currentYear - employmentDate.getFullYear();
+    let yearOffset = currentYear - employmentDate.getFullYear();
+    if (yearOffset > 10) {
+      yearOffset = 10;
+    }
     const leaveTypes = await LeaveBalanceModel.find(
       {},
       { leaveType: 1, credit: 1, _id: 0 },
