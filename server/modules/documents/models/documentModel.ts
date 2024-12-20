@@ -16,7 +16,7 @@ const documentSchema = new Schema<IDocument>(
     documentNumber: {
       type: String,
       // required: true,
-      unique: true,
+      // unique: true,
     },
     empId: {
       type: String,

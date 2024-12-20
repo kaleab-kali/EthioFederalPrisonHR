@@ -6,13 +6,14 @@ import leaveBalanceRoute from './modules/leave/routes/leaveBalanceRoute';
 import leaveInfoRoute from './modules/leave/routes/leaveRoute';
 import documentTypes from './modules/documents/routes/documentRoute';
 import colors from 'colors';
+import fileUpload from 'express-fileupload';
 
 
 const app = express();
 const port = 3000;
 
 connectDB();
-
+app.use(fileUpload())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
