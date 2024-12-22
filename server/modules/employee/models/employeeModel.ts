@@ -1,5 +1,5 @@
 import mongoose, { Schema,model,Document } from "mongoose";
-import { Education, IEmployee, Roles,  RankChange, Evaluation} from "../types/employeeTypes";
+import { Education, IEmployee, Roles,  RankChange, Evaluation, FamilyRecord, HealthRecord} from "../types/employeeTypes";
 
 export const educationSchema = new Schema<Education>({
   id: { type: String },
@@ -13,6 +13,32 @@ export const rankChangeSchema = new Schema<RankChange>({
   oldRank: { type: String },
   newRank: { type: String },
   date: { type: Date, default: Date.now },
+});
+
+const familyRecordSchema = new Schema<FamilyRecord>({
+  id: {type: String, required: true},
+  personName: { type: String, required: true },
+  type: { type: String, enum: ['Spouse', 'Kid'], required: true },
+  age: { type: Number },
+  isEligible: { type: Boolean },
+  records: [
+    {
+      date: { type: String, required: true },
+      healthIssue: { type: String, required: true },
+      cost: { type: Number, required: true },
+    },
+  ],
+  marriageStatus: { type: String, enum: ['married', 'divorced', 'widowed']},
+});
+
+const healthRecordSchema = new Schema<HealthRecord>({
+  records: [
+    {
+      date: { type: String, required: true },
+      healthIssue: { type: String, required: true },
+      cost: { type: Number, required: true },
+    },
+  ],
 });
 
 const employeeSchema = new Schema<IEmployee>(
@@ -44,6 +70,7 @@ const employeeSchema = new Schema<IEmployee>(
       leyuBota: { type: String },
     },
     salary: { type: String, required: true },
+    lastSalaryRaise: {type: Date},
     educationLevel: { type: String },
     education: [educationSchema],
     birthplaceInfo: {
@@ -147,6 +174,8 @@ const employeeSchema = new Schema<IEmployee>(
       from: { type: Date, required: true },
       to: { type: Date, required: true }, 
   }],
+  familyRecords: [familyRecordSchema],
+  healthRecords: [healthRecordSchema],
   },
   { timestamps: true },
 );

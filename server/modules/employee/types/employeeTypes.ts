@@ -85,6 +85,7 @@ export interface IEmployee {
   };
   password: string;
   role: Roles;
+  lastSalaryRaise?: Date;
   rankChanges: RankChange[];
   appraisalHistory: AppraisalHistory[];
   retirementDate?: Date;
@@ -101,6 +102,8 @@ export interface IEmployee {
   rejectionReason?: string;
   complaints: mongoose.Schema.Types.ObjectId[];
   evaluation: Evaluation[];
+  healthRecords: HealthRecord[];
+  familyRecords: FamilyRecord[];
 }
 
 // Types for the Education schema
@@ -140,6 +143,21 @@ export interface Evaluation {
   remark: string; 
   from: Date; 
   to: Date; 
+}
+// Family Schema
+export interface FamilyRecord {
+  id: string;
+  personName: string;
+  type: 'Spouse' | 'Kid';
+  age: number;
+  isEligible?: boolean;
+  records: { date: string; healthIssue: string; cost: number; }[];
+  marriageStatus: 'married' | 'divorced' | 'widowed';
+}
+
+// Health Record Schema
+export interface HealthRecord {
+  records: { date: string; healthIssue: string; cost: number }[];
 }
 // Enum for roles
 export enum Roles {
