@@ -1,0 +1,20 @@
+{
+  "search": "ፈልግ",
+  "employee": {
+    "avatar": "ፎቶ",
+    "name": "ሙሉ ስም",
+    "position": "የስራ አይነት",
+    "department": "መምሪያ ክፍል",
+    "branch": "ቅርንጫፍ",
+    "actions": "እርምጃዎች",
+    "transfer": "ማስተላለፍ",
+    "selectBranch": "እባክዎትን ቅርንጫፍ ይምረጡ",
+    "reason": "ምክንያት",
+    "enterReason": "ምክንያት ያስገቡ",
+    "confirmTransfer": "ማስተላለፍ ያረጋግጡ",
+    "confirmationMessage": "እርግጠኛ ነህ/ነሽ ይህን ተቀጣሪ እንዲሰተላለፍ?",
+    "yes": "አዎ",
+    "cancel": "ሰርዝ",
+    "confirm": "አረጋግጥ"
+  }
+}

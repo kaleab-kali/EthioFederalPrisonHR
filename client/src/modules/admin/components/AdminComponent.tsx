@@ -1,0 +1,1 @@
+export const AdminComponent = () => <div>Admin Component</div>;

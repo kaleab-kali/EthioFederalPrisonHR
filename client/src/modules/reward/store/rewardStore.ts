@@ -1,0 +1,1 @@
+export const useRewardStore = () => {}; // React Query store setup here

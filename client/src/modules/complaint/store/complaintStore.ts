@@ -1,0 +1,1 @@
+export const useComplaintStore = () => {}; // React Query store setup here

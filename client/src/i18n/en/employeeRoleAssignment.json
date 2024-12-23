@@ -1,0 +1,20 @@
+{
+  "title": "Employee Role Assignment",
+  "searchPlaceholder": "Search by name or email",
+  "profile": "Profile",
+  "name": "Name",
+  "email": "Email",
+  "currentRole": "Current Role",
+  "assignNewRole": "Assign New Role",
+  "assignRoleButton": "Assign Role",
+  "paginationInfo": "Showing {{start}} to {{end}} of {{total}} employees",
+  "roles": {
+    "All": "All",
+    "Developer": "Developer",
+    "Manager": "Manager",
+    "Designer": "Designer",
+    "Admin": "Admin",
+    "HR": "HR"
+  },
+  "roleChangeAlert": "Role for {{name}} has been changed to {{role}}."
+}
