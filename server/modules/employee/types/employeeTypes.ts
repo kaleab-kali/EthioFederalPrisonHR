@@ -97,8 +97,6 @@ export interface IEmployee {
   religion: string;
   nationality: string;
   employmentDate: Date;
-  transferStatus?: string;
-  rejectionReason?: string;
   complaints: mongoose.Schema.Types.ObjectId[];
   evaluation: Evaluation[];
   healthRecords: HealthRecord[];

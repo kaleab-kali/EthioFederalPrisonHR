@@ -2,17 +2,15 @@ import { Router } from 'express';
 import {
   addEmployee,
   assignCredentials,
-  getEmployees,
-  handleTransfer,
+  getEmployees
+  ,
   loginUser,
-  requestTransfer,
   handleTransfer,
-  createEvaluation, getEvaluationById
+  createEvaluation, getEvaluationById,
   requestTransfer,
 } from '../controllers/employeeController';
-import { checkHrRole,checkAdminRole } from '../middlewares/checkRoles';
-import { { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord, addHealthRecords} from "../controllers/healthController";
-import  {authenticate}  } from '../middlewares/authunticate';
+import  { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord, addHealthRecords} from "../controllers/healthController";
+import  {authenticate}   from '../middlewares/authunticate';
 import { checkHrRole,checkAdminRole } from '../middlewares/checkRoles';
 
 const router = Router();

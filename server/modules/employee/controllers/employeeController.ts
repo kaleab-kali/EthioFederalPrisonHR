@@ -119,28 +119,7 @@ const assignCredentials = async (req: Request, res: Response) => {
     res.status(500).send('Error assigning credentials');
   }
 };
-const requestTransfer = async (req: Request, res: Response) => {
-  const { employeeId, centerName } = req.body;
 
-  try {
-    const employee = await Employee.findOne({ empId: employeeId });
-
-    if (!employee) {
-      res.status(404).send('Employee not found');
-      return;
-    }
-
-    employee.transferStatus = 'pending';
-    employee.pendingCenterName = centerName;
-
-    await employee.save();
-
-    res.status(200).send('Transfer request submitted and pending approval');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error initiating transfer request');
-  }
-};
 
 const handleTransfer = async (req: Request, res: Response) => {
   const { employeeId, status, rejectionReason } = req.body;
@@ -194,37 +173,6 @@ const requestTransfer = async (req: Request, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error initiating transfer request");
-  }
-};
-const handleTransfer = async (req: Request, res: Response) => {
-  const { employeeId, status, rejectionReason } = req.body;
-
-  try {
-    const employee = await Employee.findOne({ empId: employeeId });
-
-    if (!employee) {
-      res.status(404).send("Employee not found");
-      return
-    }
-
-    if (status === "accepted") {
-      employee.transferStatus = "accepted";
-      employee.centerName = employee.pendingCenterName; 
-      employee.pendingCenterName = undefined;
-      await employee.save();
-      res.status(200).send("Transfer accepted and center updated");
-    } else if (status === "rejected") {
-      employee.transferStatus = "rejected";
-      employee.pendingCenterName = undefined;
-      employee.rejectionReason = rejectionReason;
-      await employee.save();
-      res.status(200).send("Transfer rejected with reason");
-    } else {
-      res.status(400).send("Invalid status");
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error processing transfer decision");
   }
 };
 
@@ -302,6 +250,6 @@ export {
   addEmployee,
   loginUser,
   assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
-  requestTransfer,
-  handleTransfer,
+  
+  
 };
