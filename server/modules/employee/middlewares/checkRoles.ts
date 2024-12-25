@@ -18,10 +18,9 @@ const checkHrRole = async (
       res.status(401).json({ message: 'Unauthorized' });
     }
     if (
-        (emp?.role === 'hrStaff' || emp?.role === 'hrManager') &&
-        emp?.centerName === 'Head Quarter'
-      )
-   {
+      (emp?.role === 'hrStaff' || emp?.role === 'hrManager') &&
+      emp?.centerName === 'Head Quarter'
+    ) {
       console.log('role checked');
       next();
     } else {

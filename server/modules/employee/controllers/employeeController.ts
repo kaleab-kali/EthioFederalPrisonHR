@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Employee from '../models/employeeModel';
 import 'dotenv';
+import LeaveBalanceModel from '../../leave/models/leaveBalanceModel';
 
 // Login validation
 const generateToken = (id: string) => {
@@ -21,10 +22,30 @@ const getEmployees = async (req: Request, res: Response) => {
   }
 };
 
-
 const addEmployee = async (req: Request, res: Response) => {
   try {
-    const employee = new Employee(req.body);
+    const newEmployeeData = req.body;
+
+    const employmentDate = new Date(newEmployeeData.employmentDate);
+    const currentYear = new Date().getFullYear();
+    let yearOffset = currentYear - employmentDate.getFullYear();
+    if (yearOffset > 10) {
+      yearOffset = 10;
+    }
+    const leaveTypes = await LeaveBalanceModel.find(
+      {},
+      { leaveType: 1, credit: 1, _id: 0 },
+    );
+    const balances = leaveTypes.map((type) => ({
+      leaveType: type.leaveType,
+      credit: type.credit + yearOffset,
+      used: 0,
+      available: type.credit + yearOffset,
+    }));
+    const leaveBalances = [{ year: currentYear, balances }];
+    // Create new Employee instance
+
+    const employee = new Employee({ ...req.body, leaveBalances });
     const newEmployee = await employee.save();
     console.log(newEmployee);
 
@@ -50,7 +71,8 @@ const loginUser = async (req: Request, res: Response) => {
       return;
     }
 
-    const isMatch = employee && await bcrypt.compare(password, employee.password);
+    const isMatch =
+      employee && (await bcrypt.compare(password, employee.password));
     if (!isMatch) {
       res.status(400).json({ message: 'Invalid credentials' });
       return;
@@ -96,7 +118,6 @@ const assignCredentials = async (req: Request, res: Response) => {
     res.status(500).send('Error assigning credentials');
   }
 };
-
 const requestTransfer = async (req: Request, res: Response) => {
   const { employeeId, centerName } = req.body;
 
@@ -104,8 +125,8 @@ const requestTransfer = async (req: Request, res: Response) => {
     const employee = await Employee.findOne({ empId: employeeId });
 
     if (!employee) {
-      res.status(404).send("Employee not found");
-      return
+      res.status(404).send('Employee not found');
+      return;
     }
 
     employee.transferStatus = 'pending';
@@ -113,12 +134,13 @@ const requestTransfer = async (req: Request, res: Response) => {
 
     await employee.save();
 
-    res.status(200).send("Transfer request submitted and pending approval");
+    res.status(200).send('Transfer request submitted and pending approval');
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error initiating transfer request");
+    res.status(500).send('Error initiating transfer request');
   }
 };
+
 const handleTransfer = async (req: Request, res: Response) => {
   const { employeeId, status, rejectionReason } = req.body;
 
@@ -126,98 +148,36 @@ const handleTransfer = async (req: Request, res: Response) => {
     const employee = await Employee.findOne({ empId: employeeId });
 
     if (!employee) {
-      res.status(404).send("Employee not found");
-      return
+      res.status(404).send('Employee not found');
+      return;
     }
 
-    if (status === "accepted") {
-      employee.transferStatus = "accepted";
-      employee.centerName = employee.pendingCenterName; 
+    if (status === 'accepted') {
+      employee.transferStatus = 'accepted';
+      employee.centerName = employee.pendingCenterName;
       employee.pendingCenterName = undefined;
       await employee.save();
-      res.status(200).send("Transfer accepted and center updated");
-    } else if (status === "rejected") {
-      employee.transferStatus = "rejected";
+      res.status(200).send('Transfer accepted and center updated');
+    } else if (status === 'rejected') {
+      employee.transferStatus = 'rejected';
       employee.pendingCenterName = undefined;
       employee.rejectionReason = rejectionReason;
       await employee.save();
-      res.status(200).send("Transfer rejected with reason");
+      res.status(200).send('Transfer rejected with reason');
     } else {
-      res.status(400).send("Invalid status");
+      res.status(400).send('Invalid status');
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error processing transfer decision");
+    res.status(500).send('Error processing transfer decision');
   }
 };
 
-const createEvaluation = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { employeeId, self, colleague, remark, from, to } = req.body;
-
-    // Validate the scores
-    if (self < 0 || self > 70 || colleague < 0 || colleague > 30) {
-      res
-        .status(400)
-        .json({
-          message:
-            "Invalid scores. Self evaluation must be between 0 and 70, colleague evaluation must be between 0 and 30.",
-        });
-      return;
-    }
-
-    const total = self * 0.7 + colleague * 0.3; // Calculate total score (weighted average)
-
-    const evaluation = {
-      self,
-      colleague,
-      total,
-      remark,
-      from: new Date(from), // Ensure from is a valid date
-      to: new Date(to), // Ensure to is a valid date
-    };
-
-    // Find the employee by ID and update the evaluation field
-    const employee = await Employee.findOne({empId: employeeId});
-    if (!employee) {
-      res.status(404).json({ message: "Employee not found" });
-      return;
-    }
-
-    // Add the new evaluation to the employee's evaluation array
-    employee.evaluation.push(evaluation);
-    await employee.save();
-
-    res.status(201).json({
-      message: "Evaluation created successfully",
-      evaluation: employee.evaluation,
-    });
-  } catch (error) {
-    console.error("Error creating evaluation:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+export {
+  getEmployees,
+  addEmployee,
+  loginUser,
+  assignCredentials,
+  requestTransfer,
+  handleTransfer,
 };
-
-const getEvaluationById = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { employeeId } = req.params; // Get the employee ID from the URL parameter
-
-    // Find the employee by ID
-    const employee = await Employee.findOne({empId: employeeId});
-    if (!employee) {
-      res.status(404).json({ message: "Employee not found" });
-      return;
-    }
-
-    // Return the evaluation data
-    res.status(200).json({
-      message: "Evaluation retrieved successfully",
-      evaluations: employee.evaluation, // Return all evaluations
-    });
-  } catch (error) {
-    console.error("Error retrieving evaluation:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-export { getEmployees, addEmployee, loginUser, assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById };

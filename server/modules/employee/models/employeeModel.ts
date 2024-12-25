@@ -1,5 +1,5 @@
-import mongoose, { Schema,model,Document } from "mongoose";
-import { Education, IEmployee, Roles,  RankChange, Evaluation, FamilyRecord, HealthRecord} from "../types/employeeTypes";
+import mongoose, { Schema, model, Document } from 'mongoose';
+import { Education, IEmployee, Roles } from '../types/employeeTypes';
 
 export const educationSchema = new Schema<Education>({
   id: { type: String },
@@ -9,46 +9,14 @@ export const educationSchema = new Schema<Education>({
   educationLevel: { type: String, required: true },
 });
 
-export const rankChangeSchema = new Schema<RankChange>({
-  oldRank: { type: String },
-  newRank: { type: String },
-  date: { type: Date, default: Date.now },
-});
-
-const familyRecordSchema = new Schema<FamilyRecord>({
-  id: {type: String, required: true},
-  personName: { type: String, required: true },
-  type: { type: String, enum: ['Spouse', 'Kid'], required: true },
-  age: { type: Number },
-  isEligible: { type: Boolean },
-  records: [
-    {
-      date: { type: String, required: true },
-      healthIssue: { type: String, required: true },
-      cost: { type: Number, required: true },
-    },
-  ],
-  marriageStatus: { type: String, enum: ['married', 'divorced', 'widowed']},
-});
-
-const healthRecordSchema = new Schema<HealthRecord>({
-  records: [
-    {
-      date: { type: String, required: true },
-      healthIssue: { type: String, required: true },
-      cost: { type: Number, required: true },
-    },
-  ],
-});
-
 const employeeSchema = new Schema<IEmployee>(
   {
     title: { type: String, required: true },
     empId: { type: String },
     firstName: { type: String, required: true },
     centerName: { type: String },
-    pendingCenterName: {type: String},
-    userName: { type: String,default: 'user' },
+    pendingCenterName: { type: String },
+    userName: { type: String, default: 'user' },
     middleName: { type: String },
     lastName: { type: String, required: true },
     birthday: { type: Date, required: true },
@@ -70,7 +38,6 @@ const employeeSchema = new Schema<IEmployee>(
       leyuBota: { type: String },
     },
     salary: { type: String, required: true },
-    lastSalaryRaise: {type: Date},
     educationLevel: { type: String },
     education: [educationSchema],
     birthplaceInfo: {
@@ -144,41 +111,13 @@ const employeeSchema = new Schema<IEmployee>(
     religion: { type: String, required: true },
     nationality: { type: String, required: true },
     employmentDate: { type: Date },
-    transferStatus: {type: String},
-    rejectionReason: {type: String},
-    rankChanges: [rankChangeSchema],
-    appraisalHistory: [
-      {
-        employeeId: { type: String },
-        currentLevel: { type: String },
-        nextLevel: { type: String },
-        scores: {
-          education: { type: Number },
-          service: { type: Number },
-          attitude: { type: Number },
-          behaviour: { type: Number },
-          workEfficiency: { type: Number },
-          disciplinary: { type: Number },
-        },
-        totalScore: { type: Number },
-        status: { type: String },
-        promotionDate: { type: Date },
-      },
-    ],
-    complaints: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Complaint' }],
-    evaluation:[ {
-      self: { type: Number, required: true },
-      colleague: { type: Number, required: true },
-      total: { type: Number, required: true },
-      remark: { type: String, required: true },
-      from: { type: Date, required: true },
-      to: { type: Date, required: true }, 
-  }],
-  familyRecords: [familyRecordSchema],
-  healthRecords: [healthRecordSchema],
+    transferStatus: { type: String },
+    rejectionReason: { type: String },
+    leaveBalances:[]
   },
   { timestamps: true },
 );
+
 
 employeeSchema.pre<IEmployee>('save', async function (next) {
   if (!this.empId) {
