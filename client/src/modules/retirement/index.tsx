@@ -7,6 +7,9 @@ const RetirementModule: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<RetirementComponent />} />
+      <Route path="/requestNumber" element={<RetirementComponent />} />
+      <Route path="/date" element={<RetirementComponent />} />
+      <Route path="/" element={<RetirementComponent />} />
     </Routes>
   );
 };

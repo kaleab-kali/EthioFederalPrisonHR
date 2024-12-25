@@ -116,7 +116,7 @@ const ComplaintList = () => {
       });
   return (
     <>
-      <h2 className='font-medium text-gray-600 font-roboto px-0 py-3'>List of Appraisal Candidates</h2>
+      <h2 className='font-medium text-gray-600 font-roboto px-0 py-3'>List of Complaint Received</h2>
       <div className="flex justify-end gap-2 mb-3">
         <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={pdfFunction}>PDF</button>
         <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={excelFunction}>EXCEL</button>
