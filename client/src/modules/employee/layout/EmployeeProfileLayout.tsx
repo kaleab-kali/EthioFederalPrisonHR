@@ -4,6 +4,7 @@ import ProfileMenu from '../components/profileView/ProfileMenu';
 import ProfileCard from '../components/profileView/ProfileCard';
 import Breadcrumb from '../components/BreadCrumb';
 import { IEmployee } from '../../../common/Types/Employee';
+import { useFetchEmployee } from '../services/queries';
 
 interface ProfileCardEmployeeInfo {
   picture: string;
@@ -306,7 +307,7 @@ const dummyEmployeeData: IEmployee[] = [
     id: employee.empId ?? '',
     title: employee.title,
     active: employee.status === 'active' ? 'Active' : 'Inactive',
-    manager: employee.emergencyContact.info.firstName, 
+    manager: employee.emergencyContact?.info?.firstName ?? '', 
   });
   
   const EmployeeProfileLayout: React.FC = () => {
@@ -314,24 +315,27 @@ const dummyEmployeeData: IEmployee[] = [
     const [employeeData, setEmployeeData] = useState<IEmployee | null>(null);
     const [profileCardData, setProfileCardData] = useState<ProfileCardEmployeeInfo | null>(null);
     const [loading, setLoading] = useState(true);
-  
+    const employeeQuery= useFetchEmployee(employeeId || '');
     useEffect(() => {
       if (employeeId) {
         const fetchEmployeeData = async () => {
           setLoading(true);
-          setTimeout(() => {
-            const employee = dummyEmployeeData.find(emp => emp.empId === employeeId);
-            setEmployeeData(employee || null);
-            if (employee) {
-              setProfileCardData(extractProfileCardInfo(employee));
-            }
-            setLoading(false);
-          }, 500);
+
+          // Fetch data using the custom hook
+          const fetchedEmployee = employeeQuery.data;
+          console.log(fetchedEmployee?.employee);
+
+          if (fetchedEmployee) {
+            setEmployeeData(fetchedEmployee.employee);
+            setProfileCardData(extractProfileCardInfo(fetchedEmployee.employee)); // Assuming `extractProfileCardInfo` processes the employee data
+          }
+
+          setLoading(false);
         };
-  
+
         fetchEmployeeData();
       }
-    }, [employeeId]);
+    }, [employeeId, employeeQuery.data]);
   
     if (loading) {
       return <div>Loading...</div>;

@@ -199,7 +199,7 @@ const Step1: React.FC<Step1Props> = ({ isMilitary }) => {
         </div>
 
         {/* Photo Upload */}
-        <div className="form-group">
+        {/* <div className="form-group">
           <label className="block font-medium text-gray-700">
             Photo <span className="text-red-500">*</span>
           </label>
@@ -209,7 +209,7 @@ const Step1: React.FC<Step1Props> = ({ isMilitary }) => {
             {...register('photo', { validate: required('Photo is required') })}
           />
           {getErrorMessage('photo') && <p className="text-red-500 text-sm mt-1">{getErrorMessage('photo')}</p>}
-        </div>
+        </div> */}
 
         {/* Ethnicity Dropdown */}
         <div className="form-group">

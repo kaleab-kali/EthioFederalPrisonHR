@@ -6,11 +6,13 @@ import MotherInfoCard from './EmployeeDetailCards/MotherInfoCard';
 import AddressCard from './EmployeeDetailCards/AddressCard';
 import EmergencyContactCard from './EmployeeDetailCards/EmergencyContactCard';
 import SpouseInfoCard from './EmployeeDetailCards/SpouseInfoCard';
+import { useUpdateEmployee } from '../../services/mutation';
 
 const EmployeeDetails: React.FC = () => {
   const employee = useOutletContext<IEmployee>();
   const [editableCard, setEditableCard] = useState<string | null>(null);
   const [editedEmployee, setEditedEmployee] = useState<IEmployee>(employee);
+  const updateEmp= useUpdateEmployee();
 
   const toggleEdit = (card: string) => {
     setEditableCard(editableCard === card ? null : card);
@@ -23,6 +25,8 @@ const EmployeeDetails: React.FC = () => {
 
   const handleSave = () => {
     console.log('Updated Employee Data:', editedEmployee);
+    const empId = employee.empId;
+    updateEmp.mutate({ id: empId, data: editedEmployee });
     setEditableCard(null);
   };
 

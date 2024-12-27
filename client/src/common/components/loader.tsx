@@ -1,7 +1,9 @@
 import React from "react";
+import { useLoading } from "./context/LoadingContext";
 
 const Loader: React.FC = () => {
-  return (
+  const { loading } = useLoading();
+  return loading ?(
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
       <div role="status" className="relative">
         <svg
@@ -25,7 +27,7 @@ const Loader: React.FC = () => {
         <span className="sr-only">Loading...</span>
       </div>
     </div>
-  );
+  ): null;
 };
 
 export default Loader;

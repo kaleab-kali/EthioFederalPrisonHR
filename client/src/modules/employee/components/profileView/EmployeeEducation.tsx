@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { IEmployee, Education } from '../../../../common/Types/Employee';
+import { useUpdateEmployee } from '../../services/mutation';
 
 
 const EmployeeEducation: React.FC = () => {
@@ -9,6 +10,7 @@ const EmployeeEducation: React.FC = () => {
   
   const [editableCardId, setEditableCardId] = useState<string | null>(null);
   const [newEducation, setNewEducation] = useState<Education | null>(null);
+  const updateEmp = useUpdateEmployee();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Education, id?: string) => {
     const value = e.target.value;
@@ -29,6 +31,8 @@ const EmployeeEducation: React.FC = () => {
 
   const handleSave = (id: string) => {
     console.log('Updated Education Data:', employee.education);
+    const empId = employee.empId;
+    updateEmp.mutate({ id: empId, data: employee });
     setEditableCardId(null);
   };
 

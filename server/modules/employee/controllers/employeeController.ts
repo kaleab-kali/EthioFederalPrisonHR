@@ -13,7 +13,10 @@ const generateToken = (id: string) => {
 };
 
 const getEmployees = async (req: Request, res: Response) => {
+    console.log('here1');
+
   try {
+    console.log("here2")
     const employees = await Employee.find();
     res.status(200).json(employees);
   } catch (error) {
@@ -21,9 +24,64 @@ const getEmployees = async (req: Request, res: Response) => {
   }
 };
 
+const getEmployeeById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { empId } = req.params; // Get the employee ID from the URL parameter
+
+    // Find the employee by ID
+    const employee = await Employee.findOne({ empId });
+    if (!employee) {
+      res.status(404).json({ message: 'Employee not found' });
+      return;
+    }
+
+    // Return the employee data
+    res.status(200).json({
+      message: 'Employee retrieved successfully',
+      employee, // Include all employee data
+    });
+  } catch (error) {
+    console.error('Error retrieving employee:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const updateEmployee = async (req: Request, res: Response): Promise<void> => {
+  const { empId } = req.params; // Get the employee ID from the URL parameter
+  const updatedData = req.body; // Get the updated employee data from the request body
+
+  try {
+    // Find the employee by ID
+    const employee = await Employee.findOne({ empId });
+
+    if (!employee) {
+      res.status(404).json({ message: 'Employee not found' });
+      return;
+    }
+
+    // Update the employee record with the new data
+    Object.assign(employee, updatedData); // Update employee fields with the new data
+
+    // Save the updated employee data
+    await employee.save();
+
+    // Return the updated employee data
+    res.status(200).json({
+      message: 'Employee updated successfully',
+      employee, // Return the updated employee data
+    });
+  } catch (error) {
+    console.error('Error updating employee:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
 const addEmployee = async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
+  console.log('here 2');
+
     const employee = new Employee(req.body);
     const newEmployee = await employee.save();
     console.log(newEmployee);
@@ -31,7 +89,8 @@ const addEmployee = async (req: Request, res: Response) => {
     res.status(201).json(newEmployee);
     console.log('employee added');
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    console.log(error);
+    res.status(500).json({ message: error });
   }
 };
 
@@ -220,4 +279,15 @@ const getEvaluationById = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export { getEmployees, addEmployee, loginUser, assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById };
+export {
+  getEmployees,
+  getEmployeeById,
+  updateEmployee,
+  addEmployee,
+  loginUser,
+  assignCredentials,
+  requestTransfer,
+  handleTransfer,
+  createEvaluation,
+  getEvaluationById,
+};
