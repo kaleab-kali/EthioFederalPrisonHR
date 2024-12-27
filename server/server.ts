@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import connectDB from './config/database';
 import employeeRoute from './modules/employee/routes/employeeRoutes';
 import centerRoute from './modules/centers/routes/centerRoute';
@@ -12,7 +13,7 @@ import fileUpload from 'express-fileupload';
 
 const app = express();
 const port = 5000;
-
+app.use(cors({ origin: 'http://localhost:3000' }));
 connectDB();
 app.use(fileUpload())
 app.use(express.json());

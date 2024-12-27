@@ -15,7 +15,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import { IEmployee } from "../../../common/Types/Employee";
 import { useAllEmployees } from "../services/queries";
 const columnHelper = createColumnHelper<IEmployeeListTable>();
 const getColumns = (handleAction: (row: Row<IEmployeeListTable>) => void) => [
@@ -83,17 +82,6 @@ const EmployeeListTable: React.FC = () => {
        setEmployees(mappedData);
      }
    }, [employeesQuery.data]);
-  const [data] = useState<any>(() => [...emplyees]);
-  const employeeList: IEmployeeListTable[] = data.map((employee) => ({
-    empID: employee.empId,
-    title: employee.title,
-    firstName: employee.firstName,
-    lastName: employee.lastName,
-    department: employee.department,
-    position: employee.position,
-  }));
-
-  const [employees] = useState<IEmployeeListTable[]>(()=>[...employeeList]);
 
   const [sorting, setSorting] = useState<any>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -101,15 +89,15 @@ const EmployeeListTable: React.FC = () => {
   const handleAction = (row: Row<IEmployeeListTable>) => {
     console.log("Action button clicked for row:", row);
     console.log("Action button data row:", row.original);
-    navigate(`profile/${row.original.empId}`);
+    navigate(`profile/${row.original.empID}`);
   };
 
   const columns = getColumns(handleAction);
   const table = useReactTable({
-    data: employees,
+    data: emplyees,
     columns,
     debugTable: true,
-    
+
     state: {
       sorting,
       globalFilter,
@@ -117,7 +105,7 @@ const EmployeeListTable: React.FC = () => {
     initialState: {
       pagination: {
         pageSize: 5,
-        pageIndex: 0
+        pageIndex: 0,
       },
     },
     getCoreRowModel: getCoreRowModel(),
@@ -125,10 +113,10 @@ const EmployeeListTable: React.FC = () => {
     getSortedRowModel: getSortedRowModel(),
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel()
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
-  console.log('row model', table.getRowModel().rows[0].getVisibleCells())
+  console.log('row model', table.getRowModel().rows[0])
   console.log('page size gt', table.getPageCount)
   console.log('page size', table.getState().pagination.pageSize)
   return (

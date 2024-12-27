@@ -10,25 +10,25 @@ const api = axios.create({
 
 // Fetch employee data
 export const fetchEmployeeData = async (id: string) => {
-  const { data } = await api.get(`/employees/${id}`);
+  const { data } = await api.get(`/api/employees/${id}`);
   return data;
 };
 
 export const getAllEmployees = async () => {
-  const { data } = await api.get(`/employees`);
+  const { data } = await api.get(`/api/employees`);
   console.log(JSON.stringify(data));
   return data;
 };
 // Submit registration form
 export const submitRegistrationForm = async (formData: any) => {
-  const { data } = await api.post("/employees/", formData);
+  const { data } = await api.post("/api/employees/", formData);
   console.log(process.env.REACT_APP_API_URL + "heheheheh");
   return data;
 };
 
 // Update employee data
 export const updateEmployeeData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/employees/${id}`, updatedData);
+  const { data } = await api.put(`/api/employees/${id}`, updatedData);
   return data;
 };
 
