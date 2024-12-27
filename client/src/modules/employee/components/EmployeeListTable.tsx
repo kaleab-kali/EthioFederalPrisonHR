@@ -83,7 +83,7 @@ const EmployeeListTable: React.FC = () => {
        setEmployees(mappedData);
      }
    }, [employeesQuery.data]);
-  const [data] = useState<any>(() => [...employees])
+  const [data] = useState<any>(() => [...emplyees]);
   const employeeList: IEmployeeListTable[] = data.map((employee) => ({
     empID: employee.empId,
     title: employee.title,
