@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { IEmployee } from '../../../../common/Types/Employee';
-import BasicInfoCard from './EmployeeDetailCards/BasicInfoCard';
-import MotherInfoCard from './EmployeeDetailCards/MotherInfoCard';
-import AddressCard from './EmployeeDetailCards/AddressCard';
-import EmergencyContactCard from './EmployeeDetailCards/EmergencyContactCard';
-import SpouseInfoCard from './EmployeeDetailCards/SpouseInfoCard';
+import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { IEmployee } from "../../../../common/Types/Employee";
+import BasicInfoCard from "./EmployeeDetailCards/BasicInfoCard";
+import MotherInfoCard from "./EmployeeDetailCards/MotherInfoCard";
+import AddressCard from "./EmployeeDetailCards/AddressCard";
+import EmergencyContactCard from "./EmployeeDetailCards/EmergencyContactCard";
+import SpouseInfoCard from "./EmployeeDetailCards/SpouseInfoCard";
+import { useUpdateEmployee } from "../../services/mutation";
 
 const EmployeeDetails: React.FC = () => {
   const employee = useOutletContext<IEmployee>();
   const [editableCard, setEditableCard] = useState<string | null>(null);
   const [editedEmployee, setEditedEmployee] = useState<IEmployee>(employee);
+  const updateEmp = useUpdateEmployee();
 
   const toggleEdit = (card: string) => {
     setEditableCard(editableCard === card ? null : card);
@@ -22,7 +24,9 @@ const EmployeeDetails: React.FC = () => {
   };
 
   const handleSave = () => {
-    console.log('Updated Employee Data:', editedEmployee);
+    console.log("Updated Employee Data:", editedEmployee);
+    const empId = employee.empId;
+    updateEmp.mutate({ id: empId, data: editedEmployee });
     setEditableCard(null);
   };
 
@@ -31,8 +35,8 @@ const EmployeeDetails: React.FC = () => {
       {/* Basic Information */}
       <BasicInfoCard
         employee={editedEmployee}
-        isEditable={editableCard === 'basic'}
-        onToggleEdit={() => toggleEdit('basic')}
+        isEditable={editableCard === "basic"}
+        onToggleEdit={() => toggleEdit("basic")}
         onChange={handleInputChange}
         onSave={handleSave}
       />
@@ -40,8 +44,8 @@ const EmployeeDetails: React.FC = () => {
       {/* Mother's Information */}
       <MotherInfoCard
         employee={editedEmployee}
-        isEditable={editableCard === 'mother'}
-        onToggleEdit={() => toggleEdit('mother')}
+        isEditable={editableCard === "mother"}
+        onToggleEdit={() => toggleEdit("mother")}
         onChange={handleInputChange}
         onSave={handleSave}
       />
@@ -49,8 +53,8 @@ const EmployeeDetails: React.FC = () => {
       {/* Address */}
       <AddressCard
         address={editedEmployee.currentAddress}
-        isEditable={editableCard === 'address'}
-        onToggleEdit={() => toggleEdit('address')}
+        isEditable={editableCard === "address"}
+        onToggleEdit={() => toggleEdit("address")}
         onChange={handleInputChange}
         onSave={handleSave}
       />
@@ -58,18 +62,18 @@ const EmployeeDetails: React.FC = () => {
       {/* Emergency Contact */}
       <EmergencyContactCard
         emergencyContact={editedEmployee.emergencyContact}
-        isEditable={editableCard === 'emergency'}
-        onToggleEdit={() => toggleEdit('emergency')}
+        isEditable={editableCard === "emergency"}
+        onToggleEdit={() => toggleEdit("emergency")}
         onChange={handleInputChange}
         onSave={handleSave}
       />
 
       {/* Spouse Info (conditionally rendered based on marital status) */}
-      {editedEmployee.maritalStatus === 'married' && (
+      {editedEmployee.maritalStatus === "married" && (
         <SpouseInfoCard
           spouseInfo={editedEmployee.spouseInfo}
-          isEditable={editableCard === 'spouse'}
-          onToggleEdit={() => toggleEdit('spouse')}
+          isEditable={editableCard === "spouse"}
+          onToggleEdit={() => toggleEdit("spouse")}
           onChange={handleInputChange}
           onSave={handleSave}
         />

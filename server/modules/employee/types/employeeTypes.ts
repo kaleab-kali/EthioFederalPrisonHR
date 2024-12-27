@@ -1,4 +1,7 @@
+// Types for the employee module
+import mongoose, { Schema, Document } from 'mongoose';
 export interface IEmployee {
+  save: any;
   firstName: string;
   lastName: string;
   age: number;
@@ -82,6 +85,8 @@ export interface IEmployee {
   };
   password: string;
   role: Roles;
+  rankChanges: RankChange[];
+  appraisalHistory: AppraisalHistory[];
   retirementDate?: Date;
   status: 'active' | 'inactive';
   skinColor: string;
@@ -94,7 +99,8 @@ export interface IEmployee {
   employmentDate: Date;
   transferStatus?: string;
   rejectionReason?: string;
-  leaveBalances?: YearlyLeaveBalances[];
+  complaints: mongoose.Schema.Types.ObjectId[];
+  evaluation: Evaluation[];
 }
 
 // Types for the Education schema
@@ -106,6 +112,35 @@ export interface Education {
   educationLevel: string;
 }
 
+export interface RankChange {
+  oldRank?: string;
+  newRank?: string;
+  date?: Date;
+}
+export interface AppraisalHistory {
+  employeeId?: string;
+  currentLevel?: string;
+  nextLevel?: string;
+  scores?: {
+    education?: number;
+    service?: number;
+    attitude?: number;
+    behaviour?: number;
+    workEfficiency?: number;
+    disciplinary?: number;
+  };
+  totalScore?: number;
+  status?: string;
+  promotionDate?: Date;
+}
+export interface Evaluation {
+  self: number;
+  colleague: number;
+  total: number;
+  remark: string;
+  from: Date;
+  to: Date;
+}
 // Enum for roles
 export enum Roles {
   Employee = 'employee',
@@ -113,14 +148,4 @@ export enum Roles {
   Staff = 'hrStaff',
   DocumentStaff = 'documentStaff',
   Admin = 'admin',
-}
-interface YearlyLeaveBalances {
-  year: number;
-  balances: LeaveBalance[];
-}
-interface LeaveBalance {
-  leaveType: string;
-  credit: number;
-  used: number;
-  available: number;
 }

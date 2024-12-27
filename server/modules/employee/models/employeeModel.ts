@@ -1,5 +1,11 @@
 import mongoose, { Schema, model, Document } from 'mongoose';
-import { Education, IEmployee, Roles } from '../types/employeeTypes';
+import {
+  Education,
+  IEmployee,
+  Roles,
+  RankChange,
+  Evaluation,
+} from '../types/employeeTypes';
 
 export const educationSchema = new Schema<Education>({
   id: { type: String },
@@ -7,6 +13,12 @@ export const educationSchema = new Schema<Education>({
   institution: { type: String, required: true },
   graduationYear: { type: Number, required: true },
   educationLevel: { type: String, required: true },
+});
+
+export const rankChangeSchema = new Schema<RankChange>({
+  oldRank: { type: String },
+  newRank: { type: String },
+  date: { type: Date, default: Date.now },
 });
 
 const employeeSchema = new Schema<IEmployee>(
@@ -26,10 +38,10 @@ const employeeSchema = new Schema<IEmployee>(
     photo: { type: String },
     ethnicity: { type: String, required: true },
     phoneNumber: {
-      prefix: { type: String, required: true },
+      prefix: { type: String },
       number: { type: String, required: true },
     },
-    email: { type: String, required: true },
+    email: { type: String },
     currentAddress: {
       region: { type: String },
       subcity: { type: String },
@@ -52,7 +64,7 @@ const employeeSchema = new Schema<IEmployee>(
       middleName: { type: String },
       lastName: { type: String, required: true },
       phoneNumber: {
-        prefix: { type: String, required: true },
+        prefix: { type: String },
         number: { type: String, required: true },
       },
     },
@@ -103,21 +115,49 @@ const employeeSchema = new Schema<IEmployee>(
     retirementDate: { type: Date },
     status: { type: String, enum: ['active', 'inactive'], default: 'active' },
     // New fields added
-    skinColor: { type: String, required: true },
-    noseStructure: { type: String, required: true },
-    eyeColor: { type: String, required: true },
-    hairTexture: { type: String, required: true },
-    height: { type: String, required: true },
-    religion: { type: String, required: true },
-    nationality: { type: String, required: true },
+    skinColor: { type: String },
+    noseStructure: { type: String },
+    eyeColor: { type: String },
+    hairTexture: { type: String },
+    height: { type: String },
+    religion: { type: String },
+    nationality: { type: String },
     employmentDate: { type: Date },
     transferStatus: { type: String },
     rejectionReason: { type: String },
-    leaveBalances:[]
+    rankChanges: [rankChangeSchema],
+    appraisalHistory: [
+      {
+        employeeId: { type: String },
+        currentLevel: { type: String },
+        nextLevel: { type: String },
+        scores: {
+          education: { type: Number },
+          service: { type: Number },
+          attitude: { type: Number },
+          behaviour: { type: Number },
+          workEfficiency: { type: Number },
+          disciplinary: { type: Number },
+        },
+        totalScore: { type: Number },
+        status: { type: String },
+        promotionDate: { type: Date },
+      },
+    ],
+    complaints: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Complaint' }],
+    evaluation: [
+      {
+        self: { type: Number, required: true },
+        colleague: { type: Number, required: true },
+        total: { type: Number, required: true },
+        remark: { type: String, required: true },
+        from: { type: Date, required: true },
+        to: { type: Date, required: true },
+      },
+    ],
   },
   { timestamps: true },
 );
-
 
 employeeSchema.pre<IEmployee>('save', async function (next) {
   if (!this.empId) {

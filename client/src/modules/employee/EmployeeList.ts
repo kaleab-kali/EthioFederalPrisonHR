@@ -1,5 +1,6 @@
 export interface IEmployeeListTable {
-    empID: string;
+    empId: any;
+    // empID: string;
     title: string;
     firstName: string;
     lastName: string;
