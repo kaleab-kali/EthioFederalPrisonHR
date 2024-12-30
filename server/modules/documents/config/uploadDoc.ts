@@ -9,7 +9,7 @@ const uploadDocFile = (
   return new Promise((resolve, reject) => {
     const uploadPath = path.join(
       __dirname,
-      '../../../uploads',
+      '../../../uploads/docs/',
       documentFile.name,
     );
 
@@ -18,7 +18,7 @@ const uploadDocFile = (
       if (err) {
         return reject('Error saving file');
       }
-      resolve(`/uploads/${documentFile.name}`);
+      resolve(`/uploads/docs/${documentFile.name}`);
     });
   });
 };

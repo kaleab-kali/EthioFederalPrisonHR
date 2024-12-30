@@ -1,9 +1,5 @@
 import Document from '../models/documentModel';
-import { uploadDocFile } from '../config/uploadDoc';
-
-export const uploadDocumentFile = async (file: any): Promise<string> => {
-  return await uploadDocFile(file);
-};
+import { handleFileUpload } from '../../../config/handleFileUpload';
 
 export const createNewDocument = async (data: any): Promise<any> => {
   const document = new Document(data);
