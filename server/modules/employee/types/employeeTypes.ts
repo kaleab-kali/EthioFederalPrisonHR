@@ -1,4 +1,6 @@
+import mongoose, { Schema, Document } from 'mongoose';
 export interface IEmployee {
+  save: any;
   firstName: string;
   lastName: string;
   age: number;
@@ -82,6 +84,9 @@ export interface IEmployee {
   };
   password: string;
   role: Roles;
+  lastSalaryRaise?: Date;
+  rankChanges: RankChange[];
+  appraisalHistory: AppraisalHistory[];
   retirementDate?: Date;
   status: 'active' | 'inactive';
   skinColor: string;
@@ -92,6 +97,10 @@ export interface IEmployee {
   religion: string;
   nationality: string;
   employmentDate: Date;
+  complaints: mongoose.Schema.Types.ObjectId[];
+  evaluation: Evaluation[];
+  healthRecords: HealthRecord[];
+  familyRecords: FamilyRecord[];
   transferStatus?: string;
   rejectionReason?: string;
   leaveBalances?: YearlyLeaveBalances[];
@@ -106,6 +115,50 @@ export interface Education {
   educationLevel: string;
 }
 
+export interface RankChange {
+  oldRank?: string;
+  newRank?: string;
+  date?: Date;
+}
+export interface AppraisalHistory {
+  employeeId?: string;
+  currentLevel?: string;
+  nextLevel?: string;
+  scores?: {
+    education?: number;
+    service?: number;
+    attitude?: number;
+    behaviour?: number;
+    workEfficiency?: number;
+    disciplinary?: number;
+  };
+  totalScore?: number;
+  status?: string;
+  promotionDate?: Date;
+}
+export interface Evaluation {
+  self: number;
+  colleague: number;
+  total: number;
+  remark: string;
+  from: Date;
+  to: Date;
+}
+// Family Schema
+export interface FamilyRecord {
+  id: string;
+  personName: string;
+  type: 'Spouse' | 'Kid';
+  age: number;
+  isEligible?: boolean;
+  records: { date: string; healthIssue: string; cost: number }[];
+  marriageStatus: 'married' | 'divorced' | 'widowed';
+}
+
+// Health Record Schema
+export interface HealthRecord {
+  records: { date: string; healthIssue: string; cost: number }[];
+}
 // Enum for roles
 export enum Roles {
   Employee = 'employee',
