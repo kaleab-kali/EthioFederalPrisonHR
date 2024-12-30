@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaWpforms } from "react-icons/fa";
 import Breadcrumb from "../../employee/components/BreadCrumb";
+import { useCreateComplaint } from "../services/mutation";
 
 interface IComplaintForm {
   empID: string;
@@ -10,6 +11,7 @@ interface IComplaintForm {
 }
 
 const ComplaintForm: React.FC = () => {
+  const creatComplaint = useCreateComplaint();
   const [form, setForm] = useState<IComplaintForm>({
     empID: "",
     category: "",
@@ -30,6 +32,13 @@ const ComplaintForm: React.FC = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); 
+    console.log("Form Data:", form);
+    creatComplaint.mutate(form);
+
+  }
+
   return (
     <>
       <Breadcrumb />
@@ -38,7 +47,7 @@ const ComplaintForm: React.FC = () => {
         <div className="flex flex-row justify-between p-8 bg-white shadow-lg rounded-lg max-w-2xl">
           <div className="w-1/2 pr-4">
             <h2 className="text-2xl font-bold mb-4">Complaint Form</h2>
-            <form>
+            <form onSubmit={onSubmit}>
               <div className="mb-4">
                 <label
                   className="block text-sm font-medium text-gray-700"
@@ -119,6 +128,14 @@ const ComplaintForm: React.FC = () => {
                   className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 ></textarea>
               </div>
+              <div className="flex justify-start">
+            <button 
+              type="submit" 
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Submit
+            </button>
+          </div>
             </form>
           </div>
 
