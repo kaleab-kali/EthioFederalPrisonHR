@@ -1,0 +1,1 @@
+export const AdminLayout = ({children}:any) => <div>{children}</div>;

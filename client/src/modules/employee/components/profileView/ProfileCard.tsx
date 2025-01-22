@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface Employee {
+interface ProfileCardEmployeeInfo {
   picture: string;
   name: string;
   id: string;
@@ -10,14 +10,15 @@ interface Employee {
 }
 
 interface ProfileCardProps {
-  employee: Employee;
+  employee: ProfileCardEmployeeInfo;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ employee }) => {
   return (
-    <div className="bg-white p-6 shadow-md rounded-lg flex flex-col items-center">
+    <div className="bg-white p-6 shadow-md rounded-lg flex flex-col items-center max-h-max">
       <div className="relative">
         <img
+          // src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
           src={employee.picture}
           alt="Employee"
           className="w-32 h-32 rounded-full mb-4 border-4 border-white shadow-lg"

@@ -14,6 +14,7 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 import { MdOutlineAppRegistration, MdAccountBalance } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 // structure and permissions for each item
 const menuItems = [
@@ -40,6 +41,18 @@ const menuItems = [
         route: "/organization/teams",
         allowedRoles: ["admin", "manager"],
       },
+      {
+        name: "Role",
+        icon: FaBuilding,
+        route: "/organization/role",
+        allowedRoles: ["admin"],
+      },
+      {
+        name: "Password",
+        icon: FaBuilding,
+        route: "/organization/password",
+        allowedRoles: ["admin"],
+      },
     ],
     allowedRoles: ["admin", "manager"],
   },
@@ -57,6 +70,12 @@ const menuItems = [
         name: "Registration",
         icon: MdOutlineAppRegistration,
         route: "/employee/registration",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "Transfer",
+        icon: MdOutlineAppRegistration,
+        route: "/employee/transfer",
         allowedRoles: ["admin", "manager"],
       },
     ],
@@ -131,19 +150,27 @@ const menuItems = [
     ],
     allowedRoles: ["admin", "user"],
   },
+  // Reward
   {
-    name: "Salary Raise",
+    name: "Reward",
     icon: FaMoneyBill,
     submenus: [
       {
-        name: "List",
+        name: "Salary Raise",
         icon: FaMoneyBill,
-        route: "/salaryRaise/list",
+        route: "/reward/salaryRaise",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Service Reward",
+        icon: FaMoneyBill,
+        route: "/reward/serviceReward",
         allowedRoles: ["admin", "user"],
       },
     ],
     allowedRoles: ["admin", "user"],
   },
+  // Retirement
   {
     name: "Retirement",
     icon: FaUserClock,
@@ -163,6 +190,7 @@ const menuItems = [
     ],
     allowedRoles: ["admin", "user"],
   },
+  // Complaint
   {
     name: "Complaint",
     icon: FaExclamationTriangle,
@@ -170,7 +198,7 @@ const menuItems = [
       {
         name: "Application",
         icon: FaExclamationTriangle,
-        route: "/complaint/apply",
+        route: "/complaint/registration",
         allowedRoles: ["admin", "user"],
       },
       {
@@ -189,15 +217,15 @@ interface SidebarProps {
   userRole: string; 
 }
 
-// Utility function to check if the user's role is allowed to see a menu item
 const canAccess = (allowedRoles: string[], userRole: string): boolean => {
   return allowedRoles.includes(userRole);
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
+  const { t } = useTranslation("sider");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
- 
+  // Toggle the submenu if the menu has submenus
   const handleMenuClick = (menu: string, hasSubmenus: boolean) => {
     console.log("Menu clicked:", menu);
     if (hasSubmenus) {
@@ -216,28 +244,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
    
     setTimeout(() => {
       if (!currentTarget.contains(document.activeElement)) {
-        setOpenMenu(null); 
+        setOpenMenu(null);
       }
     }, 0);
   };
 
   return (
     <div
-      tabIndex={0} 
-      onBlur={isCollapsed? handleBlur: undefined} 
+      tabIndex={0}
+      onBlur={isCollapsed ? handleBlur : undefined}
       className={`bg-white shadow-lg transition-all duration-300 pb-8 ${
-        isCollapsed ? "w-20" : "w-56"
+        isCollapsed ? "w-20" : "w-56 overflow-y-auto"
       } h-full relative z-1`}
-      style={{ overflowY: "auto" }}
+      // style={{ overflowY: "auto" }}
     >
       <nav className="mt-4 px-4">
         <ul className="space-y-2">
           {menuItems
-            .filter((menu) => canAccess(menu.allowedRoles, userRole)) 
+            .filter((menu) => canAccess(menu.allowedRoles, userRole))
             .map((menu) => (
               <li key={menu.name} className="relative">
                 {menu.submenus.length > 0 ? (
-                  // If there are submenus, use a div and handle click as before
                   <div
                     onClick={() =>
                       handleMenuClick(menu.name, menu.submenus.length > 0)
@@ -247,7 +274,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                     <div className="flex items-center space-x-2">
                       <menu.icon className="text-blue-500" />
                       {!isCollapsed && (
-                        <span className="font-semibold text-sm ">{menu.name}</span>
+                        <span className="font-semibold text-sm ">
+                          {t(menu.name)}
+                        </span>
                       )}
                     </div>
                     {/* Conditionally render the dropdown arrow only if there are submenus */}
@@ -273,13 +302,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                     <div className="flex items-center space-x-2">
                       <menu.icon className="text-blue-500" />
                       {!isCollapsed && (
-                        <span className="font-semibold text-sm ">{menu.name}</span>
+                        <span className="font-semibold text-sm ">
+                          {t(menu.name)}
+                        </span>
                       )}
                     </div>
                   </NavLink>
                 )}
 
-                {/* Submenu rendering for collapsed and expanded sidebar */}
                 {openMenu === menu.name && menu.submenus.length > 0 && (
                   <ul
                     className={`ml-8 mt-2 space-y-1 ${
@@ -292,12 +322,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                     {menu.submenus
                       .filter((submenu) =>
                         canAccess(submenu.allowedRoles, userRole)
-                      ) // Filter submenus based on role
+                      )
                       .map((submenu) => (
                         <li key={submenu.name}>
                           <NavLink
                             to={submenu.route}
-                            // onClick={() => setOpenMenu(null)} // Ensure menu closes on submenu click
+                            // onClick={() => setOpenMenu(null)} 
                             className={({ isActive }) =>
                               `block p-2 text-sm text-gray-600 hover:bg-blue-50 rounded ${
                                 isActive ? "bg-blue-100" : ""
@@ -306,7 +336,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                           >
                             <div className="flex items-center space-x-2">
                               <submenu.icon className="text-blue-500" />
-                              <span>{submenu.name}</span>
+                              <span>{t(submenu.name)}</span>
                             </div>
                           </NavLink>
                         </li>

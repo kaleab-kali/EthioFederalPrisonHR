@@ -11,7 +11,7 @@ const RegistrationForm = () => {
       });
       const { isValid } = methods.formState; // Get form validation state
       const [step, setStep] = useState(0); // Start from Step 0
-      const [isMilitary, setIsMilitary] = useState<boolean | null>(null); // Track if user is military or civil
+      const [isMilitary, setIsMilitary] = useState<boolean | null>(null); 
     
       const nextStep = () => setStep((prev) => prev + 1);
       const prevStep = () => setStep((prev) => prev - 1);
@@ -102,7 +102,7 @@ const RegistrationForm = () => {
               {step === 0 && <Step0 onTypeSelect={handleTypeSelection} />}
               {step === 1 && <Step1 isMilitary={isMilitary} />}
               {step === 2 && <Step2 />}
-              {step === 3 && <Step3 />}
+              {step === 3 && <Step3 isMilitary={isMilitary} />}
     
               {/* Navigation Buttons */}
               <div className="flex justify-between mt-6">
