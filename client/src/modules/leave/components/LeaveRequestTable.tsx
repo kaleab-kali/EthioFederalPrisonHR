@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IleaveRequestList } from "../types/LeaveRequest";
 
 import {
@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-table";
 
 import { LuArrowDownUp } from "react-icons/lu";
+import { useAllLeaves } from "../services/queries";
 
 const leaveRequestList: IleaveRequestList[] = [
     {
@@ -95,9 +96,14 @@ const leaveRequestList: IleaveRequestList[] = [
     }
   ];
   
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString();
-  }  
+  const formatDate = (date: Date | string) => {
+    // Ensure that the date is a valid Date object
+    const formattedDate = new Date(date);
+    return formattedDate instanceof Date && !isNaN(formattedDate.getTime())
+      ? formattedDate.toLocaleDateString()
+      : "Invalid date";
+  };
+
 const columnHelper = createColumnHelper<IleaveRequestList>();
 function handleAction(row: Row<IleaveRequestList>): void {
   console.log("leave rquest row data", row);
@@ -150,12 +156,28 @@ const columns = [
 ];
 
 const LeaveRequestTable = () => {
+  const [data, setData] = useState<IleaveRequestList[]>([]);
+        const dataQuery = useAllLeaves();
+        console.log("Data" + dataQuery.data);
+         useEffect(() => {
+           if (dataQuery.data) {
+             const mappedData = dataQuery.data.map((leave: any) => ({
+               empID: leave.employeeId,
+               fullName: leave.fullName,
+               from: leave.from,
+               to: leave.to,
+               reason: leave.reason,
+               department: leave.department
+             }));
+             setData(mappedData);
+           }
+         }, [dataQuery.data]);
     const table = useReactTable({
-        data: leaveRequestList,
-        columns,
-        debugTable: true,
-        getCoreRowModel: getCoreRowModel(),
-      });
+      data: data,
+      columns,
+      debugTable: true,
+      getCoreRowModel: getCoreRowModel(),
+    });
       return (
         <>
         <div className="overflow-x-auto bg-white shadow-md rounded-xl">

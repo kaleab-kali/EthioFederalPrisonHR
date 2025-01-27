@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   useReactTable,
   createColumnHelper,
@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { IAppraisalCandidates } from '../types/Appraisal';
 import { LuArrowDownUp } from 'react-icons/lu';
+import { useAllAppraisals } from '../services/queries';
 
 const data: IAppraisalCandidates[]= [
   {
@@ -99,7 +100,23 @@ const columns = [
 
 
 const AppraisalCandidates = () => {
-
+  const [data, setData] = useState<IAppraisalCandidates[]>([]);
+    const dataQuery = useAllAppraisals();
+    console.log("Data" + dataQuery.data);
+     useEffect(() => {
+       if (dataQuery.data) {
+         const mappedData = dataQuery.data.map((appraisal: any) => ({
+           empID: appraisal.empId,
+           empName: appraisal.empName,
+           previousTitle: appraisal.previousTitle,
+           appraisalTitle: appraisal.appraisalTitle,
+           workYears: appraisal.workYears,
+           department: appraisal.department,
+           position: appraisal.position,
+         }));
+         setData(mappedData);
+       }
+     }, [dataQuery.data]);
   const pdfFunction = () => {
     alert('pdf')
 

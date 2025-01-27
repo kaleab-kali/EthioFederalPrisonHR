@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   useReactTable,
@@ -10,6 +10,7 @@ import {
 
 import { LuArrowDownUp } from 'react-icons/lu';
 import { ISalaryRaise } from '../types/salaryRaise';
+import { useAllRaises } from '../services/queries';
 
 const data: ISalaryRaise[]= [
   {
@@ -90,6 +91,22 @@ const columns = [
 ]
 
 const SalaryRaise = () => {
+  const [data, setData] = useState<ISalaryRaise[]>([]);
+    const dataQuery = useAllRaises();
+    console.log("Data" + dataQuery.data);
+    useEffect(() => {
+      if (dataQuery.data) {
+        const mappedData = dataQuery.data.map((raise: any) => ({
+          empID: raise.employeeId,
+          empName: raise.empName,
+          empTitle: raise.empTitle,
+          raiseDate: raise.raiseDate,
+          newSalary: raise.newSalary,
+          currentSalary: raise.currentSalary,
+        }));
+        setData(mappedData);
+      }
+    }, [dataQuery.data]);
     const pdfFunction = () => {
         alert('pdf')
     

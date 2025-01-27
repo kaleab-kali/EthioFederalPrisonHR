@@ -21,6 +21,7 @@ const titleMap: { [title: string]: number } = {
 export const createAppraisals = async (): Promise<void> => {
   try {
     const employees: IEmployee[] = await Employee.find().exec();
+    console.log("apphere")
     const eligibleEmployees = employees.filter(isEligibleForAppraisal);
     const uniqueEligibleEmployees = await filterExistingAppraisals(eligibleEmployees);
     const finalEligibleEmployees = await filterEmployeesWithHighComplaints(uniqueEligibleEmployees);

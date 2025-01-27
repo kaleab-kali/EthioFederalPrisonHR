@@ -7,7 +7,7 @@ const api = axios.create({
   },
 });
 
-export const createComplaint = async (complaintData: any) => {
+export const createComplaint = async (complaintData: FormData) => {
   const { data } = await api.post(`/api/complaint`, complaintData);
   return data;
 }

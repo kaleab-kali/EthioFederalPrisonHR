@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllComplaints } from "./api";
 
-export const useFetchEmployee = (id: string) =>
+export const useFetchComplaint = (id: string) =>
   useQuery({
     queryKey: ["complaint", id],
     queryFn: () => getAllComplaints(),
     enabled: !!id, 
   });
-export function useAllEmployees() {
+export function useAllComplaints() {
   return useQuery({
     queryKey: ["complaint"],
     queryFn: getAllComplaints,

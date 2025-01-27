@@ -3,9 +3,11 @@ import multer, { FileFilterCallback } from "multer";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        console.log("Saving file to uploads directory...");
         cb(null, "uploads/");
     },
     filename: (req, file, cb) => {
+        console.log("Filename is being generated...");
         cb(null, `${Date.now()}-${file.originalname}`);
     }
 });

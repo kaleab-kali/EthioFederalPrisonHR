@@ -5,6 +5,8 @@ import {
   Roles,
   RankChange,
   Evaluation,
+  FamilyRecord,
+  HealthRecord,
 } from '../types/employeeTypes';
 
 export const educationSchema = new Schema<Education>({
@@ -19,6 +21,32 @@ export const rankChangeSchema = new Schema<RankChange>({
   oldRank: { type: String },
   newRank: { type: String },
   date: { type: Date, default: Date.now },
+});
+
+const familyRecordSchema = new Schema<FamilyRecord>({
+  id: { type: String, required: true },
+  personName: { type: String, required: true },
+  type: { type: String, enum: ['Spouse', 'Kid'], required: true },
+  age: { type: Number },
+  isEligible: { type: Boolean },
+  records: [
+    {
+      date: { type: String, required: true },
+      healthIssue: { type: String, required: true },
+      cost: { type: Number, required: true },
+    },
+  ],
+  marriageStatus: { type: String, enum: ['married', 'divorced', 'widowed'] },
+});
+
+const healthRecordSchema = new Schema<HealthRecord>({
+  records: [
+    {
+      date: { type: String, required: true },
+      healthIssue: { type: String, required: true },
+      cost: { type: Number, required: true },
+    },
+  ],
 });
 
 const employeeSchema = new Schema<IEmployee>(
@@ -38,7 +66,7 @@ const employeeSchema = new Schema<IEmployee>(
     photo: { type: String },
     ethnicity: { type: String, required: true },
     phoneNumber: {
-      prefix: { type: String },
+      prefix: { type: String, },
       number: { type: String, required: true },
     },
     email: { type: String },
@@ -50,6 +78,7 @@ const employeeSchema = new Schema<IEmployee>(
       leyuBota: { type: String },
     },
     salary: { type: String, required: true },
+    lastSalaryRaise: { type: Date },
     educationLevel: { type: String },
     education: [educationSchema],
     birthplaceInfo: {
@@ -64,7 +93,7 @@ const employeeSchema = new Schema<IEmployee>(
       middleName: { type: String },
       lastName: { type: String, required: true },
       phoneNumber: {
-        prefix: { type: String },
+        prefix: { type: String},
         number: { type: String, required: true },
       },
     },
@@ -155,6 +184,9 @@ const employeeSchema = new Schema<IEmployee>(
         to: { type: Date, required: true },
       },
     ],
+    familyRecords: [familyRecordSchema],
+    healthRecords: [healthRecordSchema],
+    leaveBalances: [],
   },
   { timestamps: true },
 );

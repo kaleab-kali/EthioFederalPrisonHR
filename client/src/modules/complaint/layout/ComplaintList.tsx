@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   useReactTable,
   createColumnHelper,
@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { LuArrowDownUp } from 'react-icons/lu';
 import { IComplaintList } from '../types/Complaint';
+import { useAllComplaints } from '../services/queries';
 
 const data: IComplaintList[]= [
   {
@@ -58,43 +59,61 @@ const data: IComplaintList[]= [
 const columnHelper = createColumnHelper<IComplaintList>();
 
 const columns = [
-  columnHelper.accessor("empID",{
-    header: ()=> "Employee ID",
+  columnHelper.accessor("empID", {
+    header: () => "Employee ID",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("empName",{
-    header: ()=> "Employee Name",
+  columnHelper.accessor("empName", {
+    header: () => "Employee Name",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('complaintID',{
-    header: ()=> "Complaint ID",
+  columnHelper.accessor("complaintID", {
+    header: () => "Complaint ID",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('complaintDate',{
-    header: ()=> "Complaint Date",
+  columnHelper.accessor("complaintDate", {
+    header: () => "Complaint Date",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('category',{
-    header: ()=> "Category",
+  columnHelper.accessor("category", {
+    header: () => "Category",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('reason',{
-    header: ()=> "Reason",
+  columnHelper.accessor("reason", {
+    header: () => "Reason",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('status',{
-    header: ()=> "Status",
+  columnHelper.accessor("status", {
+    header: () => "Status",
     cell: (info) => {
-        return (
-            info.getValue() ==='pending' ? <span className='text-cyan-500'>{info.getValue()}</span>: <span className="text-red-600">{info.getValue()}</span>
-        
-        );
+      return info.getValue() === "pending" ? (
+        <span className="text-cyan-500">{info.getValue()}</span>
+      ) : (
+        <span className="text-red-600">{info.getValue()}</span>
+      );
     },
-  })
-
-]
+  }),
+];
 
 const ComplaintList = () => {
+  const [data, setData] = useState<IComplaintList[]>([]);
+      const dataQuery = useAllComplaints();
+      console.log("Data" + dataQuery.data);
+       useEffect(() => {
+         if (dataQuery.data) {
+           const mappedData = dataQuery.data.map((complaint: any) => ({
+             empID: complaint.employeeId,
+             empName: complaint.empName,
+             complaintID: complaint.complaintId,
+             complaintDate: complaint.createdAt,
+             category: complaint.category,
+             subCategory: complaint.subCategory,
+             reason: complaint.description,
+             status: complaint.status,
+           }));
+           setData(mappedData);
+         }
+       }, [dataQuery.data]);
     const pdfFunction = () => {
         alert('pdf')
     

@@ -12,10 +12,19 @@ import { IEmployee } from '../../employee/types/employeeTypes';
 
 const createLeaveInfo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { employeeId, days, leaveType, to, from ,reason,status} = req.body;
+    const { employeeId, days, leaveType, to, from, reason, status } = req.body;
+
     const fromDate: any = new Date(from);
     const toDate: any = new Date(to);
     const currentDate: any = new Date();
+
+    if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+      res
+        .status(400)
+        .json({ message: 'Invalid date format for from or to date' });
+      return;
+    }
+
     if (days > 30) {
       res.status(400).json({
         message: 'The number of days requested should not exceed 30 days',
@@ -29,7 +38,13 @@ const createLeaveInfo = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Check for overlapping leave requests
+    if (!employee.leaveBalances || employee.leaveBalances.length === 0) {
+      res
+        .status(404)
+        .json({ message: 'Leave balances not found for the employee' });
+      return;
+    }
+
     const overlappingLeaves = await LeaveInfoModel.find({
       employeeId,
       status: { $in: ['pending', 'approved'] },
@@ -47,17 +62,21 @@ const createLeaveInfo = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Get the latest leave balance record for the year
     const latestLeaveBalance =
       employee.leaveBalances[employee.leaveBalances.length - 1];
-    if (!latestLeaveBalance) {
+    if (
+      !latestLeaveBalance ||
+      !latestLeaveBalance.balances ||
+      latestLeaveBalance.balances.length === 0
+    ) {
       res
         .status(404)
-        .json({ message: 'Leave balances not found for the employee' });
+        .json({
+          message: 'Leave balances or leave types not found for the employee',
+        });
       return;
     }
 
-    // Locate the balance for the specified leave type
     const leaveTypeBalance = latestLeaveBalance.balances.find(
       (balance: any) => balance.leaveType === leaveType,
     );
@@ -73,21 +92,15 @@ const createLeaveInfo = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Update the balance and mark it as modified
     leaveTypeBalance.used += days;
     leaveTypeBalance.available -= days;
 
-    // Explicitly mark the leave balance array as modified
     employee.markModified('leaveBalances');
-
-    // Save the updated employee document to the database
     await employee.save();
 
-    // Create and save the new leave info
     const newLeaveInfo = new LeaveInfoModel(req.body);
     await newLeaveInfo.save();
 
-    // Respond with updated information
     res.status(201).json({
       message: 'Leave info saved successfully',
       newLeaveInfo,

@@ -4,6 +4,8 @@ export const createComplaint = async (req: Request, res: Response): Promise<void
     try {
         const { employeeId, category, complaint, description } = req.body;
         const attachments = req.files as Express.Multer.File[] | undefined;
+        console.log('Files received:', req.files);
+
         const attachmentPaths = attachments?.map(file => file.path) || [];
 
         const newComplaint = await ComplaintService.createComplaint({

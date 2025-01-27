@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaClipboardList } from 'react-icons/fa';
 import 'tailwindcss/tailwind.css';
+import { useSubmitRegistration } from '../services/mutation';
 
 interface IAppraisalForm {
   employeeID: string;
@@ -15,6 +16,7 @@ interface IAppraisalForm {
 }
 
 const AppraisalForm: React.FC = () => {
+  const createAppraisalForm = useSubmitRegistration();
   const [form, setForm] = useState<IAppraisalForm>({
     employeeID: '',
     score70: 0,
@@ -35,6 +37,7 @@ const AppraisalForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(form);
+    createAppraisalForm.mutate(form);
   };
 
   const positions = ['Position 1', 'Position 2', 'Position 3'];

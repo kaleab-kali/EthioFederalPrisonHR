@@ -12,7 +12,7 @@ export function useCreateComplaint() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: FormData) => {
       setLoading(true);
       return await createComplaint(data);
     },

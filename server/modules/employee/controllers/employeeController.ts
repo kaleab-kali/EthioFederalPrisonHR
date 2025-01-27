@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Employee from '../models/employeeModel';
 import 'dotenv';
+import LeaveBalanceModel from '../../leave/models/leaveBalanceModel';
 
 // Login validation
 const generateToken = (id: string) => {
@@ -77,19 +78,36 @@ const updateEmployee = async (req: Request, res: Response): Promise<void> => {
 };
 
 const addEmployee = async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
-    console.log('here 2');
+    const newEmployeeData = req.body;
 
-    const employee = new Employee(req.body);
+    const employmentDate = new Date(newEmployeeData.employmentDate);
+    const currentYear = new Date().getFullYear();
+    let yearOffset = currentYear - employmentDate.getFullYear();
+    if (yearOffset > 10) {
+      yearOffset = 10;
+    }
+    const leaveTypes = await LeaveBalanceModel.find(
+      {},
+      { leaveType: 1, credit: 1, _id: 0 },
+    );
+    const balances = leaveTypes.map((type) => ({
+      leaveType: type.leaveType,
+      credit: type.credit + yearOffset,
+      used: 0,
+      available: type.credit + yearOffset,
+    }));
+    const leaveBalances = [{ year: currentYear, balances }];
+    // Create new Employee instance
+
+    const employee = new Employee({ ...req.body, leaveBalances });
     const newEmployee = await employee.save();
     console.log(newEmployee);
 
     res.status(201).json(newEmployee);
     console.log('employee added');
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
