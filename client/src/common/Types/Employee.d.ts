@@ -155,6 +155,14 @@ export interface Education {
   educationLevel: string;
 }
 
+
+export interface WorkExperience {
+  id: string; 
+  companyName: string;
+  fromDate: Date;
+  toDate: Date;
+}
+
 export interface IEmployee {
   firstName: string;
   lastName: string;
@@ -171,6 +179,7 @@ export interface IEmployee {
   ethnicity: string;
   centerName?: string;
   pendingCenterName?: string;
+  workExperience?: WorkExperience[];
   phoneNumber: {
     prefix: string;
     number: string;
