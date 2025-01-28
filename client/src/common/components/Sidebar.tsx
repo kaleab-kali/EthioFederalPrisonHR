@@ -36,6 +36,30 @@ const menuItems = [
         allowedRoles: ["admin", "manager"],
       },
       {
+        name: "Center",
+        icon: FaBuilding,
+        route: "/organization/centers",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "Position",
+        icon: FaBuilding,
+        route: "/organization/positions",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "leave Types",
+        icon: FaBuilding,
+        route: "/organization/leaveTypes",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "Title",
+        icon: FaBuilding,
+        route: "/organization/titles",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
         name: "Teams",
         icon: FaUsers,
         route: "/organization/teams",
