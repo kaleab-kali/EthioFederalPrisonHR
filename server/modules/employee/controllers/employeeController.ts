@@ -14,10 +14,7 @@ const generateToken = (id: string) => {
 };
 
 const getEmployees = async (req: Request, res: Response) => {
-  console.log('here1');
-
   try {
-    console.log('here2');
     const employees = await Employee.find();
     res.status(200).json(employees);
   } catch (error) {
@@ -25,57 +22,6 @@ const getEmployees = async (req: Request, res: Response) => {
   }
 };
 
-const getEmployeeById = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { empId } = req.params; // Get the employee ID from the URL parameter
-
-    // Find the employee by ID
-    const employee = await Employee.findOne({ empId });
-    if (!employee) {
-      res.status(404).json({ message: 'Employee not found' });
-      return;
-    }
-
-    // Return the employee data
-    res.status(200).json({
-      message: 'Employee retrieved successfully',
-      employee, // Include all employee data
-    });
-  } catch (error) {
-    console.error('Error retrieving employee:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-const updateEmployee = async (req: Request, res: Response): Promise<void> => {
-  const { empId } = req.params; // Get the employee ID from the URL parameter
-  const updatedData = req.body; // Get the updated employee data from the request body
-
-  try {
-    // Find the employee by ID
-    const employee = await Employee.findOne({ empId });
-
-    if (!employee) {
-      res.status(404).json({ message: 'Employee not found' });
-      return;
-    }
-
-    // Update the employee record with the new data
-    Object.assign(employee, updatedData); // Update employee fields with the new data
-
-    // Save the updated employee data
-    await employee.save();
-
-    // Return the updated employee data
-    res.status(200).json({
-      message: 'Employee updated successfully',
-      employee, // Return the updated employee data
-    });
-  } catch (error) {
-    console.error('Error updating employee:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
 
 const addEmployee = async (req: Request, res: Response) => {
   try {
@@ -174,28 +120,7 @@ const assignCredentials = async (req: Request, res: Response) => {
   }
 };
 
-const requestTransfer = async (req: Request, res: Response) => {
-  const { employeeId, centerName } = req.body;
 
-  try {
-    const employee = await Employee.findOne({ empId: employeeId });
-
-    if (!employee) {
-      res.status(404).send('Employee not found');
-      return;
-    }
-
-    employee.transferStatus = 'pending';
-    employee.pendingCenterName = centerName;
-
-    await employee.save();
-
-    res.status(200).send('Transfer request submitted and pending approval');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error initiating transfer request');
-  }
-};
 const handleTransfer = async (req: Request, res: Response) => {
   const { employeeId, status, rejectionReason } = req.body;
 
@@ -228,16 +153,41 @@ const handleTransfer = async (req: Request, res: Response) => {
   }
 };
 
+const requestTransfer = async (req: Request, res: Response) => {
+  const { employeeId, centerName } = req.body;
+
+  try {
+    const employee = await Employee.findOne({ empId: employeeId });
+
+    if (!employee) {
+      res.status(404).send("Employee not found");
+      return
+    }
+
+    employee.transferStatus = 'pending';
+    employee.pendingCenterName = centerName;
+
+    await employee.save();
+
+    res.status(200).send("Transfer request submitted and pending approval");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error initiating transfer request");
+  }
+};
+
 const createEvaluation = async (req: Request, res: Response): Promise<void> => {
   try {
     const { employeeId, self, colleague, remark, from, to } = req.body;
 
     // Validate the scores
     if (self < 0 || self > 70 || colleague < 0 || colleague > 30) {
-      res.status(400).json({
-        message:
-          'Invalid scores. Self evaluation must be between 0 and 70, colleague evaluation must be between 0 and 30.',
-      });
+      res
+        .status(400)
+        .json({
+          message:
+            "Invalid scores. Self evaluation must be between 0 and 70, colleague evaluation must be between 0 and 30.",
+        });
       return;
     }
 
@@ -253,9 +203,9 @@ const createEvaluation = async (req: Request, res: Response): Promise<void> => {
     };
 
     // Find the employee by ID and update the evaluation field
-    const employee = await Employee.findOne({ empId: employeeId });
+    const employee = await Employee.findOne({empId: employeeId});
     if (!employee) {
-      res.status(404).json({ message: 'Employee not found' });
+      res.status(404).json({ message: "Employee not found" });
       return;
     }
 
@@ -264,49 +214,42 @@ const createEvaluation = async (req: Request, res: Response): Promise<void> => {
     await employee.save();
 
     res.status(201).json({
-      message: 'Evaluation created successfully',
+      message: "Evaluation created successfully",
       evaluation: employee.evaluation,
     });
   } catch (error) {
-    console.error('Error creating evaluation:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error creating evaluation:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-const getEvaluationById = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
+const getEvaluationById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { employeeId } = req.params; // Get the employee ID from the URL parameter
 
     // Find the employee by ID
-    const employee = await Employee.findOne({ empId: employeeId });
+    const employee = await Employee.findOne({empId: employeeId});
     if (!employee) {
-      res.status(404).json({ message: 'Employee not found' });
+      res.status(404).json({ message: "Employee not found" });
       return;
     }
 
     // Return the evaluation data
     res.status(200).json({
-      message: 'Evaluation retrieved successfully',
+      message: "Evaluation retrieved successfully",
       evaluations: employee.evaluation, // Return all evaluations
     });
   } catch (error) {
-    console.error('Error retrieving evaluation:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error retrieving evaluation:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 export {
   getEmployees,
-  getEmployeeById,
-  updateEmployee,
   addEmployee,
   loginUser,
-  assignCredentials,
-  requestTransfer,
-  handleTransfer,
-  createEvaluation,
-  getEvaluationById,
+  assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
+  
+  
 };

@@ -1,22 +1,21 @@
-// complaintRoutes.ts
 import express from 'express';
 import {
-    createComplaint,
-    updateComplaintStatus,
-    getAllComplaints,
-    getComplaintById
+  createComplaint,
+  updateComplaintStatus,
+  getAllComplaints,
+  getComplaintById,
 } from '../controllers/complaintController';
-
-import upload from '../config/multerConfig';
+import fileUpload from 'express-fileupload';
 
 const router = express.Router();
 
-router.post('/', upload.array('attachments', 10),createComplaint);
+// Enable file upload middleware
+router.use(fileUpload());
 
-router.patch('/status/:complaintId', upload.array('evidenceFiles', 5), updateComplaintStatus);
-
+// Routes
+router.post('/', createComplaint);
+router.patch('/status/:complaintId', updateComplaintStatus);
 router.get('/', getAllComplaints);
-
 router.get('/:complaintId', getComplaintById);
 
 export default router;
