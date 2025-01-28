@@ -17,6 +17,9 @@ import titleRoute from './modules/organization/routes/titleRoute';
 import positionRoute from './modules/organization/routes/positionRoute';
 import departmentRoute from './modules/organization/routes/departmentRoute';
 import path from 'path';
+import dashboardRoute from './modules/dashboard/routes/dashboardRoute'
+
+
 
 const app = express();
 const port = 5000;
@@ -42,6 +45,7 @@ app.use('/api/salaryLimit', salaryLimitRoute);
 app.use('/api/org/title', titleRoute);
 app.use('/api/org/position', positionRoute);
 app.use('/api/org/department', departmentRoute);
+app.use('/api/dashboard', dashboardRoute);
 app.listen(port, () => {
   console.log(colors.cyan(`Server is running on port ${port}`));
 });

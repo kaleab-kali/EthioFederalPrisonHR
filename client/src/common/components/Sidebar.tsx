@@ -77,6 +77,12 @@ const menuItems = [
         route: "/organization/password",
         allowedRoles: ["admin"],
       },
+      {
+        name: "Calender",
+        icon: FaBuilding,
+        route: "/organization/calender",
+        allowedRoles: ["admin"],
+      },
     ],
     allowedRoles: ["admin", "manager"],
   },
