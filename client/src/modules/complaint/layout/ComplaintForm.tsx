@@ -8,7 +8,7 @@ interface IComplaintForm {
   category: string;
   subcategory: string;
   reason: string;
-  attachments?: FileList | null;
+  complaints?: FileList | null;
 }
 
 const ComplaintForm: React.FC = () => {
@@ -18,7 +18,7 @@ const ComplaintForm: React.FC = () => {
     category: "",
     subcategory: "",
     reason: "",
-    attachments: null,
+    complaints: null,
   });
 
   const categories = {
@@ -36,12 +36,13 @@ const ComplaintForm: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prevForm) => ({ ...prevForm, attachments: e.target.files }));
+    setForm((prevForm) => ({ ...prevForm, complaints: e.target.files }));
   };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form Data:", form);
+    
 
     // You may need to handle file upload differently depending on your backend setup
     const formData = new FormData();
@@ -49,11 +50,14 @@ const ComplaintForm: React.FC = () => {
     formData.append("category", form.category);
     formData.append("complaint", form.subcategory);
     formData.append("description", form.reason);
-    if (form.attachments) {
-      Array.from(form.attachments).forEach((file) =>
-        formData.append("attachments", file)
+    if (form.complaints) {
+      Array.from(form.complaints).forEach((file) =>
+        formData.append("complaints", file)
       );
     }
+
+    formData.forEach((value, key) => console.log(key, value));
+
 
     createComplaint.mutate(formData as any); // Update this if your mutation expects FormData
   };
@@ -150,14 +154,14 @@ const ComplaintForm: React.FC = () => {
               <div className="mb-4">
                 <label
                   className="block text-sm font-medium text-gray-700"
-                  htmlFor="attachments"
+                  htmlFor="complaints"
                 >
-                  Attachments
+                  complaints
                 </label>
                 <input
                   type="file"
-                  id="attachments"
-                  name="attachments"
+                  id="complaints"
+                  name="complaints"
                   multiple
                   onChange={handleFileChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"

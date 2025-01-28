@@ -7,7 +7,7 @@ import leaveInfoRoute from './modules/leave/routes/leaveRoute';
 import documentRoute from './modules/documents/routes/documentRoute';
 import retirementsRoute from './modules/retirement/routes/retirementRoute';
 import colors from 'colors';
-import fileUpload from 'express-fileupload';
+import cors from 'cors';
 import complaintRoute from './modules/complaint/routes/complaintRoute';
 import appraisalRoute from './modules/appraisal/routes/appraisalRoute';
 import salaryRaiseRoute from './modules/salaryRaise/routes/SalaryRaiseRoute';
@@ -16,14 +16,16 @@ import appraisalHistoryRoute from './modules/appraisal/routes/appraisalHistoryRo
 import titleRoute from './modules/organization/routes/titleRoute';
 import positionRoute from './modules/organization/routes/positionRoute';
 import departmentRoute from './modules/organization/routes/departmentRoute';
+import path from 'path';
 
 const app = express();
-const port = 3000;
+const port = 5000;
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 connectDB();
-app.use(fileUpload());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use('/api/employees', employeeRoute);
 app.use('/api/centers', centerRoute);

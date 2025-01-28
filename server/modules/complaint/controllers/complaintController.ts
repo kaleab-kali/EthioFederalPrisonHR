@@ -8,7 +8,7 @@ export const createComplaint = async (
 ): Promise<void> => {
   try {
     const { employeeId, category, complaint, description } = req.body;
-
+    console.log(req.files);
     const attachments = req.files
       ? await handleFileUpload(req.files, 'complaints') // Ensure it's an array of strings
       : undefined;

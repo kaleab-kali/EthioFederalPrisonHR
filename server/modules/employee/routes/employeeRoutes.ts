@@ -2,11 +2,13 @@ import { Router } from 'express';
 import {
   addEmployee,
   assignCredentials,
-  getEmployees
-  ,
+  getEmployees,
   loginUser,
   handleTransfer,
-  createEvaluation, getEvaluationById,
+  createEvaluation,
+  getEvaluationById,
+  getEmployeeById,
+  updateEmployee,
   requestTransfer,
 } from '../controllers/employeeController';
 import  { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord, addHealthRecords} from "../controllers/healthController";
@@ -15,6 +17,8 @@ import { checkHrRole,checkAdminRole } from '../middlewares/checkRoles';
 
 const router = Router();
 router.get('/', getEmployees);
+router.get('/:empId', getEmployeeById);
+router.put('/:empId', updateEmployee);
 router.post('/assign-credentials',authenticate,checkAdminRole, assignCredentials);
 router.post('/', authenticate,checkHrRole ,addEmployee);
 router.post('/auth/login', loginUser);

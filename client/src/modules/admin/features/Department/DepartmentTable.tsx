@@ -11,39 +11,42 @@ import { LuArrowDownUp } from "react-icons/lu";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import DepartmentForm from "./DepartmentForm";
 import { Department, NewDepartment } from "../../types/DepartmentTypes";
+import { useSubmitDepartment, useUpdateDepartment } from "../../services/mutation";
+import { useAllDepartments } from "../../services/queries";
 
-// Dummy data
-const dummyData: Department[] = [
-  { id: "1", name: "Engineering", head: "John Doe" },
-  { id: "2", name: "Marketing", head: "Jane Smith" },
-  { id: "3", name: "Sales", head: "Mike Johnson" },
-  { id: "4", name: "HR" },
-];
+
 
 // Column helper
 const columnHelper = createColumnHelper<Department>();
 
 const DepartmentTable: React.FC = () => {
-  const [data, setData] = useState<Department[]>(dummyData);
+    const fetchDepartments = useAllDepartments();
+  
+  const [data, setData] = useState<Department[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<Department | NewDepartment>({
-    name: "",
-    head: "",
+    departmentId: "",
+    departmentName: "",
+    departmentHead: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-
+React.useEffect(() => {
+  if (fetchDepartments.data) {
+    setData(fetchDepartments.data);
+  }
+}, [fetchDepartments.data]);
   // Define columns
   const columns = [
-    columnHelper.accessor("name", {
+    columnHelper.accessor("departmentName", {
       header: "Department Name",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("id", {
+    columnHelper.accessor("departmentId", {
       header: "Department ID",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("head", {
+    columnHelper.accessor("departmentHead", {
       header: "Department Head",
       cell: (info) => info.getValue() || "N/A",
     }),
@@ -59,7 +62,7 @@ const DepartmentTable: React.FC = () => {
             Edit
           </button>
           <button
-            onClick={() => handleDelete(row.original.id)}
+            onClick={() => handleDelete(row.original.departmentId)}
             className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
           >
             Delete
@@ -80,6 +83,8 @@ const DepartmentTable: React.FC = () => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
+  const submitForm= useSubmitDepartment();
+  const updateForm = useUpdateDepartment();
 
   // Handle form submission
   const handleFormSubmit = (data: NewDepartment) => {
@@ -87,12 +92,15 @@ const DepartmentTable: React.FC = () => {
       // Update existing department
       setData((prev) =>
         prev.map((dept) =>
-          dept.id === (formData as Department).id ? { ...dept, ...data } : dept
+          dept.departmentId === (formData as Department).departmentId ? { ...dept, ...data } : dept
         )
       );
+      updateForm.mutate({id:(formData as Department).departmentId,data:data});
     } else {
       // Add new department
       setData((prev) => [...prev, { id: String(prev.length + 1), ...data }]);
+      submitForm.mutate(data);
+
     }
     setShowForm(false);
   };
@@ -106,7 +114,7 @@ const DepartmentTable: React.FC = () => {
 
   // Handle delete
   const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((dept) => dept.id !== id));
+    setData((prev) => prev.filter((dept) => dept.departmentId !== id));
   };
 
   return (
@@ -116,7 +124,11 @@ const DepartmentTable: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-900">Departments</h1>
         <button
           onClick={() => {
-            setFormData({ name: "", head: "" });
+            setFormData({
+              departmentId: "",
+              departmentName: "",
+              departmentHead: "",
+            });
             setIsEditing(false);
             setShowForm(true);
           }}

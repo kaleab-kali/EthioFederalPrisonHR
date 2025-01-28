@@ -10,7 +10,7 @@ type PositionFormProps = {
 };
 
 const PositionForm: React.FC<PositionFormProps> = ({
-  initialData = { name: "" },
+  initialData = { posName: "" },
   onSubmit,
   onClose,
   title,
@@ -44,8 +44,8 @@ const PositionForm: React.FC<PositionFormProps> = ({
             </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="posName"
+              value={formData.posName}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required

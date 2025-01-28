@@ -11,33 +11,32 @@ import { LuArrowDownUp } from "react-icons/lu";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import PositionForm from "./PositionForm";
 import { Position, NewPosition } from "../../types/PositionTypes";
+import { useSubmitPosition, useUpdatePosition } from "../../services/mutation";
+import { useAllPositions } from "../../services/queries";
 
-// Dummy data
-const dummyData: Position[] = [
-  { id: "1", name: "Software Engineer" },
-  { id: "2", name: "Product Manager" },
-  { id: "3", name: "UX Designer" },
-];
+
 
 // Column helper
 const columnHelper = createColumnHelper<Position>();
 
 const PositionTable: React.FC = () => {
-  const [data, setData] = useState<Position[]>(dummyData);
+  const {data:fetchPositions, refetch} = useAllPositions();
+  const [data, setData] = useState<Position[]>(fetchPositions || []);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<Position | NewPosition>({
-    name: "",
+    posId: "",
+    posName: "",
   });
   const [isEditing, setIsEditing] = useState(false);
 
   // Define columns
   const columns = [
-    columnHelper.accessor("name", {
+    columnHelper.accessor("posName", {
       header: "Position Name",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("id", {
+    columnHelper.accessor("posId", {
       header: "Position ID",
       cell: (info) => info.getValue(),
     }),
@@ -53,7 +52,7 @@ const PositionTable: React.FC = () => {
             Edit
           </button>
           <button
-            onClick={() => handleDelete(row.original.id)}
+            onClick={() => handleDelete(row.original.posId)}
             className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
           >
             Delete
@@ -74,19 +73,21 @@ const PositionTable: React.FC = () => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-
+  const submitForm= useSubmitPosition();
+  const updateForm = useUpdatePosition();
   // Handle form submission
   const handleFormSubmit = (data: NewPosition) => {
     if (isEditing) {
       // Update existing position
-      setData((prev) =>
-        prev.map((position) =>
-          position.id === (formData as Position).id ? { ...position, ...data } : position
-        )
-      );
+      
+      updateForm.mutate({ id: (formData as Position).posId, data: data });
+      refetch()
+      setData(fetchPositions)
     } else {
       // Add new position
-      setData((prev) => [...prev, { id: String(prev.length + 1), ...data }]);
+      submitForm.mutate(data);
+      refetch();
+      setData(fetchPositions);
     }
     setShowForm(false);
   };
@@ -100,7 +101,7 @@ const PositionTable: React.FC = () => {
 
   // Handle delete
   const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((position) => position.id !== id));
+    setData((prev) => prev.filter((position) => position.posId !== id));
   };
 
   return (
@@ -110,7 +111,7 @@ const PositionTable: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-900">Positions</h1>
         <button
           onClick={() => {
-            setFormData({ name: "" });
+            setFormData({ posId: "", posName: "" });
             setIsEditing(false);
             setShowForm(true);
           }}

@@ -1,6 +1,7 @@
 export type Position = {
-    id: string;
-    name: string;
-  };
+  _id?: string;
+  posId: string;
+  posName: string;
+};
   
-  export type NewPosition = Omit<Position, "id">;
+  export type NewPosition = Omit<Position, "posId">;

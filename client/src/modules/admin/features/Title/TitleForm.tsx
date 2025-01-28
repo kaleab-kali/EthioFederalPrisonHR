@@ -10,7 +10,7 @@ type TitleFormProps = {
 };
 
 const TitleForm: React.FC<TitleFormProps> = ({
-  initialData = { name: "", isMilitary: false },
+  initialData = { titleId: "", titleName: "", isMilitary: false },
   onSubmit,
   onClose,
   title,
@@ -49,8 +49,8 @@ const TitleForm: React.FC<TitleFormProps> = ({
             </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="titleName"
+              value={formData.titleName}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required

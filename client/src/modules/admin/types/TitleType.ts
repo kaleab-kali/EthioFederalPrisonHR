@@ -1,6 +1,6 @@
 export type Title = {
-    id: string;
-    name: string;
+    titleId: string;
+    titleName: string;
     isMilitary: boolean;
   };
   

@@ -6,6 +6,7 @@ const titleInfoSchema = new Schema<TitleInfo>(
   {
     titleId: { type: String },
     titleName: { type: String },
+    isMilitary: { type: Boolean },
   },
   { timestamps: true },
 );
