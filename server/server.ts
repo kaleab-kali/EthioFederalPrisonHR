@@ -13,6 +13,9 @@ import appraisalRoute from './modules/appraisal/routes/appraisalRoute';
 import salaryRaiseRoute from './modules/salaryRaise/routes/SalaryRaiseRoute';
 import salaryLimitRoute from './modules/salaryRaise/routes/salaryLimitRoute';
 import appraisalHistoryRoute from './modules/appraisal/routes/appraisalHistoryRoute';
+import titleRoute from './modules/organization/routes/titleRoute';
+import positionRoute from './modules/organization/routes/positionRoute';
+import departmentRoute from './modules/organization/routes/departmentRoute';
 
 const app = express();
 const port = 3000;
@@ -33,6 +36,9 @@ app.use('/api/appraisal', appraisalRoute);
 app.use('/api/appraisalHistory', appraisalHistoryRoute);
 app.use('/api/salaryRaise', salaryRaiseRoute);
 app.use('/api/salaryLimit', salaryLimitRoute);
+app.use('/api/org/title', titleRoute);
+app.use('/api/org/position', positionRoute);
+app.use('/api/org/department', departmentRoute);
 app.listen(port, () => {
   console.log(colors.cyan(`Server is running on port ${port}`));
 });
