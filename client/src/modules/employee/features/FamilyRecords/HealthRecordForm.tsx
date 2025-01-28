@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { FaUser, FaHeart, FaChild, FaHospital } from 'react-icons/fa';
 
 interface HealthRecord {
-  beneficiary: 'Employee' | 'Spouse' | 'Child'; // Who the health coverage is for
-  childName?: string; // Name of the child (if beneficiary is Child)
-  costOfCoverage: number; // Cost of health coverage
-  hospitalName: string; // Name of the hospital
-  coverageStartDate: string; // Start date of coverage
-  coverageEndDate: string; // End date of coverage
+  beneficiary: 'Employee' | 'Spouse' | 'Child'; 
+  childName?: string; 
+  costOfCoverage: number; 
+  hospitalName: string;
+  coverageStartDate: string; 
+  coverageEndDate: string; 
 }
 
 interface IEmployee {
   employeeId: string;
-  spouseName?: string; // Name of the spouse (if applicable)
+  spouseName?: string; 
   children?: Array<{ name: string; dateOfBirth: string }>; // List of children (name and date of birth)
-  healthRecords?: HealthRecord[]; // Optional array of health records
+  healthRecords?: HealthRecord[]; 
 }
 
 const HealthRecordForm: React.FC = () => {
@@ -28,10 +28,10 @@ const HealthRecordForm: React.FC = () => {
 
   const [employee, setEmployee] = useState<IEmployee>({
     employeeId: '',
-    spouseName: 'Jane Doe', // Example spouse name
+    spouseName: 'Jane Doe', 
     children: [
-      { name: 'Child 1', dateOfBirth: '2010-05-15' }, // Example child
-      { name: 'Child 2', dateOfBirth: '2005-08-20' }, // Example child (older than 18)
+      { name: 'Child 1', dateOfBirth: '2010-05-15' }, 
+      { name: 'Child 2', dateOfBirth: '2005-08-20' }, 
     ],
     healthRecords: [],
   });
@@ -64,7 +64,7 @@ const HealthRecordForm: React.FC = () => {
     setCoverageStartDate('');
     setCoverageEndDate('');
 
-    // Log the updated employee object (for demonstration purposes)
+   
     console.log('Updated Employee:', {
       employeeId,
       healthRecords: [...(employee.healthRecords || []), newHealthRecord],

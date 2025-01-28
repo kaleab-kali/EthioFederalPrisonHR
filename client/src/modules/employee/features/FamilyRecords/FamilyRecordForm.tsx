@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import { FaUser, FaHeart, FaChild, FaTimesCircle, FaUserSlash } from 'react-icons/fa';
 
 interface FamilyRecord {
-  eventType: 'Marriage' | 'Child' | 'Divorce' | 'Widowed'; // Type of family event
-  spouseName?: string; // Name of the spouse (for Marriage, Divorce, or Widowed)
-  spousePhoneNumber?: string; // Phone number of the spouse (for Marriage)
-  spouseEthnicity?: string; // Ethnicity of the spouse (for Marriage)
+  eventType: 'Marriage' | 'Child' | 'Divorce' | 'Widowed'; 
+  spouseName?: string; 
+  spousePhoneNumber?: string; 
+  spouseEthnicity?: string; 
   spouseAddress?: {
     region: string;
     subcity: string;
     woreda: string;
-  }; // Address of the spouse (for Marriage)
-  spouseDateOfBirth?: string; // Date of birth of the spouse (for Marriage)
-  childName?: string; // Name of the child (for Child)
-  childDateOfBirth?: string; // Date of birth of the child (for Child)
-  divorceDate?: string; // Date of divorce (for Divorce)
-  widowedDate?: string; // Date of becoming widowed (for Widowed)
+  }; 
+  spouseDateOfBirth?: string; 
+  childName?: string;
+  childDateOfBirth?: string; 
+  divorceDate?: string; 
+  widowedDate?: string; 
 }
 
 interface IEmployee {
   employeeId: string;
-  familyRecords?: FamilyRecord[]; // Optional array of family records
+  familyRecords?: FamilyRecord[]; 
 }
 
 const FamilyRecordForm: React.FC = () => {
@@ -78,7 +78,7 @@ const FamilyRecordForm: React.FC = () => {
     setDivorceDate('');
     setWidowedDate('');
 
-    // Log the updated employee object (for demonstration purposes)
+    
     console.log('Updated Employee:', {
       employeeId,
       familyRecords: [...(employee.familyRecords || []), newFamilyRecord],
