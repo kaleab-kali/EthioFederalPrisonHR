@@ -162,6 +162,12 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
                   <HiCog className="mr-2" /> Settings
                 </button>
                 <button className="flex items-center w-full text-left p-2 hover:bg-gray-100">
+                  <HiCog className="mr-2" /> Calender
+                </button>
+                <button className="flex items-center w-full text-left p-2 hover:bg-gray-100">
+                  <HiCog className="mr-2" /> News
+                </button>
+                <button className="flex items-center w-full text-left p-2 hover:bg-gray-100">
                   Sign Out
                 </button>
               </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   useReactTable,
   createColumnHelper,
@@ -9,6 +9,7 @@ import {
 
 import { LuArrowDownUp } from 'react-icons/lu';
 import { IServiceReward } from '../types/serviceReward';
+import { useAllRewards } from '../services/queries';
 
 const data: IServiceReward[]= [
   {
@@ -96,6 +97,22 @@ const columns = [
 ]
 
 const ServiceReward = () => {
+  const [data, setData] = useState<IServiceReward[]>([]);
+  const dataQuery = useAllRewards();
+  console.log("Data" + dataQuery.data);
+  useEffect(() => {
+    if (dataQuery.data) {
+      const mappedData = dataQuery.data.map((reward: any) => ({
+        empID: reward.employeeId,
+        empName: reward.empName,
+        empTitle: reward.empTitle,
+        rewardDate: reward.rewardDate,
+        reward: reward.reward,
+        workYears: reward.workYears
+      }));
+      setData(mappedData);
+    }
+  }, [dataQuery.data]);
     const pdfFunction = () => {
         alert('pdf')
     

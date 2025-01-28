@@ -36,6 +36,30 @@ const menuItems = [
         allowedRoles: ["admin", "manager"],
       },
       {
+        name: "Center",
+        icon: FaBuilding,
+        route: "/organization/centers",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "Position",
+        icon: FaBuilding,
+        route: "/organization/positions",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "leave Types",
+        icon: FaBuilding,
+        route: "/organization/leaveTypes",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "Title",
+        icon: FaBuilding,
+        route: "/organization/titles",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
         name: "Teams",
         icon: FaUsers,
         route: "/organization/teams",
@@ -198,7 +222,7 @@ const menuItems = [
       {
         name: "Application",
         icon: FaExclamationTriangle,
-        route: "/complaint/apply",
+        route: "/complaint/registration",
         allowedRoles: ["admin", "user"],
       },
       {
@@ -254,7 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
       tabIndex={0}
       onBlur={isCollapsed ? handleBlur : undefined}
       className={`bg-white shadow-lg transition-all duration-300 pb-8 ${
-        isCollapsed ? "w-20" : "w-56"
+        isCollapsed ? "w-20" : "w-56 overflow-y-auto"
       } h-full relative z-1`}
       // style={{ overflowY: "auto" }}
     >
@@ -265,7 +289,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
             .map((menu) => (
               <li key={menu.name} className="relative">
                 {menu.submenus.length > 0 ? (
-                  // If there are submenus, use a div and handle click as before
                   <div
                     onClick={() =>
                       handleMenuClick(menu.name, menu.submenus.length > 0)
@@ -328,7 +351,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                         <li key={submenu.name}>
                           <NavLink
                             to={submenu.route}
-                            // onClick={() => setOpenMenu(null)} // Ensure menu closes on submenu click
+                            // onClick={() => setOpenMenu(null)} 
                             className={({ isActive }) =>
                               `block p-2 text-sm text-gray-600 hover:bg-blue-50 rounded ${
                                 isActive ? "bg-blue-100" : ""
