@@ -21,7 +21,7 @@ const app = express();
 const port = 3000;
 
 connectDB();
-app.use(fileUpload())
+app.use(fileUpload());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,12 +30,13 @@ app.use('/api/centers', centerRoute);
 app.use('/api/leavebalances', leaveBalanceRoute);
 app.use('/api/leaveinfo', leaveInfoRoute);
 app.use('/api/documents', documentRoute);
-app.use('/api/retirements',retirementsRoute);
+app.use('/api/retirements', retirementsRoute);
 app.use('/api/complaint', complaintRoute);
 app.use('/api/appraisal', appraisalRoute);
 app.use('/api/appraisalHistory', appraisalHistoryRoute);
 app.use('/api/salaryRaise', salaryRaiseRoute);
 app.use('/api/salaryLimit', salaryLimitRoute);
+//dynamics
 app.use('/api/org/title', titleRoute);
 app.use('/api/org/position', positionRoute);
 app.use('/api/org/department', departmentRoute);
