@@ -34,6 +34,12 @@ export const submitHealthForm = async (id: string, updatedData: any) => {
   return data;
 };
 
+export const submitWorkForm = async (formData: any) => {
+  const { data } = await api.post("/api/employees/work-experience/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
+
 export const submitTransferRequestForm = async (formData: any) => {
   const { data } = await api.post("/api/employees/transfer/request/", formData);
   console.log(process.env.REACT_APP_API_URL + "heheheheh");

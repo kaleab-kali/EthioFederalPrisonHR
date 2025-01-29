@@ -25,5 +25,17 @@
   "Request Number": "Request Number",
   "Complaint": "Complaint",
   "Application": "Application",
-  "Received Candidates": "Received Candidates"
+  "Received Candidates": "Received Candidates",
+  "Photo Capture": "Photo Capture",
+  "Work Experience": "Work Experience",
+  "Document Tracking": "Document Tracking",
+  "Marital Status": "Marital Status",
+  "Health Record": "Health Record",
+  "Leave Permit": "Leave Permit",
+  "Reward": "Reward",
+  "Service Reward": "Service Reward",
+  "Position": "Position",
+  "leave Types": "leave Types",
+  "Title": "Title",
+  "Calendar": "Calendar"
 }

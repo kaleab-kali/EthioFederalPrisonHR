@@ -12,6 +12,7 @@ const ProfileMenu: React.FC = () => {
     { name: 'Material', path: 'material' },
     { name: 'Performance', path: 'performance' },
     { name: 'Documents', path: 'documents' },
+    { name: 'Work Experience', path: 'workExperience' },
   ];
 
   const location = useLocation();
