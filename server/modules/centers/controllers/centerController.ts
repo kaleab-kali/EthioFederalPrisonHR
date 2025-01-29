@@ -41,3 +41,23 @@ export const getCenterById = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error retrieving center', error });
   }
 };
+
+export const updateCenter = async (req: Request, res: Response) => {
+
+  try {
+    const { centerId } = req.params;
+    const center = await Center.findOneAndUpdate({ centerId },{$set:req.body}, { new: true });
+    if (!center) {
+      res.status(404).json({ error: 'Center not found' });
+    }
+    res.status(200).json(center);
+    console.log('Center updated successfully');
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating center' });
+    console.error(error);
+  }
+
+}
+
+    
+    
