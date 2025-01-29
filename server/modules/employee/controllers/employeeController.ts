@@ -176,6 +176,23 @@ const requestTransfer = async (req: Request, res: Response) => {
   }
 };
 
+const getAllEmpsWithPendingTransferStatus = async (req: Request, res: Response) => {
+  try {
+    const employees = await Employee.find({ transferStatus: 'pending' });
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+const getAllEmpsWithAcceptedTransferStatus = async (req: Request, res: Response) => {
+  try {
+    const employees = await Employee.find({ transferStatus: 'accepted' });
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 const createEvaluation = async (req: Request, res: Response): Promise<void> => {
   try {
     const { employeeId, self, colleague, remark, from, to } = req.body;
@@ -249,7 +266,5 @@ export {
   getEmployees,
   addEmployee,
   loginUser,
-  assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
-  
-  
+  assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,getAllEmpsWithAcceptedTransferStatus,getAllEmpsWithPendingTransferStatus
 };

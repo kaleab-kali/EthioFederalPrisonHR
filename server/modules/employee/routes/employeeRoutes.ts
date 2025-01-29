@@ -8,6 +8,8 @@ import {
   handleTransfer,
   createEvaluation, getEvaluationById,
   requestTransfer,
+  getAllEmpsWithPendingTransferStatus,
+  getAllEmpsWithAcceptedTransferStatus,
 } from '../controllers/employeeController';
 import  { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord, addHealthRecords} from "../controllers/healthController";
 import  {authenticate}   from '../middlewares/authunticate';
@@ -22,16 +24,16 @@ router.post('/transfer/request', requestTransfer);
 router.post('/transfer/handle', handleTransfer);
 router.post("/evaluation", createEvaluation);
 router.get("/evaluation/:employeeId", getEvaluationById);
-
-
-router.post("/:id/family", async (req, res) => {
-  try {
-    const result = await addFamilyRecord(req.params.id, req.body);
-    res.status(201).json(result);
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+router.get('/pendingTransfer', getAllEmpsWithPendingTransferStatus),
+  router.get('/acceptedTransfer', getAllEmpsWithAcceptedTransferStatus),
+  router.post('/:id/family', async (req, res) => {
+    try {
+      const result = await addFamilyRecord(req.params.id, req.body);
+      res.status(201).json(result);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
 router.post("/:id/health", async (req, res) => {
   try {
