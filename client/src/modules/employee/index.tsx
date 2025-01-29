@@ -15,6 +15,12 @@ import EmployeeEducation from './components/profileView/EmployeeEducation';
 import EmployeeHealth from './components/profileView/EmployeeHealth';
 import EmployeeListTable from './components/EmployeeListTable';
 import TransferEmployeeTable from './components/TransferEmployeeTable';
+import EmployeePhotoCapture from './features/LivePicture/EmployeePhotoCapture';
+import WorkExperienceForm from './features/WorkExprience/WorkExperienceForm';
+import DocumentTrackingForm from './features/DocumentTracking/DocumentTrackingForm';
+import FamilyRecordForm from './features/FamilyRecords/FamilyRecordForm';
+import HealthRecordForm from './features/FamilyRecords/HealthRecordForm';
+import LeavePermitComponent from './components/LeavePermitComponent';
 
 
 const EmployeeModule: React.FC = () => {
@@ -44,7 +50,16 @@ const EmployeeModule: React.FC = () => {
       <Route path="/registration" element={<RegistrationForm />} />
       <Route path="/remove" element={<EmployeeComponent />} />
       <Route path="/transfer" element={<TransferEmployeeTable />} />
+      <Route path="/picture" element={<EmployeePhotoCapture />} />
+
+      <Route path="/workExperience" element={<WorkExperienceForm />} />
+      <Route path="/document" element={<DocumentTrackingForm />} />
+      <Route path="/healthRecord" element={<HealthRecordForm />} />
+      <Route path="/martialStatus" element={<FamilyRecordForm />} />
+      <Route path="/leavePass" element={<LeavePermitComponent />} />
+
     </Routes>
+    
     //   <Route path="dashboard" element={<HomeComponent />} />
   );
 };

@@ -66,7 +66,7 @@ const employeeSchema = new Schema<IEmployee>(
     photo: { type: String },
     ethnicity: { type: String, required: true },
     phoneNumber: {
-      prefix: { type: String, },
+      prefix: { type: String },
       number: { type: String, required: true },
     },
     email: { type: String },
@@ -93,7 +93,7 @@ const employeeSchema = new Schema<IEmployee>(
       middleName: { type: String },
       lastName: { type: String, required: true },
       phoneNumber: {
-        prefix: { type: String},
+        prefix: { type: String },
         number: { type: String, required: true },
       },
     },

@@ -8,13 +8,13 @@ const api = axios.create({
 });
 
 export const createComplaint = async (complaintData: FormData) => {
-  const { data } = await api.post(`/api/complaint`, complaintData);
+  console.log("api: ", complaintData)
+  const { data } = await api.post(`/api/complaint`, complaintData, { headers: { 'Content-Type': 'multipart/form-data' } });
   return data;
 }
 
 export const getAllComplaints = async () => {
   const { data } = await api.get(`/api/complaint`);
-  console.log(JSON.stringify(data));
   return data;
 };
 

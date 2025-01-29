@@ -25,6 +25,26 @@ export const submitRegistrationForm = async (formData: any) => {
   console.log(process.env.REACT_APP_API_URL + "heheheheh");
   return data;
 };
+export const submitFamilyForm = async (id: string, updatedData: any) => {
+  const { data } = await api.post(`/api/employees/${id}/family`, updatedData);
+  return data;
+};
+export const submitHealthForm = async (id: string, updatedData: any) => {
+  const { data } = await api.post(`/api/employees/${id}/health`, updatedData);
+  return data;
+};
+
+export const submitTransferRequestForm = async (formData: any) => {
+  const { data } = await api.post("/api/employees/transfer/request/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
+
+export const submitTransferHandle = async (formData: any) => {
+  const { data } = await api.post("/api/employees/transfer/handle/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
 
 // Update employee data
 export const updateEmployeeData = async (id: string, updatedData: any) => {
