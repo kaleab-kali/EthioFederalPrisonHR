@@ -38,7 +38,7 @@ structure = {
                 'homeFeature.ts': 'export const homeFeature = () => {};'
             },
             'layout': {
-                'homeLayout.tsx': 'export const HomeLayout = ({children}) => <div>{children}</div>;'
+                'homeLayout.tsx': 'export const HomeLayout = () => <div>home layout</div>;'
             },
             'services': {
                 'homeService.ts': 'export const homeService = () => {};'

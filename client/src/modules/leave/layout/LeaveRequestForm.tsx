@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { useSubmitLeave } from '../services/mutation';
 
 interface ILeaveRequestForm {
-  employeeID: string;
+  employeeId: string;
   from: string;
   to: string;
   leaveType: string;
@@ -12,8 +13,9 @@ interface ILeaveRequestForm {
 }
 
 const LeaveRequestForm: React.FC = () => {
+  const leaveForm= useSubmitLeave();
   const [form, setForm] = useState<ILeaveRequestForm>({
-    employeeID: '',
+    employeeId: '',
     from: '',
     to: '',
     leaveType: '',
@@ -44,9 +46,10 @@ const LeaveRequestForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(form);
+    leaveForm.mutate(form)
   };
 
-  const leaveTypes = ['Sick Leave', 'Annual Leave', 'Maternity Leave', 'Paternity Leave'];
+  const leaveTypes = ['sick leave', 'annual leave', 'maternity leave', 'paternity leave'];
 
   return (
     <div className="flex flex-row justify-between p-8 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
@@ -54,11 +57,11 @@ const LeaveRequestForm: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4">Leave Request Form</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="employeeID">Employee ID</label>
+            <label className="block text-sm font-medium text-gray-700" htmlFor="employeeId">Employee ID</label>
             <input 
               type="text" 
-              name="employeeID" 
-              value={form.employeeID} 
+              name="employeeId" 
+              value={form.employeeId} 
               onChange={handleChange} 
               className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required

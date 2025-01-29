@@ -456,30 +456,6 @@ const updateLeaveBalances = async (
   }
 };
 
-const deleteLeaveInfo = async (req: Request, res: Response): Promise<void> => {
-  try {
-    // const deletedLeaveInfo = await LeaveInfoModel.findByIdAndDelete(
-    //   req.params.id
-    // );
-    // if (!deletedLeaveInfo) {
-    //   res.status(404).json({ error: "Leave info not found" });
-    //   return;
-    // }
-    // // Update the Employee model to remove the leaveInfo reference
-    // const employee = await Employee.findById(deletedLeaveInfo.employeeId);
-    // if (employee) {
-    //   employee.leaveInfo = undefined;
-    //   await employee.save();
-    // }
-    // res.status(200).json({
-    //   message: "Leave info deleted successfully",
-    //   deletedLeaveInfo,
-    // });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
 
 const hrLeaveApproval = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -568,7 +544,6 @@ const hrLeaveApproval = async (req: Request, res: Response): Promise<void> => {
 
 export {
   createLeaveInfo,
-  deleteLeaveInfo,
   getAllLeaveInfo,
   getLeaveInfoForDepartmentHead,
   getLeaveInfoForManager,

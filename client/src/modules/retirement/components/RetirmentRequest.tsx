@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSubmitRetirement } from "../services/mutation";
+import { useAllEmployees } from "../../employee/services/queries";
 
 interface ParentInfo {
   name: string;
@@ -32,12 +34,28 @@ const RetirmentRequest: React.FC = () => {
   const [employeeId, setEmployeeId] = useState<string>("");
   const [employeeData, setEmployeeData] = useState<EmployeeData | null>(null);
 
+  const retirementForm= useSubmitRetirement()
   const [formData, setFormData] = useState<FormData>({
     retirementIdentifier: "",
     organizationIdentifier: "",
     father: { name: "", birthday: "", incomeSource: "" },
     mother: { name: "", birthday: "", incomeSource: "" },
   });
+    const employeesQuery = useAllEmployees();
+    console.log("employees" + employeesQuery.data);
+     useEffect(() => {
+       if (employeesQuery.data) {
+         const mappedData = employeesQuery.data.map((employee: any) => ({
+           empID: employee.empId,
+           title: employee.title,
+           firstName: employee.firstName,
+           lastName: employee.lastName,
+           department: employee.department,
+           position: employee.position,
+         }));
+         setEmployeeData(mappedData);
+       }
+     }, [employeesQuery.data]);
 
   const mockEmployeeData: EmployeeData = {
     id: "123",
@@ -55,12 +73,16 @@ const RetirmentRequest: React.FC = () => {
   };
 
   const handleSearch = () => {
-    if (employeeId === "123") {
-      setEmployeeData(mockEmployeeData);
-    } else {
-      setEmployeeData(null);
-    }
-  };
+  if (employeeId.trim() !== "") {
+    const filteredData = employeesQuery.data?.find(
+      (employee: any) => employee.empId.toString() === employeeId.trim()
+    );
+    setEmployeeData(filteredData || null);
+  } else {
+    setEmployeeData(null);
+  }
+};
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -72,6 +94,7 @@ const RetirmentRequest: React.FC = () => {
 
   const handleSubmit = () => {
     console.log("Form Data Submitted:", formData);
+    retirementForm.mutate(formData);
   };
 
   return (

@@ -3,4 +3,5 @@ export interface RInterface{
     center: string;
     centerId: string;
     empId: string;
+    status: string;
 }

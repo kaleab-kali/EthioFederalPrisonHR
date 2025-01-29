@@ -5,7 +5,6 @@ import {
   getLeaveInfoForDepartmentHead,
   getLeaveInfoForManager,
   getLeaveInfoByEmployeeId,
-  deleteLeaveInfo,
   getAllLeaveBalances,
   updateLeaveBalances,
   getAllLeaveBalanceByYear,

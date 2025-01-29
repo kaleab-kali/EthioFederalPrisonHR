@@ -7,6 +7,7 @@ const documentSchema = new Schema<RInterface>(
     center: { type: String, required: true },
     centerId: { type: String, required: true },
     empId: { type: String, required: true },
+    status : { type: String,enum: ['pending', 'approved', 'rejected']},
   },
   { timestamps: true },
 );
