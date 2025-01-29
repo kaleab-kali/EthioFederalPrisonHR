@@ -10,7 +10,7 @@ type DepartmentFormProps = {
 };
 
 const DepartmentForm: React.FC<DepartmentFormProps> = ({
-  initialData = { name: "", head: "" },
+  initialData = { departmentId:"", departmentName: "", departmentHead: "" },
   onSubmit,
   onClose,
   title,
@@ -44,8 +44,8 @@ const DepartmentForm: React.FC<DepartmentFormProps> = ({
             </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="departmentName"
+              value={formData.departmentName}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
@@ -57,8 +57,8 @@ const DepartmentForm: React.FC<DepartmentFormProps> = ({
             </label>
             <input
               type="text"
-              name="head"
-              value={formData.head || ""}
+              name="departmentHead"
+              value={formData.departmentHead || ""}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />

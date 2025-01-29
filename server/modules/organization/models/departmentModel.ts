@@ -7,7 +7,7 @@ const departmentInfoSchema = new Schema<DepartmentInfo>(
   {
     departmentId: { type: String },
     departmentName: { type: String, required: true },
-    departmentHead: { type: String, required: true },
+    departmentHead: { type: String },
   },
   { timestamps: true },
 );

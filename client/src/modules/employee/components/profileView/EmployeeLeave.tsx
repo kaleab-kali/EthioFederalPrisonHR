@@ -1,21 +1,46 @@
-import React from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { IEmployee } from '../../../../common/Types/Employee';
+import React from "react";
+import { useOutletContext } from "react-router-dom";
+import { IEmployee } from "../../../../common/Types/Employee";
+import { useFetchLeave } from "../../../leave/services/queries";
 
 const EmployeeLeave: React.FC = () => {
   const employee = useOutletContext<IEmployee>();
+  const leaveInfo = useFetchLeave(employee.empId);
+  console.log(leaveInfo.data);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const getStatusColor = (from: string, to: string) => {
+    const today = new Date();
+    const startDate = new Date(from);
+    const endDate = new Date(to);
+
+    if (today.toDateString() === startDate.toDateString())
+      return "bg-green-500";
+    if (today < startDate) return "bg-orange-500";
+    if (today > endDate) return "bg-red-500";
+    return "bg-gray-500";
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
-      {employee.leaveRecords && employee.leaveRecords.length > 0 ? (
-        employee.leaveRecords.map((leave, index) => (
+      {leaveInfo.data && leaveInfo.data.employeeLeaveInfos.length > 0 ? (
+        leaveInfo.data?.employeeLeaveInfos.map((leave, index) => (
           <div
             key={index}
             className="relative bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-lg transition-shadow duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0 sm:space-x-6"
           >
             <div
-              className={`absolute top-0 right-0 px-4 py-1 rounded-bl-lg text-white font-semibold ${
-                leave.status === 'Accepted' ? 'bg-green-500' : 'bg-red-500'
-              }`}
+              className={`absolute top-0 right-0 px-4 py-1 rounded-bl-lg text-white font-semibold ${getStatusColor(
+                leave.from,
+                leave.to
+              )}`}
             >
               {leave.status}
             </div>
@@ -23,12 +48,16 @@ const EmployeeLeave: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:space-x-6 w-full">
               <div className="text-gray-600">
                 <p className="font-normal text-sm">Date From</p>
-                <p className="font-semibold text-gray-900">{leave.dateFrom}</p>
+                <p className="font-semibold text-gray-900">
+                  {formatDate(leave.from)}
+                </p>
               </div>
 
               <div className="text-gray-600">
                 <p className="font-normal text-sm">Date To</p>
-                <p className="font-semibold text-gray-900">{leave.dateTo}</p>
+                <p className="font-semibold text-gray-900">
+                  {formatDate(leave.to)}
+                </p>
               </div>
 
               <div className="text-gray-600">
@@ -43,7 +72,9 @@ const EmployeeLeave: React.FC = () => {
 
               <div className="text-gray-600">
                 <p className="font-normal text-sm">Delegated To</p>
-                <p className="font-semibold text-gray-900">{leave.delegatedTo}</p>
+                <p className="font-semibold text-gray-900">
+                  {leave.delegatedTo}
+                </p>
               </div>
             </div>
           </div>

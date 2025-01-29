@@ -10,7 +10,7 @@ type LeaveTypeFormProps = {
 };
 
 const LeaveTypeForm: React.FC<LeaveTypeFormProps> = ({
-  initialData = { type: "", credit: 0 },
+  initialData = { leaveType: "", credit: 0 },
   onSubmit,
   onClose,
   title,
@@ -49,8 +49,8 @@ const LeaveTypeForm: React.FC<LeaveTypeFormProps> = ({
             </label>
             <input
               type="text"
-              name="type"
-              value={formData.type}
+              name="leaveType"
+              value={formData.leaveType}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required

@@ -11,34 +11,37 @@ import { LuArrowDownUp } from "react-icons/lu";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import TitleForm from "./TitleForm";
 import { Title, NewTitle } from "../../types/TitleType";
+import { useAllTitles } from "../../services/queries";
+import { useSubmitTitle, useUpdateTitle } from "../../services/mutation";
 
-// Dummy data
-const dummyData: Title[] = [
-  { id: "1", name: "Manager", isMilitary: false },
-  { id: "2", name: "Captain", isMilitary: true },
-  { id: "3", name: "Engineer", isMilitary: false },
-];
+
 
 // Column helper
 const columnHelper = createColumnHelper<Title>();
 
 const TitleTable: React.FC = () => {
-  const [data, setData] = useState<Title[]>(dummyData);
+  const fetchTitles = useAllTitles();
+  const [data, setData] = useState<Title[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<Title | NewTitle>({
-    name: "",
+    titleId: "",
+    titleName: "",
     isMilitary: false,
   });
   const [isEditing, setIsEditing] = useState(false);
-
+React.useEffect(() => {
+  if (fetchTitles.data) {
+    setData(fetchTitles.data);
+  }
+}, [fetchTitles.data]);
   // Define columns
   const columns = [
-    columnHelper.accessor("name", {
+    columnHelper.accessor("titleName", {
       header: "Title Name",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("id", {
+    columnHelper.accessor("titleId", {
       header: "Title ID",
       cell: (info) => info.getValue(),
     }),
@@ -58,7 +61,7 @@ const TitleTable: React.FC = () => {
             Edit
           </button>
           <button
-            onClick={() => handleDelete(row.original.id)}
+            onClick={() => handleDelete(row.original.titleId)}
             className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
           >
             Delete
@@ -79,19 +82,16 @@ const TitleTable: React.FC = () => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-
+  const submitForm = useSubmitTitle();
+  const updateForm = useUpdateTitle();
   // Handle form submission
   const handleFormSubmit = (data: NewTitle) => {
     if (isEditing) {
       // Update existing title
-      setData((prev) =>
-        prev.map((title) =>
-          title.id === (formData as Title).id ? { ...title, ...data } : title
-        )
-      );
+      updateForm.mutate({ id: (formData as Title).titleId, data: data});
     } else {
       // Add new title
-      setData((prev) => [...prev, { id: String(prev.length + 1), ...data }]);
+      submitForm.mutate(data);
     }
     setShowForm(false);
   };
@@ -105,7 +105,7 @@ const TitleTable: React.FC = () => {
 
   // Handle delete
   const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((title) => title.id !== id));
+    setData((prev) => prev.filter((title) => title.titleId !== id));
   };
 
   return (
@@ -115,7 +115,7 @@ const TitleTable: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-900">Titles</h1>
         <button
           onClick={() => {
-            setFormData({ name: "", isMilitary: false });
+            setFormData({ titleId: "", titleName: "", isMilitary: false });
             setIsEditing(false);
             setShowForm(true);
           }}

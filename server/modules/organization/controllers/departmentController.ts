@@ -47,8 +47,8 @@ const getAllDepartments = async (
 
 const updateDepartment = async (req: Request, res: Response): Promise<void> => {
   try {
-    const department = await DepartmentModel.findByIdAndUpdate(
-      req.params.id,
+    const department = await DepartmentModel.findOneAndUpdate(
+      {departmentId:req.params.id},
       { $set: req.body },
       { new: true },
     );

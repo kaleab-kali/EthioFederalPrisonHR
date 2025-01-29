@@ -9,6 +9,7 @@ import {
 import { IAppraisalCandidates } from '../types/Appraisal';
 import { LuArrowDownUp } from 'react-icons/lu';
 import { useAllAppraisals } from '../services/queries';
+import { useCreateAppraisal } from '../services/mutation';
 
 const data: IAppraisalCandidates[]= [
   {
@@ -100,6 +101,7 @@ const columns = [
 
 
 const AppraisalCandidates = () => {
+  const createAppreisalCandidate = useCreateAppraisal();
   const [data, setData] = useState<IAppraisalCandidates[]>([]);
     const dataQuery = useAllAppraisals();
     console.log("Data" + dataQuery.data);
@@ -117,6 +119,10 @@ const AppraisalCandidates = () => {
          setData(mappedData);
        }
      }, [dataQuery.data]);
+     const handelCandidate = () => {
+      const newData = '';
+      createAppreisalCandidate.mutate(newData); 
+     }
   const pdfFunction = () => {
     alert('pdf')
 
@@ -139,6 +145,9 @@ const AppraisalCandidates = () => {
   return (
    <>
       <h2 className='font-medium text-gray-600 font-roboto px-0 py-3'>List of Appraisal Candidates</h2>
+      <div className="flex justify-start gap-2 mb-3">
+        <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={handelCandidate}>Check</button>
+      </div>
       <div className="flex justify-end gap-2 mb-3">
         <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={pdfFunction}>PDF</button>
         <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={excelFunction}>EXCEL</button>

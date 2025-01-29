@@ -108,7 +108,7 @@ const getLeaveInfoByEmployeeId = async (
     const employeeLeaveInfos = await LeaveInfoModel.find({
       employeeId: employeeId,
     });
-
+    console.log(employeeLeaveInfos, employeeId);
     if (!employeeLeaveInfos || employeeLeaveInfos.length === 0) {
       res.status(404).json({ message: 'Leave info not found' });
       return;

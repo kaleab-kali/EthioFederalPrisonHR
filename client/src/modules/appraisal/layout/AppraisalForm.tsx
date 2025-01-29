@@ -1,183 +1,188 @@
-import React, { useState } from 'react';
-import { FaClipboardList } from 'react-icons/fa';
-import 'tailwindcss/tailwind.css';
-import { useSubmitRegistration } from '../services/mutation';
+import React, { useState } from "react";
+import { FaClipboardList } from "react-icons/fa";
+import "tailwindcss/tailwind.css";
+import { useSubmitRegistration } from "../services/mutation";
 
 interface IAppraisalForm {
-  employeeID: string;
-  score70: number;
-  score30: number;
+  employeeId: string;
   currentLevel: string;
-  appraisalLevel: string;
-  position: string;
-  department: string;
-  disciplinaryDedication: number;
-  remark: string;
+  nextLevel: string;
+  scores: {
+    education: number;
+    service: number;
+    attitude: number;
+    behaviour: number;
+    workEfficiency: number;
+    disciplinary: number;
+  };
+  scoreOutOf30: number;
+  scoreOutOf70: number;
+  totalScore: number;
 }
+
+const MAX_SCORE = 20;
 
 const AppraisalForm: React.FC = () => {
   const createAppraisalForm = useSubmitRegistration();
   const [form, setForm] = useState<IAppraisalForm>({
-    employeeID: '',
-    score70: 0,
-    score30: 0,
-    currentLevel: '',
-    appraisalLevel: '',
-    position: '',
-    department: '',
-    disciplinaryDedication: 0,
-    remark: ''
+    employeeId: "",
+    currentLevel: "",
+    nextLevel: "",
+    scores: {
+      education: 0,
+      service: 0,
+      attitude: 0,
+      behaviour: 0,
+      workEfficiency: 0,
+      disciplinary: 0,
+    },
+    scoreOutOf30: 0,
+    scoreOutOf70: 0,
+    totalScore: 0,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    if (name in form.scores) {
+      const numericValue = Math.min(Number(value), MAX_SCORE);
+      const updatedScores = { ...form.scores, [name]: numericValue };
+      const maxScore = 100; // Maximum sum of positive attributes before scaling
+      const scaledMax = 30; // Desired scale
+
+      const rawScore =
+        updatedScores.education +
+        updatedScores.service +
+        updatedScores.attitude +
+        updatedScores.behaviour +
+        updatedScores.workEfficiency -
+        updatedScores.disciplinary;
+
+      // Normalize to be out of 30
+      const scoreOutOf30 = (rawScore / maxScore) * scaledMax;
+      // const scoreOutOf30 =
+      //   updatedScores.education +
+      //   updatedScores.service +
+      //   updatedScores.attitude +
+      //   updatedScores.behaviour +
+      //   updatedScores.workEfficiency -
+      //   updatedScores.disciplinary;
+      setForm({
+        ...form,
+        scores: updatedScores,
+        scoreOutOf30,
+        totalScore: scoreOutOf30 + form.scoreOutOf70,
+      });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+  };
+
+  const handleScoreOutOf70Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const scoreOutOf70 = Number(e.target.value);
+    setForm({
+      ...form,
+      scoreOutOf70,
+      totalScore: form.scoreOutOf30 + scoreOutOf70,
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form);
     createAppraisalForm.mutate(form);
   };
 
-  const positions = ['Position 1', 'Position 2', 'Position 3'];
-  const departments = ['Department A', 'Department B', 'Department C'];
-
   return (
-    <div className="flex flex-row justify-between p-8 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
-      <div className="w-1/2 pr-4">
-        <h2 className="text-2xl font-bold mb-4">Appraisal Form</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="employeeID">Employee ID</label>
-            <input 
-              type="text" 
-              name="employeeID" 
-              value={form.employeeID} 
-              onChange={handleChange} 
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    <div className="flex flex-col md:flex-row justify-between p-8 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
+      <div className="md:w-2/3 pr-4">
+        <h2 className="text-2xl font-bold mb-4 text-gray-700">
+          Appraisal Form
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              name="employeeId"
+              value={form.employeeId}
+              onChange={handleChange}
               required
-              placeholder="Enter Employee ID"
+              className="input-field"
+              placeholder="Employee ID"
+            />
+            <input
+              type="text"
+              name="currentLevel"
+              value={form.currentLevel}
+              onChange={handleChange}
+              required
+              className="input-field"
+              placeholder="Current Level"
+            />
+            <input
+              type="text"
+              name="nextLevel"
+              value={form.nextLevel}
+              onChange={handleChange}
+              required
+              className="input-field"
+              placeholder="Next Level"
             />
           </div>
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="currentLevel">Current Level</label>
-              <input 
-                type="text" 
-                name="currentLevel" 
-                value={form.currentLevel} 
-                onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-                placeholder="Enter Current Level"
-              />
-            </div>
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="appraisalLevel">Appraisal Level</label>
-              <input 
-                type="text" 
-                name="appraisalLevel" 
-                value={form.appraisalLevel} 
-                onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-                placeholder="Enter Appraisal Level"
-              />
-            </div>
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="position">Position</label>
-              <select
-                name="position" 
-                value={form.position} 
-                onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-              >
-                <option value="" disabled>Select position</option>
-                {positions.map((position) => (
-                  <option key={position} value={position}>{position}</option>
-                ))}
-              </select>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {Object.keys(form.scores).map((score) => (
+              <div key={score}>
+                <label className="block text-sm font-medium text-gray-700 capitalize">
+                  {score} out of 20
+                </label>
+                <input
+                  type="number"
+                  name={score}
+                  value={form.scores[score as keyof IAppraisalForm["scores"]]}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                  max={MAX_SCORE}
+                />
+              </div>
+            ))}
           </div>
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="department">Department</label>
-              <select
-                name="department" 
-                value={form.department} 
-                onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-              >
-                <option value="" disabled>Select department</option>
-                {departments.map((department) => (
-                  <option key={department} value={department}>{department}</option>
-                ))}
-              </select>
-            </div>
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="score70">Score out of 70</label>
-              <input 
-                type="number" 
-                name="score70" 
-                value={form.score70} 
-                onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-                placeholder="Enter Score out of 70"
-              />
-            </div>
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="score30">Score out of 30</label>
-              <input 
-                type="number" 
-                name="score30" 
-                value={form.score30} 
-                onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-                placeholder="Enter Score out of 30"
-              />
-            </div>
-          </div>
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <div className="col-span-3">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="disciplinaryDedication">Disciplinary Dedication</label>
-              <input 
-                type="number" 
-                name="disciplinaryDedication" 
-                value={form.disciplinaryDedication} 
-                onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-                placeholder="Enter Disciplinary Dedication"
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="remark">Remark</label>
-            <textarea 
-              name="remark" 
-              value={form.remark} 
-              onChange={handleChange} 
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Score out of 70
+            </label>
+            <input
+              type="number"
+              name="scoreOutOf70"
+              value={form.scoreOutOf70}
+              onChange={handleScoreOutOf70Change}
+              className="input-field"
+              min={0}
+              max={70}
               required
-              placeholder="Enter Remark"
-            ></textarea>
+            />
+            {form.scoreOutOf70 > 70 && (
+              <p className="text-red-500 text-sm mt-1">
+                Score cannot be more than 70.
+              </p>
+            )}
           </div>
-          <div className="flex justify-start">
-            <button 
-              type="submit" 
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Submit
-            </button>
+
+          <div className="text-lg font-bold text-gray-700">
+            Score out of 30: {form.scoreOutOf30}
           </div>
+          <div className="text-lg font-bold text-gray-700">
+            Total Score: {form.totalScore}
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            Submit
+          </button>
         </form>
       </div>
-      <div className="w-1/2 flex items-center justify-center">
+      <div className="hidden md:flex md:w-1/3 items-center justify-center">
         <FaClipboardList size="80%" className="text-gray-300" />
       </div>
     </div>
