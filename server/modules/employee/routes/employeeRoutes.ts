@@ -10,6 +10,8 @@ import {
   getEmployeeById,
   updateEmployee,
   requestTransfer,
+  getAllEmpsWithPendingTransferStatus,
+  getAllEmpsWithAcceptedTransferStatus,
 } from '../controllers/employeeController';
 import  { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord, addHealthRecords} from "../controllers/healthController";
 import  {authenticate}   from '../middlewares/authunticate';
@@ -26,7 +28,8 @@ router.post('/transfer/request', requestTransfer);
 router.post('/transfer/handle', handleTransfer);
 router.post("/evaluation", createEvaluation);
 router.get("/evaluation/:employeeId", getEvaluationById);
-
+router.get("/pendingTransfer", getAllEmpsWithPendingTransferStatus),
+router.get("/acceptedTransfer", getAllEmpsWithAcceptedTransferStatus),
 
 router.post("/:id/family", async (req, res) => {
   try {
