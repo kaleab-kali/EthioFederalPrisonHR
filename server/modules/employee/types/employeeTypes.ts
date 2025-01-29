@@ -99,8 +99,8 @@ export interface IEmployee {
   employmentDate: Date;
   complaints: mongoose.Schema.Types.ObjectId[];
   evaluation: Evaluation[];
-  healthRecords: HealthRecord[];
-  familyRecords: FamilyRecord[];
+  familyRecords?: FamilyRecord[];
+  healthRecords?: HealthRecord[];
   transferStatus?: string;
   rejectionReason?: string;
   leaveBalances?: YearlyLeaveBalances[];
@@ -146,19 +146,35 @@ export interface Evaluation {
   to: Date;
 }
 // Family Schema
-export interface FamilyRecord {
-  id: string;
-  personName: string;
-  type: 'Spouse' | 'Kid';
-  age: number;
-  isEligible?: boolean;
-  records: { date: string; healthIssue: string; cost: number }[];
-  marriageStatus: 'married' | 'divorced' | 'widowed';
+export interface SpouseAddress {
+  region: string;
+  subcity: string;
+  woreda: string;
 }
 
-// Health Record Schema
+export interface FamilyRecord {
+  eventType: 'Marriage' | 'Child' | 'Divorce' | 'Widowed';
+  spouseName?: string;
+  spousePhoneNumber?: string;
+  spouseEthnicity?: string;
+  spouseAddress?: SpouseAddress;
+  spouseDateOfBirth?: string;
+  childName?: string;
+  childDateOfBirth?: string;
+  relation?: string;
+  Age?: number;
+  divorceDate?: string;
+  widowedDate?: string;
+  iseligible?: boolean;
+}
+
 export interface HealthRecord {
-  records: { date: string; healthIssue: string; cost: number }[];
+  beneficiary: 'Employee' | 'Spouse' | 'Child';
+  childName?: string;
+  costOfCoverage: number;
+  hospitalName: string;
+  coverageStartDate: string;
+  coverageEndDate: string;
 }
 // Enum for roles
 export enum Roles {
