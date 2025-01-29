@@ -340,6 +340,6 @@ export {
   addEmployee,
   loginUser,getAllEmpsWithAcceptedTransferStatus,getAllEmpsWithPendingTransferStatus,
   assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
-  
+  addWorkExperience
   
 };
