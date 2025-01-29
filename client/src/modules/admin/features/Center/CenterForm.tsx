@@ -10,7 +10,7 @@ type CenterFormProps = {
 };
 
 const CenterForm: React.FC<CenterFormProps> = ({
-  initialData = { name: "", location: "", head: "", isHeadquarters: false },
+  initialData = { centerId: "", name: "", location: "", head: "", isHeadquarters: false },
   onSubmit,
   onClose,
   title,

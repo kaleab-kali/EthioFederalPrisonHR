@@ -10,7 +10,7 @@ const api = axios.create({
 
 // Fetch Leave data
 export const fetchLeaveData = async (id: string) => {
-  const { data } = await api.get(`/api/leaveinfo/${id}`);
+  const { data } = await api.get(`/api/leaveinfo/employee/${id}`);
   return data;
 };
 

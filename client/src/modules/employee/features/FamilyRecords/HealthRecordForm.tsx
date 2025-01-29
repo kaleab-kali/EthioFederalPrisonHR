@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaUser, FaHeart, FaChild, FaHospital } from 'react-icons/fa';
+import { useSubmitHealth } from '../../services/mutation';
 
 interface HealthRecord {
   beneficiary: 'Employee' | 'Spouse' | 'Child'; 
@@ -18,7 +19,9 @@ interface IEmployee {
 }
 
 const HealthRecordForm: React.FC = () => {
+  
   const [employeeId, setEmployeeId] = useState('');
+  const createHealthRecord = useSubmitHealth();
   const [beneficiary, setBeneficiary] = useState<'Employee' | 'Spouse' | 'Child'>('Employee');
   const [childName, setChildName] = useState('');
   const [costOfCoverage, setCostOfCoverage] = useState<number>(0);
@@ -54,6 +57,8 @@ const HealthRecordForm: React.FC = () => {
       employeeId,
       healthRecords: [...(prev.healthRecords || []), newHealthRecord],
     }));
+    createHealthRecord.mutate({ id: employeeId, data: newHealthRecord });
+
 
     // Reset the form fields
     setEmployeeId('');

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaUser, FaHeart, FaChild, FaTimesCircle, FaUserSlash } from 'react-icons/fa';
+import { useSubmitFamily } from '../../services/mutation';
 
 interface FamilyRecord {
   eventType: 'Marriage' | 'Child' | 'Divorce' | 'Widowed'; 
@@ -25,6 +26,7 @@ interface IEmployee {
 
 const FamilyRecordForm: React.FC = () => {
   const [employeeId, setEmployeeId] = useState('');
+  const createFamilyRecord = useSubmitFamily()
   const [eventType, setEventType] = useState<'Marriage' | 'Child' | 'Divorce' | 'Widowed'>('Marriage');
   const [spouseName, setSpouseName] = useState('');
   const [spousePhoneNumber, setSpousePhoneNumber] = useState('');
@@ -64,6 +66,7 @@ const FamilyRecordForm: React.FC = () => {
       employeeId,
       familyRecords: [...(prev.familyRecords || []), newFamilyRecord],
     }));
+    createFamilyRecord.mutate({id:employeeId, data:newFamilyRecord})
 
     // Reset the form fields
     setEmployeeId('');

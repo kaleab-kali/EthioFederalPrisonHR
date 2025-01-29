@@ -1,7 +1,7 @@
 export type LeaveType = {
-    id: string;
-    type: string;
-    credit: number;
-  };
+  id: string;
+  leaveType: string;
+  credit: number;
+};
   
   export type NewLeaveType = Omit<LeaveType, "id">;

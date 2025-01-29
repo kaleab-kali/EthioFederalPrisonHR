@@ -19,9 +19,25 @@ export const getAllAppraisals = async () => {
   console.log(JSON.stringify(data));
   return data;
 };
+
+export const fetchAppraisalHistoryData = async (id: string) => {
+  const { data } = await api.get(`/api/appraisalHistory/employee/${id}`);
+  return data;
+};
+
+export const getAllAppraisalHistories = async () => {
+  const { data } = await api.get(`/api/appraisalHistory/`);
+  console.log(JSON.stringify(data));
+  return data;
+};
+export const createAppraisal = async (formData: any) => {
+  const { data } = await api.post("/api/appraisal/");
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
 // Submit registration form
 export const submitRegistrationForm = async (formData: any) => {
-  const { data } = await api.post("/api/appraisal/", formData);
+  const { data } = await api.post("/api/appraisalHistory/", formData);
   console.log(process.env.REACT_APP_API_URL + "heheheheh");
   return data;
 };

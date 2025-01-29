@@ -2,6 +2,7 @@ import Employee from "../models/employeeModel";
 import { FamilyRecord } from "../types/employeeTypes";
 
 const addFamilyRecord = async (employeeId: string, record: FamilyRecord) => {
+  console.log(`adding family record for employee ${employeeId}`, record);
   const employee = await Employee.findOne({empId: employeeId});
   if (!employee) throw new Error("Employee not found");
 

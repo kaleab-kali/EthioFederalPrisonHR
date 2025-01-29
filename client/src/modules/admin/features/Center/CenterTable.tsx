@@ -11,36 +11,39 @@ import { LuArrowDownUp } from "react-icons/lu";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import CenterForm from "./CenterForm";
 import { Center, NewCenter } from "../../types/CenterTypes";
+import { useAllCenters } from "../../services/queries";
+import { useSubmitCenter, useUpdateCenter } from "../../services/mutation";
 
-// Dummy data
-const dummyData: Center[] = [
-  { id: "1", name: "Main Office", location: "New York", head: "John Doe", isHeadquarters: true },
-  { id: "2", name: "Branch 1", location: "Los Angeles", head: "Jane Smith", isHeadquarters: false },
-  { id: "3", name: "Branch 2", location: "Chicago", head: "Mike Johnson", isHeadquarters: false },
-];
+
 
 // Column helper
 const columnHelper = createColumnHelper<Center>();
 
 const CenterTable: React.FC = () => {
-  const [data, setData] = useState<Center[]>(dummyData);
+  const fetchCenters = useAllCenters();
+  const [data, setData] = useState<Center[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<Center | NewCenter>({
+    centerId: "",
     name: "",
     location: "",
     head: "",
     isHeadquarters: false,
   });
   const [isEditing, setIsEditing] = useState(false);
-
+  React.useEffect(() => {
+    if (fetchCenters.data) {
+      setData(fetchCenters.data);
+    }
+  }, [fetchCenters.data]);
   // Define columns
   const columns = [
     columnHelper.accessor("name", {
       header: "Center Name",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("id", {
+    columnHelper.accessor("centerId", {
       header: "Center ID",
       cell: (info) => info.getValue(),
     }),
@@ -68,7 +71,7 @@ const CenterTable: React.FC = () => {
             Edit
           </button>
           <button
-            onClick={() => handleDelete(row.original.id)}
+            onClick={() => handleDelete(row.original.centerId)}
             className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
           >
             Delete
@@ -91,17 +94,28 @@ const CenterTable: React.FC = () => {
   });
 
   // Handle form submission
+  const submitForm = useSubmitCenter();
+  const updateForm = useUpdateCenter();
+
+  // Handle form submission
   const handleFormSubmit = (data: NewCenter) => {
     if (isEditing) {
-      // Update existing center
+      // Update existing department
       setData((prev) =>
         prev.map((center) =>
-          center.id === (formData as Center).id ? { ...center, ...data } : center
+          center.centerId === (formData as Center).centerId
+            ? { ...center, ...data }
+            : center
         )
       );
+      updateForm.mutate({
+        id: (formData as Center).centerId,
+        data: data,
+      });
     } else {
-      // Add new center
+      // Add new department
       setData((prev) => [...prev, { id: String(prev.length + 1), ...data }]);
+      submitForm.mutate(data);
     }
     setShowForm(false);
   };
@@ -115,7 +129,7 @@ const CenterTable: React.FC = () => {
 
   // Handle delete
   const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((center) => center.id !== id));
+    setData((prev) => prev.filter((center) => center.centerId !== id));
   };
 
   return (
@@ -125,7 +139,12 @@ const CenterTable: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-900">Centers</h1>
         <button
           onClick={() => {
-            setFormData({ name: "", location: "", head: "", isHeadquarters: false });
+            setFormData({
+              centerId: "", name: "",
+              location: "",
+              head: "",
+              isHeadquarters: false,
+            });
             setIsEditing(false);
             setShowForm(true);
           }}

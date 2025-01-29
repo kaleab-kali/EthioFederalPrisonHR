@@ -11,30 +11,31 @@ import { LuArrowDownUp } from "react-icons/lu";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import LeaveTypeForm from "./LeaveTypeForm";
 import { LeaveType, NewLeaveType } from "../../types/LeaveType";
+import { useAllLeaves } from "../../services/queries";
+import { useSubmitLeave, useUpdateLeave } from "../../services/mutation";
 
-// Dummy data
-const dummyData: LeaveType[] = [
-  { id: "1", type: "Annual Leave", credit: 20 },
-  { id: "2", type: "Sick Leave", credit: 10 },
-  { id: "3", type: "Casual Leave", credit: 15 },
-];
 
 // Column helper
 const columnHelper = createColumnHelper<LeaveType>();
 
 const LeaveTypeTable: React.FC = () => {
-  const [data, setData] = useState<LeaveType[]>(dummyData);
+  const fetchLeaveType = useAllLeaves();
+  const [data, setData] = useState<LeaveType[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<LeaveType | NewLeaveType>({
-    type: "",
+    leaveType: "",
     credit: 0,
   });
   const [isEditing, setIsEditing] = useState(false);
-
+  React.useEffect(() => {
+    if (fetchLeaveType.data) {
+      setData(fetchLeaveType.data);
+    }
+  }, [fetchLeaveType.data]);
   // Define columns
   const columns = [
-    columnHelper.accessor("type", {
+    columnHelper.accessor("leaveType", {
       header: "Leave Type",
       cell: (info) => info.getValue(),
     }),
@@ -77,17 +78,20 @@ const LeaveTypeTable: React.FC = () => {
   });
 
   // Handle form submission
+  const submitForm = useSubmitLeave();
+  const updateForm = useUpdateLeave();
+
+  // Handle form submission
+  
   const handleFormSubmit = (data: NewLeaveType) => {
     if (isEditing) {
-      // Update existing leave type
-      setData((prev) =>
-        prev.map((leaveType) =>
-          leaveType.id === (formData as LeaveType).id ? { ...leaveType, ...data } : leaveType
-        )
-      );
+      
+      updateForm.mutate({
+        id: (formData as LeaveType).id,
+        data: data,
+      });
     } else {
-      // Add new leave type
-      setData((prev) => [...prev, { id: String(prev.length + 1), ...data }]);
+      submitForm.mutate(data);
     }
     setShowForm(false);
   };
@@ -111,7 +115,7 @@ const LeaveTypeTable: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-900">Leave Types</h1>
         <button
           onClick={() => {
-            setFormData({ type: "", credit: 0 });
+            setFormData({ leaveType: "", credit: 0 });
             setIsEditing(false);
             setShowForm(true);
           }}

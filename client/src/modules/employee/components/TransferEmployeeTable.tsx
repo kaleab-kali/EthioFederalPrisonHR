@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAllEmployees } from "../services/queries";
+import { useAllCenters } from "../../admin/services/queries";
+import { useSubmitTransferRequest } from "../services/mutation";
 
 interface Employee {
   id: number;
@@ -13,27 +16,26 @@ interface Employee {
 const TransferEmployeeTable: React.FC = () => {
   const { t } = useTranslation("transfer");
   const [searchTerm, setSearchTerm] = useState("");
-  const [employees, setEmployees] = useState<Employee[]>([
-    {
-      id: 1,
-      avatar: "https://via.placeholder.com/50",
-      fullName: "John Doe",
-      position: "Developer",
-      department: "Engineering",
-      branch: "Addis Ababa",
-    },
-    {
-      id: 2,
-      avatar: "https://via.placeholder.com/50",
-      fullName: "Jane Smith",
-      position: "Designer",
-      department: "Design",
-      branch: "Mekelle",
-    },
-  ]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const employeesQuery = useAllEmployees();
+    console.log("employees" + employeesQuery.data);
+     useEffect(() => {
+       if (employeesQuery.data) {
+         const mappedData = employeesQuery.data.map((employee: any) => ({
+           id: employee.empId,
+           title: employee.title,
+           fullName: employee.firstName + ' ' + employee.lastName,
+           department: employee.department,
+           position: employee.position,
+           branch: employee.branch
+         }));
+         setEmployees(mappedData);
+       }
+     }, [employeesQuery.data]);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
+  const fetchCenters = useAllCenters()
   const [newBranch, setNewBranch] = useState("");
   const [reason, setReason] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,7 +56,7 @@ const TransferEmployeeTable: React.FC = () => {
     setSelectedEmployee(employee);
     setIsModalOpen(true);
   };
-
+  const createTransfer=useSubmitTransferRequest();
   const handleTransferConfirm = () => {
     if (selectedEmployee && newBranch) {
       setEmployees(
@@ -62,6 +64,12 @@ const TransferEmployeeTable: React.FC = () => {
           emp.id === selectedEmployee.id ? { ...emp, branch: newBranch } : emp
         )
       );
+      const data = {
+        employeeId: selectedEmployee.id,
+        centerName: newBranch,
+        reason: reason,
+      };
+      createTransfer.mutate(data);
       setIsConfirmOpen(false);
       setIsModalOpen(false);
       setSelectedEmployee(null);
@@ -132,9 +140,9 @@ const TransferEmployeeTable: React.FC = () => {
               className="w-full p-2 border rounded-md mb-4"
             >
               <option value="">{t("employee.selectBranch")}</option>
-              <option value="Addis Ababa">Addis Ababa</option>
-              <option value="Mekelle">Mekelle</option>
-              <option value="Hawassa">Hawassa</option>
+              {fetchCenters.data.map(fetchCenter => (
+                <option value={fetchCenter.name}>{fetchCenter.name}</option>)
+              )}
               {/* Add more branches */}
             </select>
             <label className="block mb-2">{t("employee.reason")}</label>

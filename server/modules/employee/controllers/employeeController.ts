@@ -205,7 +205,7 @@ const handleTransfer = async (req: Request, res: Response) => {
 
 const requestTransfer = async (req: Request, res: Response) => {
   const { employeeId, centerName } = req.body;
-
+  console.log(employeeId, centerName);
   try {
     const employee = await Employee.findOne({ empId: employeeId });
 
