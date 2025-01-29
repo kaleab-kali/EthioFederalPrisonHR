@@ -157,10 +157,12 @@ export interface Education {
 
 
 export interface WorkExperience {
-  id: string; 
+  _id: string; 
   companyName: string;
-  fromDate: Date;
-  toDate: Date;
+  position: string;
+  startDate: Date;
+  endDate: Date;
+  description : string;
 }
 
 export interface IEmployee {

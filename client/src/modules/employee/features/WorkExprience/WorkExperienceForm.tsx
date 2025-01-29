@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaBriefcase } from 'react-icons/fa';
+import { useSubmitWork } from '../../services/mutation';
 
 // Define the IEmployee interface
 interface IEmployee {
@@ -15,6 +16,7 @@ interface IEmployee {
 
 const WorkExperienceForm: React.FC = () => {
   const [employeeId, setEmployeeId] = useState('');
+  const createWorksExperience= useSubmitWork()
   const [companyName, setCompanyName] = useState('');
   const [position, setPosition] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -40,6 +42,10 @@ const WorkExperienceForm: React.FC = () => {
       employeeId,
       workExperience: [...prev.workExperience, newExperience],
     }));
+    createWorksExperience.mutate({
+      employeeId: employeeId,
+      workExperience: newExperience,
+    });
 
     // Reset the form fields
     setEmployeeId('');

@@ -4,9 +4,9 @@ import {    createCenter, getAllCenters, getCenterById, updateCenter, } from '..
 const router = Router();
 
 router.get('/', getAllCenters);
-router.get('/id', getCenterById);
+router.get('/:centerId', getCenterById);
 router.post('/', createCenter);
-router.put('/id', updateCenter);
+router.put('/:centerId', updateCenter);
 
 
 export default router;

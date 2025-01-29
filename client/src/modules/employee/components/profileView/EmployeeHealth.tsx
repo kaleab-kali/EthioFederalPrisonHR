@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useOutletContext } from "react-router-dom";
+
 interface HealthRecord {
   personName: string;
   role: 'Employee' | 'Spouse' | 'Kid';
@@ -52,6 +54,8 @@ const employeeData: IEmployee = {
 };
 
 const EmployeeHealth: React.FC = () => {
+    const employee = useOutletContext<IEmployee>();
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: number) => {
