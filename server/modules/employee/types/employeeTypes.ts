@@ -104,6 +104,7 @@ export interface IEmployee {
   transferStatus?: string;
   rejectionReason?: string;
   leaveBalances?: YearlyLeaveBalances[];
+  workExperience: WorkExperience[];
 }
 
 // Types for the Education schema
@@ -178,3 +179,12 @@ interface LeaveBalance {
   used: number;
   available: number;
 }
+
+export interface WorkExperience {
+  companyName: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+}
+

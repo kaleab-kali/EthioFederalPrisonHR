@@ -245,11 +245,36 @@ const getEvaluationById = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+const addWorkExperience = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { employeeId, workExperience } = req.body;
+
+    // Find the employee by ID
+    const employee = await Employee.findOne({empId: employeeId});
+    if (!employee) {
+      res.status(404).json({ message: 'Employee not found' });
+      return
+    }
+
+    // Add the work experience
+    employee.workExperience.push(workExperience);
+    await employee.save();
+
+    res.status(200).json({ message: 'Work experience added successfully', employee });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 export {
   getEmployees,
   addEmployee,
   loginUser,
-  assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
-  
+  assignCredentials, 
+  requestTransfer, 
+  handleTransfer, 
+  createEvaluation, 
+  getEvaluationById,
+  addWorkExperience  
   
 };

@@ -7,6 +7,7 @@ import {
   Evaluation,
   FamilyRecord,
   HealthRecord,
+  WorkExperience
 } from '../types/employeeTypes';
 
 export const educationSchema = new Schema<Education>({
@@ -47,6 +48,14 @@ const healthRecordSchema = new Schema<HealthRecord>({
       cost: { type: Number, required: true },
     },
   ],
+});
+
+const workExperienceSchema = new Schema<WorkExperience>({
+  companyName: { type: String, required: true },
+  position: { type: String, required: true },
+  startDate: { type: String, required: true },
+  endDate: { type: String, required: true },
+  description: { type: String, required: true },
 });
 
 const employeeSchema = new Schema<IEmployee>(
@@ -187,6 +196,7 @@ const employeeSchema = new Schema<IEmployee>(
     familyRecords: [familyRecordSchema],
     healthRecords: [healthRecordSchema],
     leaveBalances: [],
+    workExperience: [workExperienceSchema],
   },
   { timestamps: true },
 );

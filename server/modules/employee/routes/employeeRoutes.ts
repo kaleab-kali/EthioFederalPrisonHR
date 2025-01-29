@@ -8,6 +8,7 @@ import {
   handleTransfer,
   createEvaluation, getEvaluationById,
   requestTransfer,
+  addWorkExperience
 } from '../controllers/employeeController';
 import  { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord, addHealthRecords} from "../controllers/healthController";
 import  {authenticate}   from '../middlewares/authunticate';
@@ -77,5 +78,6 @@ router.put("/:employeeId/family/:familyRecordId/health-records", async (req, res
 });
 router.post('/transfer/request', requestTransfer);
 router.post('/transfer/handle', handleTransfer);
+router.post('/work-experience', addWorkExperience);
 
 export default router;
