@@ -14,6 +14,11 @@ export const fetchEmployeeData = async (id: string) => {
   return data;
 };
 
+export const fetchDocumentData = async (id: string) => {
+  const { data } = await api.get(`/api/documents/${id}`);
+  return data;
+};
+
 export const getAllEmployees = async () => {
   const { data } = await api.get(`/api/employees`);
   console.log(JSON.stringify(data));
@@ -25,12 +30,27 @@ export const submitRegistrationForm = async (formData: any) => {
   console.log(process.env.REACT_APP_API_URL + "heheheheh");
   return data;
 };
+export const submitDocumentForm = async (formData: FormData) => {
+    formData.forEach((value, key) => console.log(key, value));
+
+  const { data } = await api.post(`/api/documents/`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+  return data;
+};
 export const submitFamilyForm = async (id: string, updatedData: any) => {
-  const { data } = await api.post(`/api/employees/${id}/family`, updatedData);
+  const sendData = { employeeId: id, familyRecord: updatedData };
+  const { data } = await api.post(`/api/employees/addFamilyRecord`, sendData);
   return data;
 };
 export const submitHealthForm = async (id: string, updatedData: any) => {
-  const { data } = await api.post(`/api/employees/${id}/health`, updatedData);
+  const sendData = { employeeId: id, healthRecord: updatedData };
+
+  const { data } = await api.post(`/api/employees/addHealthRecord`, sendData);
+  return data;
+};
+
+export const submitWorkForm = async (formData: any) => {
+  const { data } = await api.post("/api/employees/work-experience/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
   return data;
 };
 

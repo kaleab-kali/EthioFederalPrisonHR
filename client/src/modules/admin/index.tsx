@@ -9,6 +9,7 @@ import PositionTable from "./features/Position/PositionTable";
 import LeaveTypeTable from "./features/LeaveType/LeaveTypeTable";
 import TitleTable from "./features/Title/TitleTable";
 import EthiopianCalendar from "./components/EthiopianCalender";
+import SalaryLimitTable from "./features/SalaryLimit/SalaryLimitTable";
 
 const Admin = () => {
   return (
@@ -21,6 +22,7 @@ const Admin = () => {
       <Route path="/leaveTypes" element={<LeaveTypeTable />} />
       <Route path="/titles" element={<TitleTable/>} />
       <Route path="/calender" element={<EthiopianCalendar/>} />
+      <Route path="/salaryLimit" element={<SalaryLimitTable/>} />
 
       {/* <SignIn/> */}
       {/* <AdminComponent /> */}

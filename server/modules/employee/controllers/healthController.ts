@@ -1,90 +1,102 @@
+import { Request, Response } from 'express';
 import Employee from "../models/employeeModel";
 import { FamilyRecord } from "../types/employeeTypes";
 
-const addFamilyRecord = async (employeeId: string, record: FamilyRecord) => {
-  console.log(`adding family record for employee ${employeeId}`, record);
-  const employee = await Employee.findOne({empId: employeeId});
-  if (!employee) throw new Error("Employee not found");
+const addFamilyRecord = async (req: Request, res: Response): Promise<void> => {
+  const { employeeId, familyRecord } = req.body;
+  try {
+    // Calculate the child's age using the birth date
+    const currentYear = new Date().getFullYear();
+    const birthYear = new Date(familyRecord.spouseDateOfBirth).getFullYear();
+    const age = currentYear - birthYear;
+    console.log("Age", age);
+    // Assign the calculated age to the family record
+    familyRecord.Age = age;
 
+    // Determine eligibility
+    if (
+      (familyRecord.eventType === 'Child' && age >= 18) ||
+      (familyRecord.eventType === 'Spouse' && ['Divorce', 'Widowed'].includes(familyRecord.eventType))
+    ) {
+      familyRecord.iseligible = false;
+    } else {
+      familyRecord.iseligible = true;
+    }
 
-  if (record.type === "Kid" && record.age > 18) {
-    record.isEligible = false;
-  } else if (record.type === "Spouse" && record.marriageStatus === "divorced") {
-    record.isEligible = false;
-  } else {
-    record.isEligible = true;
+    // Update or create the employee document and add the family record
+    const employee = await Employee.findOneAndUpdate(
+      { empId: employeeId },
+      { $push: { familyRecords: familyRecord } },
+      { new: true, upsert: true }
+    );
+
+    res.status(200).json(employee);
+  } catch (error) {
+    console.error(error); // Optional: log the error for debugging purposes
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  employee.familyRecords.push(record);
-  await employee.save();
-  return employee;
 };
 
-const addHealthRecord = async (employeeId: string, record: { date: string; healthIssue: string; cost: number }) => {
-  const employee = await Employee.findOne({empId: employeeId});
-  if (!employee) throw new Error("Employee not found");
-
-  employee.healthRecords.push({ records: [record] });
-  await employee.save();
-  return employee;
-};
-
-const updateFamilyRecord = async (employeeId: string, recordId: string, updates: Partial<FamilyRecord>) => {
-  const employee = await Employee.findOne({empId: employeeId});
-  if (!employee) throw new Error("Employee not found");
-
-  const record = employee.familyRecords.find(record => record.id === recordId);
-  console.log(record)
-  if (!record) throw new Error("Family record not found");
-
-  Object.assign(record, updates);
-  if (record.type === "Kid" && record.age > 18) {
-    record.isEligible = false;
-  } else if (record.type === "Spouse" && record.marriageStatus === "divorced") {
-    record.isEligible = false;
-  } else {
-    record.isEligible = true;
-  }
-  await employee.save();
-  return employee;
-};
-
-const deleteFamilyRecord = async (employeeId: string, recordId: string) => {
-  const employee = await Employee.findOne({empId: employeeId});
-  if (!employee) throw new Error("Employee not found");
-
-  employee.familyRecords = employee.familyRecords.filter(record => record.id !== recordId);
-  await employee.save();
-  return employee;
-};
-
-const addHealthRecords = async (
-    employeeId: string,
-    familyRecordId: string,
-    newRecord: { date: string; healthIssue: string; cost: number } | { date: string; healthIssue: string; cost: number }[]
-  ) => {
+const addHealthRecord = async (req: Request, res: Response): Promise<void> => {
+  const { employeeId, healthRecord } = req.body;
+  try {
     const employee = await Employee.findOne({ empId: employeeId });
-    if (!employee) throw new Error("Employee not found");
-  
-    // Locate the family record
-    const familyRecord = employee.familyRecords.find(record => record.id === familyRecordId);
-    if (!familyRecord) throw new Error("Family record not found");
-  
 
-    const recordsToAdd = Array.isArray(newRecord) ? newRecord : [newRecord];
-  
+    if (!employee) {
+      res.status(404).json({ message: 'Employee not found' });
+      return;
+    }
 
-    recordsToAdd.forEach(record => {
-      if (!record.date || !record.healthIssue || typeof record.cost !== 'number') {
-        throw new Error("Invalid health record structure");
-      }
-    });
-  
-   
-    familyRecord.records.push(...recordsToAdd);
-  
-    await employee.save(); 
-    return familyRecord;
-  };
+    // Check eligibility
+    const familyRecords = employee.familyRecords ?? [];
+    if (
+      healthRecord.beneficiary === 'Spouse' && !familyRecords.some(
+        (record) => record.eventType === 'Marriage' && record.iseligible
+      ) ||
+      healthRecord.beneficiary === 'Child' && !familyRecords.some(
+        (record) => record.eventType === 'Child' && record.iseligible && record.childName === healthRecord.childName
+      )
+    ) {
+      res.status(400).json({ message: 'Beneficiary is not eligible' });
+      return;
+    }
 
-  export{addFamilyRecord, addHealthRecord, updateFamilyRecord, deleteFamilyRecord, addHealthRecords}
+    employee.healthRecords = employee.healthRecords ?? [];
+    employee.healthRecords.push(healthRecord);
+    await employee.save();
+    res.status(200).json(employee);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const deleteFamilyRecord = async (req: Request, res: Response): Promise<void> => {
+  const { employeeId, recordId } = req.params;
+  try {
+    const employee = await Employee.findOneAndUpdate(
+      { empId: employeeId },
+      { $pull: { familyRecords: { _id: recordId } } },
+      { new: true }
+    );
+    res.status(200).json(employee);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const updateFamilyRecord = async (req: Request, res: Response): Promise<void> => {
+  const { employeeId, recordId } = req.params;
+  const updatedRecord = req.body;
+  try {
+    const employee = await Employee.findOneAndUpdate(
+      { empId: employeeId, 'familyRecords._id': recordId },
+      { $set: { 'familyRecords.$': updatedRecord } },
+      { new: true }
+    );
+    res.status(200).json(employee);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord };

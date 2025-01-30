@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useLoading } from "../../../common/components/context/LoadingContext";
-import { submitFamilyForm, submitHealthForm, submitRegistrationForm, submitTransferHandle, submitTransferRequestForm, updateEmployeeData } from "./api";
+import { submitDocumentForm, submitFamilyForm, submitHealthForm, submitRegistrationForm, submitTransferHandle, submitTransferRequestForm, submitWorkForm, updateEmployeeData } from "./api";
 
 // Mutation for creating an employee
 export function useSubmitRegistration() {
@@ -26,6 +26,62 @@ export function useSubmitRegistration() {
     },
     onSuccess: () => {
       toast.success("Employee created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useSubmitWork() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitWorkForm(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to create work employee");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("Employee work created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useSubmitDocument() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: FormData) => {
+    data.forEach((value, key) => console.log(key, value));
+
+      setLoading(true);
+      return await submitDocumentForm(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to create work employee");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("Employee work created successfully");
       setLoading(false);
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },

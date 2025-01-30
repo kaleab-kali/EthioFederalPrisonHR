@@ -11,7 +11,7 @@ export const getAllDocuments = async (): Promise<any[]> => {
 };
 
 export const getDocumentById = async (id: string): Promise<any | null> => {
-  return await Document.findById(id);
+  return await Document.find({ docReceiverId : id });
 };
 
 export const updateDocumentById = async (
