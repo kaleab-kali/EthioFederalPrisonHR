@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchEmployeeData, getAllEmployees } from "./api";
+import { fetchDocumentData, fetchEmployeeData, getAllEmployees } from "./api";
 
 export const useFetchEmployee = (id: string) =>
   useQuery({
@@ -7,6 +7,13 @@ export const useFetchEmployee = (id: string) =>
     queryFn: () => fetchEmployeeData(id),
     enabled: !!id, // Ensures the query runs only when ID is available
   });
+
+  export const useFetchDocument = (id: string) =>
+    useQuery({
+      queryKey: ["document", id],
+      queryFn: () => fetchDocumentData(id),
+      enabled: !!id, // Ensures the query runs only when ID is available
+    });
 export function useAllEmployees() {
   return useQuery({
     queryKey: ["employees"],

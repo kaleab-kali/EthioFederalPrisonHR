@@ -7,9 +7,9 @@ const addFamilyRecord = async (req: Request, res: Response): Promise<void> => {
   try {
     // Calculate the child's age using the birth date
     const currentYear = new Date().getFullYear();
-    const birthYear = new Date(familyRecord.birthDate).getFullYear();
+    const birthYear = new Date(familyRecord.spouseDateOfBirth).getFullYear();
     const age = currentYear - birthYear;
-
+    console.log("Age", age);
     // Assign the calculated age to the family record
     familyRecord.Age = age;
 

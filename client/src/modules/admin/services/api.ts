@@ -123,4 +123,30 @@ export const updateLeaveData = async (id: string, updatedData: any) => {
   const { data } = await api.put(`/api/leavebalances/${id}`, updatedData);
   return data;
 };
+
+//salary limit
+
+export const fetchSalaryLimitData = async (id: string) => {
+  const { data } = await api.get(`/api/salaryLimit/${id}`);
+  return data;
+};
+
+export const getAllSalaryLimit = async () => {
+  const { data } = await api.get(`/api/salaryLimit/`);
+  console.log(JSON.stringify(data));
+  return data;
+};
+// Submit registration form
+export const submitSalaryLimitForm = async (formData: any) => {
+  const { data } = await api.post("/api/salaryLimit/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
+
+// Update Leave data
+export const updateSalaryLimitData = async (id: string, updatedData: any) => {
+  const { data } = await api.put(`/api/salaryLimit/${id}`, updatedData);
+  return data;
+};
+
 export default api;

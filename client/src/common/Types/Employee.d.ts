@@ -120,10 +120,23 @@ export interface Appraisal {
 }
 
 export interface DocumentRecord {
-  type: string;
-  dateIn?: Date;
-  dateOut?: Date;
-  header: string;
+  documentType: 'in' | 'out';
+  tag?: 'personal' | 'organizational';
+  documentNumber?: string;
+  empId: string;
+  from?: string;
+  to?: string;
+  shelf: string;
+  docReceiverId: string;
+  docSenderId: string;
+  date: Date;
+  title?: string;
+  topic?: string;
+  documentFile: string;
+  content?: string;
+  createdAt: Date;
+  updatedAt: Date;
+
 }
 
 export interface AttendanceRecord {

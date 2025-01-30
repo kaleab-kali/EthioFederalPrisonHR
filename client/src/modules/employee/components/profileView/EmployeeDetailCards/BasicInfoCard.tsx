@@ -68,7 +68,7 @@ const BasicInfoCard: React.FC<BasicInfoCardProps> = ({ employee, isEditable, onT
       <Field label="Position" value={employee.position} name="position" editable={isEditable} onChange={onChange} />
       <Field label="Department" value={employee.department} name="department" editable={isEditable} onChange={onChange} />
       <Field label="Salary" value={employee.salary} name="salary" editable={isEditable} onChange={onChange} />
-      <Field label="Employment Date" value={employee.employmentDate ? employee.employmentDate.toDateString() : 'N/A'} name="employmentDate" editable={false} onChange={onChange} />
+      <Field label="Employment Date" value={employee.employmentDate ? new Date(employee.employmentDate).toDateString()  : 'N/A'} name="employmentDate" editable={false} onChange={onChange} />
     </div>
     <div className="flex justify-end mt-4">
       <button

@@ -9,6 +9,7 @@ const ProfileMenu: React.FC = () => {
     { name: 'Attendance', path: 'attendance' },
     { name: 'Appraisal', path: 'appraisal' },
     { name: 'health', path: 'health' },
+    { name: 'Family', path: 'family' },
     { name: 'Material', path: 'material' },
     { name: 'Performance', path: 'performance' },
     { name: 'Documents', path: 'documents' },
