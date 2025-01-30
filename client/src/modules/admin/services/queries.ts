@@ -5,11 +5,13 @@ import {
   fetchLeaveData,
   fetchPositionData,
   fetchTitleData,
+  fetchSalaryLimitData,
   getAllCenters,
   getAllDepartments,
   getAllLeaves,
   getAllPositions,
   getAllTitles,
+  getAllSalaryLimit
 } from "./api";
 
 export const useFetchCenter = (id: string) =>
@@ -73,5 +75,20 @@ export function useAllLeaves() {
   return useQuery({
     queryKey: ["leaves"],
     queryFn: getAllLeaves,
+  });
+}
+
+//salary limit
+
+export const useFetchSalaryLimit = (id: string) =>
+  useQuery({
+    queryKey: ["salaryLimit", id],
+    queryFn: () => fetchSalaryLimitData(id),
+    enabled: !!id, // Ensures the query runs only when ID is available
+  });
+export function useAllSalaryLimits() {
+  return useQuery({
+    queryKey: ["salaryLimit"],
+    queryFn: getAllSalaryLimit,
   });
 }
