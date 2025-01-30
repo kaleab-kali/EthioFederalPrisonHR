@@ -170,6 +170,39 @@ const assignCredentials = async (req: Request, res: Response) => {
   }
 };
 
+const changeRole = async (req: Request, res: Response): Promise<void> => {
+  const { employeeId, newRole } = req.body;
+
+  try {
+    // Validate input
+    if (!employeeId || !newRole) {
+      res.status(400).json({ message: 'employeeId and newRole are required' });
+      return;
+    }
+
+    // Update the employee's role
+    const updatedEmployee = await Employee.findOneAndUpdate(
+      { empId: employeeId },
+      { role: newRole },
+      { new: true }
+    );
+
+    // Check if employee exists
+    if (!updatedEmployee) {
+      res.status(404).json({ message: 'Employee not found' });
+      return;
+    }
+
+    res.status(200).json({
+      message: 'Role updated successfully',
+      employee: updatedEmployee,
+    });
+  } catch (error) {
+    console.error(error); // Optional: log the error for debugging
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 const changePasswordController = async (
   req: Request,
   res: Response
@@ -367,8 +400,9 @@ const addWorkExperience = async (req: Request, res: Response): Promise<void> => 
 
     // Find the employee by ID
     const employee = await Employee.findOne({empId: employeeId});
+    console.log(employeeId)
     if (!employee) {
-      res.status(404).json({ message: 'Employee not found' });
+      res.status(404).json({ message: 'Employee not found1' });
       return
     }
 
@@ -389,6 +423,6 @@ export {
   addEmployee,
   loginUser,getAllEmpsWithAcceptedTransferStatus,getAllEmpsWithPendingTransferStatus,
   assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
-  addWorkExperience, changePasswordController
+  addWorkExperience, changePasswordController, changeRole 
   
 };

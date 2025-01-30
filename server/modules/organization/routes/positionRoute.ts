@@ -7,10 +7,13 @@ import {
   updatePosition,
 } from '../controllers/positionController';
 
+import { checkHqExclusiveRole } from '../../employee/middlewares/checkRoles';
+import  {authenticate}   from '../../employee/middlewares/authunticate';
+
 const router = express.Router();
 
 // Create a new position
-router.post('/', createPosition);
+router.post('/',  authenticate, checkHqExclusiveRole, createPosition);
 
 // Get all positions
 router.get('/', getAllPositions);
@@ -19,9 +22,9 @@ router.get('/', getAllPositions);
 router.get('/:id', getPositionById);
 
 // Update a position by ID
-router.put('/:id', updatePosition);
+router.put('/:id',authenticate,  checkHqExclusiveRole, updatePosition);
 
 // Delete a position by ID
-router.delete('/:id', deletePosition);
+router.delete('/:id', authenticate, checkHqExclusiveRole, deletePosition);
 
 export default router;

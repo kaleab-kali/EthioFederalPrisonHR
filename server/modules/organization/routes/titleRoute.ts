@@ -7,10 +7,13 @@ import {
   updateTitle,
 } from '../controllers/titleController';
 
+import { checkHqExclusiveRole } from '../../employee/middlewares/checkRoles';
+import  {authenticate}   from '../../employee/middlewares/authunticate';
+
 const router: Router = express.Router();
 
 // Create an Title registration
-router.post('/', createTitle);
+router.post('/', authenticate, checkHqExclusiveRole, createTitle);
 
 // Get all Titles
 router.get('/', getAllTitles);
@@ -19,9 +22,9 @@ router.get('/', getAllTitles);
 router.get('/:id', getTitleById);
 
 // Update an Title by ID
-router.put('/:id', updateTitle);
+router.put('/:id', authenticate, checkHqExclusiveRole, updateTitle);
 
 // Delete an Title by ID
-router.delete('/:id', deleteTitle);
+router.delete('/:id', authenticate, checkHqExclusiveRole, deleteTitle);
 
 export default router;

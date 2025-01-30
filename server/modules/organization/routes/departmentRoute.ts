@@ -7,10 +7,13 @@ import {
   updateDepartment,
 } from '../controllers/departmentController';
 
+import { checkHqExclusiveRole } from '../../employee/middlewares/checkRoles';
+import  {authenticate}   from '../../employee/middlewares/authunticate';
+
 const router: Router = express.Router();
 
 // Create a Department registration
-router.post('/', createDepartment);
+router.post('/', authenticate, checkHqExclusiveRole, createDepartment);
 
 // Get all Departments
 router.get('/', getAllDepartments);
@@ -19,9 +22,9 @@ router.get('/', getAllDepartments);
 router.get('/:id', getDepartmentById);
 
 // Update a Department by ID
-router.put('/:id', updateDepartment);
+router.put('/:id', authenticate, checkHqExclusiveRole, updateDepartment);
 
 // Delete a Department by ID
-router.delete('/:id', deleteDepartment);
+router.delete('/:id', authenticate, checkHqExclusiveRole, deleteDepartment);
 
 export default router;
