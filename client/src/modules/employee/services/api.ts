@@ -30,6 +30,11 @@ export const submitRegistrationForm = async (formData: any) => {
   console.log(process.env.REACT_APP_API_URL + "heheheheh");
   return data;
 };
+export const submitPerformanceForm = async (formData: any) => {
+  const { data } = await api.post("/api/employees/evaluation/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
 export const submitDocumentForm = async (formData: FormData) => {
     formData.forEach((value, key) => console.log(key, value));
 

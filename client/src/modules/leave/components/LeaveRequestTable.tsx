@@ -133,26 +133,26 @@ const columns = [
     header: () => "Department",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.display({
-    header: "actions",
-    id: "action",
-    cell: ({ row }) => (
-      <div className="flex gap-2">
-        <button
-          onClick={() => handleAction(row)}
-          className="px-3 py-1 border border-green-400 text-green-500 font-medium rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300"
-        >
-          Accept
-        </button>
-        <button
-          onClick={() => handleAction(row)}
-          className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
-        >
-          Deny
-        </button>
-      </div>
-    ),
-  }),
+  // columnHelper.display({
+  //   header: "actions",
+  //   id: "action",
+  //   cell: ({ row }) => (
+  //     <div className="flex gap-2">
+  //       <button
+  //         onClick={() => handleAction(row)}
+  //         className="px-3 py-1 border border-green-400 text-green-500 font-medium rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300"
+  //       >
+  //         Accept
+  //       </button>
+  //       <button
+  //         onClick={() => handleAction(row)}
+  //         className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
+  //       >
+  //         Deny
+  //       </button>
+  //     </div>
+  //   ),
+  // }),
 ];
 
 const LeaveRequestTable = () => {
@@ -172,6 +172,20 @@ const LeaveRequestTable = () => {
              setData(mappedData);
            }
          }, [dataQuery.data]);
+
+         const pdfFunction = () => {
+          alert('pdf')
+      
+        }
+        const excelFunction = () => {
+          alert('excel')
+        }
+        const csvFunction = () => {
+          alert('csv')
+        }
+        const printFunction = () => {
+          alert('print')
+        }
     const table = useReactTable({
       data: data,
       columns,
@@ -180,6 +194,14 @@ const LeaveRequestTable = () => {
     });
       return (
         <>
+        <h2 className='font-medium text-gray-600 font-roboto px-0 py-3'>On Leave Employees</h2>
+      <div className="flex justify-end gap-2 mb-3">
+        <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={pdfFunction}>PDF</button>
+        <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={excelFunction}>EXCEL</button>
+        <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={csvFunction}>CSV</button>
+        <button className="bg-green-300 rounded-md px-4 text-center text-md" onClick={printFunction}>PRINT</button>
+
+      </div>
         <div className="overflow-x-auto bg-white shadow-md rounded-xl">
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">

@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { DocumentRecord, IEmployee } from "../../../../common/Types/Employee";
 import { useFetchDocument } from "../../services/queries";
 import { LuDownload } from "react-icons/lu";
+import { EthDateTime } from "ethiopian-calendar-date-converter";
 
 const EmployeeDocuments: React.FC = () => {
   const employee = useOutletContext<IEmployee>();
@@ -37,7 +38,18 @@ const EmployeeDocuments: React.FC = () => {
   const toggleOutAccordion = () => {
     setOutActiveIndex(outActiveIndex === null ? 0 : null);
   };
-
+const convertToEthiopianDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const ethDate = EthDateTime.fromEuropeanDate(date);
+  return `${ethDate.year}/${ethDate.month}/${ethDate.date}`;
+};
+const formatDate = (date: Date | string) => {
+  // Ensure that the date is a valid Date object
+  const formattedDate = new Date(date);
+  return formattedDate instanceof Date && !isNaN(formattedDate.getTime())
+    ? formattedDate.toLocaleDateString()
+    : "Invalid date";
+};
   const renderDocumentTable = (records: DocumentRecord[]) => (
     <table className="min-w-full bg-white border-collapse border border-gray-300">
       <thead>
@@ -72,7 +84,7 @@ const EmployeeDocuments: React.FC = () => {
                 {record.title || "N/A"}
               </td>
               <td className="py-3 px-4 border-b border-gray-200 text-sm">
-                {formattedDate}
+                {convertToEthiopianDate(formatDate(record.date))}
               </td>
               <td className="py-3 px-4 border-b border-gray-200 text-sm">
                 {record.topic || "N/A"}

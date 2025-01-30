@@ -2,19 +2,31 @@ import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { IEmployee } from "../../../../common/Types/Employee";
 import { useFetchLeave } from "../../../leave/services/queries";
+import { EthDateTime } from "ethiopian-calendar-date-converter";
 
 const EmployeeLeave: React.FC = () => {
   const employee = useOutletContext<IEmployee>();
   const leaveInfo = useFetchLeave(employee.empId);
   console.log(leaveInfo.data);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+const convertToEthiopianDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const ethDate = EthDateTime.fromEuropeanDate(date);
+  return `${ethDate.toDateWithDayString()}`;
+};
+const formatDate = (date: Date | string) => {
+  // Ensure that the date is a valid Date object
+  const formattedDate = new Date(date);
+  return formattedDate instanceof Date && !isNaN(formattedDate.getTime())
+    ? formattedDate.toLocaleDateString()
+    : "Invalid date";
+};
+  // const formatDate = (dateString: string) => {
+  //   return new Date(dateString).toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "long",
+  //     day: "numeric",
+  //   });
+  // };
 
   const getStatusColor = (from: string, to: string) => {
     const today = new Date();
@@ -49,14 +61,14 @@ const EmployeeLeave: React.FC = () => {
               <div className="text-gray-600">
                 <p className="font-normal text-sm">Date From</p>
                 <p className="font-semibold text-gray-900">
-                  {formatDate(leave.from)}
+                  {convertToEthiopianDate(formatDate(leave.from))}
                 </p>
               </div>
 
               <div className="text-gray-600">
                 <p className="font-normal text-sm">Date To</p>
                 <p className="font-semibold text-gray-900">
-                  {formatDate(leave.to)}
+                  {convertToEthiopianDate(formatDate(leave.to))}
                 </p>
               </div>
 
