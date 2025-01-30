@@ -9,55 +9,39 @@ import {
 } from "@tanstack/react-table";
 import { LuArrowDownUp } from "react-icons/lu";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import CenterForm from "./CenterForm";
-import { Center, NewCenter } from "../../types/CenterTypes";
-import { useAllCenters } from "../../services/queries";
-import { useSubmitCenter, useUpdateCenter } from "../../services/mutation";
-
+import SalaryLimitForm from "./SalaryLimitForm";
+import { SalaryLimitType, NewSalaryLimitType } from "../../types/SalaryLimitTypes";
+import { useAllSalaryLimits } from "../../services/queries";
+import { useSubmitSalaryLimit, useUpdateSalaryLimit } from "../../services/mutation";
 
 
 // Column helper
-const columnHelper = createColumnHelper<Center>();
+const columnHelper = createColumnHelper<SalaryLimitType>();
 
-const CenterTable: React.FC = () => {
-  const fetchCenters = useAllCenters();
-  const [data, setData] = useState<Center[]>([]);
+const SalaryLimitTable: React.FC = () => {
+  const fetchSalaryLimit = useAllSalaryLimits();
+  const [data, setData] = useState<SalaryLimitType[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState<Center | NewCenter>({
-    centerId: "",
-    name: "",
-    location: "",
-    head: "",
-    isHeadquarters: false,
+  const [formData, setFormData] = useState<SalaryLimitType | NewSalaryLimitType>({
+    title: "",
+    salaryLimit: 0,
   });
   const [isEditing, setIsEditing] = useState(false);
   React.useEffect(() => {
-    if (fetchCenters.data) {
-      setData(fetchCenters.data);
+    if (fetchSalaryLimit.data) {
+      setData(fetchSalaryLimit.data);
     }
-  }, [fetchCenters.data]);
+  }, [fetchSalaryLimit.data]);
   // Define columns
   const columns = [
-    columnHelper.accessor("name", {
-      header: "Center Name",
+    columnHelper.accessor("title", {
+      header: "Title",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("centerId", {
-      header: "Center ID",
+    columnHelper.accessor("salaryLimit", {
+      header: "Salary Limit",
       cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("location", {
-      header: "Center Location",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("head", {
-      header: "Center Head",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("isHeadquarters", {
-      header: "Role",
-      cell: (info) => (info.getValue() ? "Headquarters" : "Branch"),
     }),
     columnHelper.display({
       id: "actions",
@@ -71,7 +55,7 @@ const CenterTable: React.FC = () => {
             Edit
           </button>
           <button
-            onClick={() => handleDelete(row.original.centerId)}
+            onClick={() => handleDelete(row.original.id)}
             className="px-3 py-1 border border-red-500 text-red-500 font-medium rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
           >
             Delete
@@ -94,64 +78,51 @@ const CenterTable: React.FC = () => {
   });
 
   // Handle form submission
-  const submitForm = useSubmitCenter();
-  const updateForm = useUpdateCenter();
+  const submitForm = useSubmitSalaryLimit();
+  const updateForm = useUpdateSalaryLimit();
 
   // Handle form submission
-  const handleFormSubmit = (data: NewCenter) => {
+  
+  const handleFormSubmit = (data: NewSalaryLimitType) => {
     if (isEditing) {
-      // Update existing department
-      setData((prev) =>
-        prev.map((center) =>
-          center.centerId === (formData as Center).centerId
-            ? { ...center, ...data }
-            : center
-        )
-      );
+      
       updateForm.mutate({
-        id: (formData as Center).centerId,
+        id: (formData as SalaryLimitType).id,
         data: data,
       });
     } else {
-      // Add new department
-      setData((prev) => [...prev, { id: String(prev.length + 1), ...data }]);
       submitForm.mutate(data);
     }
     setShowForm(false);
   };
 
   // Handle edit
-  const handleEdit = (center: Center) => {
-    setFormData(center);
+  const handleEdit = (salaryLimitType: SalaryLimitType) => {
+    setFormData(salaryLimitType);
     setIsEditing(true);
     setShowForm(true);
   };
 
   // Handle delete
   const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((center) => center.centerId !== id));
+    setData((prev) => prev.filter((salaryLimitType) => salaryLimitType.id !== id));
   };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       {/* Title and Add Button */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Centers</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Salary Limit</h1>
         <button
           onClick={() => {
-            setFormData({
-              centerId: "", name: "",
-              location: "",
-              head: "",
-              isHeadquarters: false,
-            });
+            setFormData({ title: "", salaryLimit: 0 });
             setIsEditing(false);
             setShowForm(true);
           }}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center"
         >
           <FaPlus className="mr-2" />
-          Add Center
+          Add Salary Limit
         </button>
       </div>
 
@@ -206,15 +177,15 @@ const CenterTable: React.FC = () => {
 
       {/* Form Popup */}
       {showForm && (
-        <CenterForm
+        <SalaryLimitForm
           initialData={formData}
           onSubmit={handleFormSubmit}
           onClose={() => setShowForm(false)}
-          title={isEditing ? "Edit Center" : "Add Center"}
+          title={isEditing ? "Edit Salary Limit" : "Add Salary Limit"}
         />
       )}
     </div>
   );
 };
 
-export default CenterTable;
+export default SalaryLimitTable;

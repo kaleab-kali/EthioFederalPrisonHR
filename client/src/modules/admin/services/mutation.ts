@@ -6,15 +6,79 @@ import {
 import toast from "react-hot-toast";
 import { useLoading } from "../../../common/components/context/LoadingContext";
 import {
+  submitCenterForm,
   submitDepartmentForm,
+  submitLeaveForm,
   submitPositionForm,
   submitTitleForm,
+  updateCenterData,
   updateDepartmentData,
+  updateLeaveData,
   updatePositionData,
   updateTitleData,
+  submitSalaryLimitForm,
+  updateSalaryLimitData,
 } from "./api";
 
 // Mutation for creating an Department
+export function useSubmitCenter() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitCenterForm(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to create Center");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("Center created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["centers"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useUpdateCenter(
+  options?: UseMutationOptions<void, Error, { id: string; data: any }, unknown>
+) {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      setLoading(true);
+      console.log("Data before mutation:", data);
+      return await updateCenterData(id, data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      toast.error(error.message || "Failed to update Center");
+      setLoading(false);
+    },
+    onSuccess: (_, variables) => {
+      toast.success("Center updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["centers"] });
+      queryClient.invalidateQueries({
+        queryKey: ["center", { id: variables.id }],
+      });
+      setLoading(false);
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+    ...options,
+  });
+}
 export function useSubmitDepartment() {
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
@@ -192,4 +256,121 @@ export function useUpdatePosition(
   });
 }
 
+export function useSubmitLeave() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitLeaveForm(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to create Leave");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("Leave created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["leaves"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useUpdateLeave(
+  options?: UseMutationOptions<void, Error, { id: string; data: any }, unknown>
+) {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      setLoading(true);
+      console.log("Data before mutation:", data);
+      return await updateLeaveData(id, data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      toast.error(error.message || "Failed to update Leave");
+      setLoading(false);
+    },
+    onSuccess: (_, variables) => {
+      toast.success("Leave updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["leaves"] });
+      queryClient.invalidateQueries({
+        queryKey: ["leave", { id: variables.id }],
+      });
+      setLoading(false);
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+    ...options,
+  });
+}
 // Mutation for deleting/deactivating an Department
+
+export function useSubmitSalaryLimit() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitSalaryLimitForm(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to create salary limit");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("salary limit created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["salaryLimit"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useUpdateSalaryLimit(
+  options?: UseMutationOptions<void, Error, { id: string; data: any }, unknown>
+) {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      setLoading(true);
+      console.log("Data before mutation:", data);
+      return await updateSalaryLimitData(id, data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      toast.error(error.message || "Failed to update SalaryLimit");
+      setLoading(false);
+    },
+    onSuccess: (_, variables) => {
+      toast.success("salary limit updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["salaryLimit"] });
+      queryClient.invalidateQueries({
+        queryKey: ["salaryLimit", { id: variables.id }],
+      });
+      setLoading(false);
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+    ...options,
+  });
+}

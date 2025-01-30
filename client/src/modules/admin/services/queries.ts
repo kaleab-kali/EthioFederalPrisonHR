@@ -1,13 +1,31 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  fetchCenterData,
   fetchDepartmentData,
+  fetchLeaveData,
   fetchPositionData,
   fetchTitleData,
+  fetchSalaryLimitData,
+  getAllCenters,
   getAllDepartments,
+  getAllLeaves,
   getAllPositions,
   getAllTitles,
+  getAllSalaryLimit
 } from "./api";
 
+export const useFetchCenter = (id: string) =>
+  useQuery({
+    queryKey: ["center", id],
+    queryFn: () => fetchCenterData(id),
+    enabled: !!id, // Ensures the query runs only when ID is available
+  });
+export function useAllCenters() {
+  return useQuery({
+    queryKey: ["centers"],
+    queryFn: getAllCenters,
+  });
+}
 export const useFetchDepartment = (id: string) =>
   useQuery({
     queryKey: ["department", id],
@@ -44,5 +62,33 @@ export function useAllPositions() {
   return useQuery({
     queryKey: ["positions"],
     queryFn: getAllPositions,
+  });
+}
+
+export const useFetchLeave = (id: string) =>
+  useQuery({
+    queryKey: ["leave", id],
+    queryFn: () => fetchLeaveData(id),
+    enabled: !!id, // Ensures the query runs only when ID is available
+  });
+export function useAllLeaves() {
+  return useQuery({
+    queryKey: ["leaves"],
+    queryFn: getAllLeaves,
+  });
+}
+
+//salary limit
+
+export const useFetchSalaryLimit = (id: string) =>
+  useQuery({
+    queryKey: ["salaryLimit", id],
+    queryFn: () => fetchSalaryLimitData(id),
+    enabled: !!id, // Ensures the query runs only when ID is available
+  });
+export function useAllSalaryLimits() {
+  return useQuery({
+    queryKey: ["salaryLimit"],
+    queryFn: getAllSalaryLimit,
   });
 }

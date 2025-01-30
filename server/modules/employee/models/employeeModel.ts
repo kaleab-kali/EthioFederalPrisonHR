@@ -7,6 +7,7 @@ import {
   Evaluation,
   FamilyRecord,
   HealthRecord,
+  WorkExperience
 } from '../types/employeeTypes';
 
 export const educationSchema = new Schema<Education>({
@@ -23,30 +24,65 @@ export const rankChangeSchema = new Schema<RankChange>({
   date: { type: Date, default: Date.now },
 });
 
-const familyRecordSchema = new Schema<FamilyRecord>({
-  id: { type: String, required: true },
-  personName: { type: String, required: true },
-  type: { type: String, enum: ['Spouse', 'Kid'], required: true },
-  age: { type: Number },
-  isEligible: { type: Boolean },
-  records: [
-    {
-      date: { type: String, required: true },
-      healthIssue: { type: String, required: true },
-      cost: { type: Number, required: true },
-    },
-  ],
-  marriageStatus: { type: String, enum: ['married', 'divorced', 'widowed'] },
+const FamilyRecordSchema = new mongoose.Schema({
+  eventType: {
+    type: String,
+    enum: ['Marriage', 'Child', 'Divorce', 'Widowed'],
+    required: true,
+  },
+  spouseName: String,
+  spousePhoneNumber: String,
+  spouseEthnicity: String,
+  spouseAddress: {
+    region: String,
+    subcity: String,
+    woreda: String,
+  },
+  spouseDateOfBirth: Date,
+  childName: String,
+  relation: String,
+  childDateOfBirth: Date,
+  Age: Number,
+  divorceDate: Date,
+  widowedDate: Date,
+  iseligible: {
+    type: Boolean,
+    default: true,
+  },
 });
 
-const healthRecordSchema = new Schema<HealthRecord>({
-  records: [
-    {
-      date: { type: String, required: true },
-      healthIssue: { type: String, required: true },
-      cost: { type: Number, required: true },
-    },
-  ],
+// Define the HealthRecord schema
+const HealthRecordSchema = new mongoose.Schema({
+  beneficiary: {
+    type: String,
+    enum: ['Employee', 'Spouse', 'Child'],
+    required: true,
+  },
+  childName: String,
+  costOfCoverage: {
+    type: Number,
+    required: true,
+  },
+  hospitalName: {
+    type: String,
+    required: true,
+  },
+  coverageStartDate: {
+    type: Date,
+    required: true,
+  },
+  coverageEndDate: {
+    type: Date,
+    required: true,
+  },
+});
+
+const workExperienceSchema = new Schema<WorkExperience>({
+  companyName: { type: String, required: true },
+  position: { type: String, required: true },
+  startDate: { type: String, required: true },
+  endDate: { type: String, required: true },
+  description: { type: String, required: true },
 });
 
 const employeeSchema = new Schema<IEmployee>(
@@ -184,9 +220,10 @@ const employeeSchema = new Schema<IEmployee>(
         to: { type: Date, required: true },
       },
     ],
-    familyRecords: [familyRecordSchema],
-    healthRecords: [healthRecordSchema],
+    familyRecords: [FamilyRecordSchema],
+    healthRecords: [HealthRecordSchema],
     leaveBalances: [],
+    workExperience: [workExperienceSchema],
   },
   { timestamps: true },
 );

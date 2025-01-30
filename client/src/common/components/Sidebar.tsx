@@ -60,9 +60,9 @@ const menuItems = [
         allowedRoles: ["admin", "manager"],
       },
       {
-        name: "Teams",
+        name: "Salary Limit",
         icon: FaUsers,
-        route: "/organization/teams",
+        route: "/organization/salaryLimit",
         allowedRoles: ["admin", "manager"],
       },
       {
@@ -150,6 +150,14 @@ const menuItems = [
         route: "/employee/leavePass",
         allowedRoles: ["admin", "manager"],
       },
+      {
+        name: "Performance",
+        icon: MdOutlineAppRegistration,
+        route: "/employee/performanceEvaluation",
+        allowedRoles: ["admin", "manager"],
+      },
+      
+
     ],
     allowedRoles: ["admin", "manager"],
   },

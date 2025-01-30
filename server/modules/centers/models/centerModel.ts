@@ -23,7 +23,8 @@ CenterSchema.pre<ICenter>('save', async function (next) {
       lastCenterNumber = parseInt(lastCenterIdParts[1]);
     }
 
-    this.centerId = `${this.name}-${(lastCenterNumber + 1).toString().padStart(2, '0')}`;
+    this.centerId = `${this.name.trim().replace(/\s+/g, '')}-${(lastCenterNumber + 1).toString().padStart(2, '0')}`;
+
   }
   next();
 });

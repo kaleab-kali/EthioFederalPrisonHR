@@ -205,7 +205,7 @@ const handleTransfer = async (req: Request, res: Response) => {
 
 const requestTransfer = async (req: Request, res: Response) => {
   const { employeeId, centerName } = req.body;
-
+  console.log(employeeId, centerName);
   try {
     const employee = await Employee.findOne({ empId: employeeId });
 
@@ -223,6 +223,23 @@ const requestTransfer = async (req: Request, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error initiating transfer request");
+  }
+};
+
+const getAllEmpsWithPendingTransferStatus = async (req: Request, res: Response) => {
+  try {
+    const employees = await Employee.find({ transferStatus: 'pending' });
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+const getAllEmpsWithAcceptedTransferStatus = async (req: Request, res: Response) => {
+  try {
+    const employees = await Employee.find({ transferStatus: 'accepted' });
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -295,13 +312,34 @@ const getEvaluationById = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+const addWorkExperience = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { employeeId, workExperience } = req.body;
+
+    // Find the employee by ID
+    const employee = await Employee.findOne({empId: employeeId});
+    if (!employee) {
+      res.status(404).json({ message: 'Employee not found' });
+      return
+    }
+
+    // Add the work experience
+    employee.workExperience.push(workExperience);
+    await employee.save();
+
+    res.status(200).json({ message: 'Work experience added successfully', employee });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 export {
   getEmployees,
   getEmployeeById,
   updateEmployee,
   addEmployee,
-  loginUser,
+  loginUser,getAllEmpsWithAcceptedTransferStatus,getAllEmpsWithPendingTransferStatus,
   assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
-  
+  addWorkExperience
   
 };

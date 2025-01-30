@@ -21,6 +21,9 @@ import DocumentTrackingForm from './features/DocumentTracking/DocumentTrackingFo
 import FamilyRecordForm from './features/FamilyRecords/FamilyRecordForm';
 import HealthRecordForm from './features/FamilyRecords/HealthRecordForm';
 import LeavePermitComponent from './components/LeavePermitComponent';
+import EmployeeWorkExperience from './components/profileView/EmployeeWork';
+import EmployeeFamily from './components/profileView/EmployeeFamily';
+import PerformanceForm from './features/PerformanceEvaluation/PerformanceForm';
 
 
 const EmployeeModule: React.FC = () => {
@@ -38,6 +41,7 @@ const EmployeeModule: React.FC = () => {
         <Route path="details" element={<EmployeeDetails />} />
         <Route path="education" element={<EmployeeEducation />} />
         <Route path="health" element={<EmployeeHealth />} />
+        <Route path="family" element={<EmployeeFamily />} />
         <Route path="material" element={<EmployeeMaterial />} />
         <Route path="attendance" element={<EmployeeAttendance />} />
         <Route path="leave" element={<EmployeeLeave />} />
@@ -45,6 +49,7 @@ const EmployeeModule: React.FC = () => {
         <Route path="appraisal" element={<EmployeeAppraisal />} />
         <Route path="performance" element={<EmployeePerformance />} />
         <Route path="documents" element={<EmployeeDocuments />} />
+        <Route path="workExperience" element={<EmployeeWorkExperience />} />
       </Route>
 
       <Route path="/registration" element={<RegistrationForm />} />
@@ -57,9 +62,10 @@ const EmployeeModule: React.FC = () => {
       <Route path="/healthRecord" element={<HealthRecordForm />} />
       <Route path="/martialStatus" element={<FamilyRecordForm />} />
       <Route path="/leavePass" element={<LeavePermitComponent />} />
+      <Route path="/performanceEvaluation" element={<PerformanceForm />} />
 
     </Routes>
-    
+
     //   <Route path="dashboard" element={<HomeComponent />} />
   );
 };

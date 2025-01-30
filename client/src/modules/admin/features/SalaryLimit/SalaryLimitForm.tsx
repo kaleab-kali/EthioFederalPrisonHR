@@ -1,21 +1,21 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
-import { LeaveType, NewLeaveType } from "../../types/LeaveType";
+import { SalaryLimitType, NewSalaryLimitType } from "../../types/SalaryLimitTypes";
 
-type LeaveTypeFormProps = {
-  initialData?: LeaveType | NewLeaveType;
-  onSubmit: (data: NewLeaveType) => void;
+type SalaryLimitFormProps = {
+  initialData?: SalaryLimitType | NewSalaryLimitType;
+  onSubmit: (data: NewSalaryLimitType) => void;
   onClose: () => void;
   title: string;
 };
 
-const LeaveTypeForm: React.FC<LeaveTypeFormProps> = ({
-  initialData = { leaveType: "", credit: 0 },
+const SalaryLimitForm: React.FC<SalaryLimitFormProps> = ({
+  initialData = { title: "", salaryLimit: 0 },
   onSubmit,
   onClose,
   title,
 }) => {
-  const [formData, setFormData] = React.useState<NewLeaveType>(initialData);
+  const [formData, setFormData] = React.useState<NewSalaryLimitType>(initialData);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -23,7 +23,7 @@ const LeaveTypeForm: React.FC<LeaveTypeFormProps> = ({
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "credit" ? Number(value) : value,
+      [name]: name === "salaryLimit" ? Number(value) : value,
     }));
   };
 
@@ -45,12 +45,12 @@ const LeaveTypeForm: React.FC<LeaveTypeFormProps> = ({
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
-              Leave Type
+              Title
             </label>
             <input
               type="text"
-              name="leaveType"
-              value={formData.leaveType}
+              name="title"
+              value={formData.title}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
@@ -58,12 +58,12 @@ const LeaveTypeForm: React.FC<LeaveTypeFormProps> = ({
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
-              Credit
+              Salary Limit
             </label>
             <input
               type="number"
-              name="credit"
-              value={formData.credit}
+              name="salaryLimit"
+              value={formData.salaryLimit}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
@@ -90,4 +90,4 @@ const LeaveTypeForm: React.FC<LeaveTypeFormProps> = ({
   );
 };
 
-export default LeaveTypeForm;
+export default SalaryLimitForm;

@@ -8,6 +8,29 @@ const api = axios.create({
   },
 });
 
+export const fetchCenterData = async (id: string) => {
+  const { data } = await api.get(`/api/centers/${id}`);
+  return data;
+};
+
+export const getAllCenters = async () => {
+  const { data } = await api.get(`/api/centers/`);
+  console.log(JSON.stringify(data));
+  return data;
+};
+// Submit registration form
+export const submitCenterForm = async (formData: any) => {
+  const { data } = await api.post("/api/centers/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
+
+// Update Center data
+export const updateCenterData = async (id: string, updatedData: any) => {
+  const { data } = await api.put(`/api/centers/${id}`, updatedData);
+  return data;
+};
+
 // Fetch Department data
 export const fetchDepartmentData = async (id: string) => {
   const { data } = await api.get(`/api/org/department/${id}`);
@@ -77,4 +100,53 @@ export const updatePositionData = async (id: string, updatedData: any) => {
   const { data } = await api.put(`/api/org/position/${id}`, updatedData);
   return data;
 };
+
+export const fetchLeaveData = async (id: string) => {
+  const { data } = await api.get(`/api/leavebalances/${id}`);
+  return data;
+};
+
+export const getAllLeaves = async () => {
+  const { data } = await api.get(`/api/leavebalances/`);
+  console.log(JSON.stringify(data));
+  return data;
+};
+// Submit registration form
+export const submitLeaveForm = async (formData: any) => {
+  const { data } = await api.post("/api/leavebalances/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
+
+// Update Leave data
+export const updateLeaveData = async (id: string, updatedData: any) => {
+  const { data } = await api.put(`/api/leavebalances/${id}`, updatedData);
+  return data;
+};
+
+//salary limit
+
+export const fetchSalaryLimitData = async (id: string) => {
+  const { data } = await api.get(`/api/salaryLimit/${id}`);
+  return data;
+};
+
+export const getAllSalaryLimit = async () => {
+  const { data } = await api.get(`/api/salaryLimit/`);
+  console.log(JSON.stringify(data));
+  return data;
+};
+// Submit registration form
+export const submitSalaryLimitForm = async (formData: any) => {
+  const { data } = await api.post("/api/salaryLimit/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
+
+// Update Leave data
+export const updateSalaryLimitData = async (id: string, updatedData: any) => {
+  const { data } = await api.put(`/api/salaryLimit/${id}`, updatedData);
+  return data;
+};
+
 export default api;

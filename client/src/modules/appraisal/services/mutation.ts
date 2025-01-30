@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useLoading } from "../../../common/components/context/LoadingContext";
-import { submitRegistrationForm, updateAppraisalData } from "./api";
+import { createAppraisal, submitRegistrationForm, updateAppraisalData } from "./api";
 
 // Mutation for creating an Appraisal
 export function useSubmitRegistration() {
@@ -27,7 +27,7 @@ export function useSubmitRegistration() {
     onSuccess: () => {
       toast.success("Appraisal created successfully");
       setLoading(false);
-      queryClient.invalidateQueries({ queryKey: ["appraisals"] });
+      queryClient.invalidateQueries({ queryKey: ["appraisalHistorys"] });
     },
     onSettled: () => {
       setLoading(false);
@@ -35,6 +35,32 @@ export function useSubmitRegistration() {
   });
 }
 
+export function useCreateAppraisal() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await createAppraisal(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to create Appraisal");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("Appraisal created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["appraisals"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
 // Mutation for uploading a file
 // export function useCreateUpload() {
 //   const { setLoading } = useLoading();
