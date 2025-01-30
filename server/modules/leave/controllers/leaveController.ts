@@ -471,8 +471,13 @@ const getLeavePermit = async (req: Request, res: Response): Promise<void> => {
       res.status(404).json({ message: 'No upcoming leave found' });
       return;
     }
+    // console.log(employee,"Upcoming leave found")
+    const employeePermit = {
+      employee: employee,
+      upcomingLeaves: upcomingLeaves,
+    }
 
-    res.status(200).json({ upcomingLeaves });
+    res.status(200).json({ employeePermit });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
