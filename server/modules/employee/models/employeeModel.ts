@@ -224,6 +224,7 @@ const employeeSchema = new Schema<IEmployee>(
     healthRecords: [HealthRecordSchema],
     leaveBalances: [],
     workExperience: [workExperienceSchema],
+    passwordChanged: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

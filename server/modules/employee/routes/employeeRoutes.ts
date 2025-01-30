@@ -12,7 +12,8 @@ import {
   requestTransfer,
   getAllEmpsWithPendingTransferStatus,
   getAllEmpsWithAcceptedTransferStatus,
-  addWorkExperience
+  addWorkExperience,
+  changePasswordController
 } from '../controllers/employeeController';
 import  { addFamilyRecord, addHealthRecord, deleteFamilyRecord, updateFamilyRecord} from "../controllers/healthController";
 import  {authenticate}   from '../middlewares/authunticate';
@@ -25,6 +26,7 @@ router.put('/:empId', updateEmployee);
 router.post('/assign-credentials',authenticate,checkAdminRole, assignCredentials);
 router.post('/', authenticate,checkHrRole ,addEmployee);
 router.post('/auth/login', loginUser);
+router.post("/change-password", changePasswordController);
 router.post('/transfer/request', requestTransfer);
 router.post('/transfer/handle', handleTransfer);
 router.post("/evaluation", createEvaluation);

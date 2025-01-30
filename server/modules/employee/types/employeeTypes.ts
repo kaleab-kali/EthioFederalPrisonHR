@@ -105,6 +105,7 @@ export interface IEmployee {
   rejectionReason?: string;
   leaveBalances?: YearlyLeaveBalances[];
   workExperience: WorkExperience[];
+  passwordChanged?: Boolean;
 }
 
 // Types for the Education schema
