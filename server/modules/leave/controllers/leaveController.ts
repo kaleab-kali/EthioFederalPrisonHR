@@ -12,7 +12,7 @@ import { IEmployee } from '../../employee/types/employeeTypes';
 
 const createLeaveInfo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { employeeId, days, leaveType, to, from ,reason,status} = req.body;
+    const { employeeId, days, leaveType, to, from, reason, status } = req.body;
     const fromDate: any = new Date(from);
     const toDate: any = new Date(to);
     const currentDate: any = new Date();
@@ -456,7 +456,6 @@ const updateLeaveBalances = async (
   }
 };
 
-
 const hrLeaveApproval = async (req: Request, res: Response): Promise<void> => {
   try {
     const { leaveId, confirm } = req.body;
@@ -542,6 +541,35 @@ const hrLeaveApproval = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getLeavePermit = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { employeeId } = req.params || req.body;
+    console.log(employeeId);
+
+    const employee: any = await Employee.findOne({ empId: employeeId });
+    if (!employee) {
+      res.status(404).json({ message: 'Employee not found with this ID' });
+      return;
+    }
+    // Fetch all upcoming leaves sorted by `from` date
+    const upcomingLeaves = await LeaveInfoModel.find({
+      employeeId: employeeId,
+      // status: "approved",
+      from: { $gte: new Date() },
+    }).sort({ from: 1 }); // Sort by `from` date ascending
+
+    if (upcomingLeaves.length === 0) {
+      res.status(404).json({ message: 'No upcoming leave found' });
+      return;
+    }
+
+    res.status(200).json({ upcomingLeaves });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 export {
   createLeaveInfo,
   getAllLeaveInfo,
@@ -552,4 +580,5 @@ export {
   getAllLeaveBalanceByYear,
   getLeaveInfoByEmployeeId,
   hrLeaveApproval,
+  getLeavePermit,
 };

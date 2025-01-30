@@ -8,6 +8,7 @@ import {
   getAllLeaveBalances,
   updateLeaveBalances,
   getAllLeaveBalanceByYear,
+  getLeavePermit,
 } from '../controllers/leaveController';
 
 // import authAdminProtect from '../middleware/adminMiddleware/authAdminMiddleware';
@@ -59,4 +60,5 @@ router.put(
 // Delete leave information by ID
 // router.delete('/:id', authAdminProtect, checkHrManagerRole, deleteLeaveInfo);
 
+router.get("/leavePermit/:employeeId",getLeavePermit)
 export default router;
