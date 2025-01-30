@@ -183,7 +183,7 @@ export enum Roles {
   Staff = 'hrStaff',
   DocumentStaff = 'documentStaff',
   Admin = 'admin',
-  HQAdmin = 'ha-admin'
+  HQAdmin = 'hq-admin'
 }
 interface YearlyLeaveBalances {
   year: number;
