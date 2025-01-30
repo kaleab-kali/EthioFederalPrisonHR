@@ -23,6 +23,7 @@ import HealthRecordForm from './features/FamilyRecords/HealthRecordForm';
 import LeavePermitComponent from './components/LeavePermitComponent';
 import EmployeeWorkExperience from './components/profileView/EmployeeWork';
 import EmployeeFamily from './components/profileView/EmployeeFamily';
+import PerformanceForm from './features/PerformanceEvaluation/PerformanceForm';
 
 
 const EmployeeModule: React.FC = () => {
@@ -61,6 +62,8 @@ const EmployeeModule: React.FC = () => {
       <Route path="/healthRecord" element={<HealthRecordForm />} />
       <Route path="/martialStatus" element={<FamilyRecordForm />} />
       <Route path="/leavePass" element={<LeavePermitComponent />} />
+      <Route path="/performanceEvaluation" element={<PerformanceForm />} />
+
     </Routes>
 
     //   <Route path="dashboard" element={<HomeComponent />} />

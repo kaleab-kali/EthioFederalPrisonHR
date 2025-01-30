@@ -29,38 +29,39 @@ const TestComponentFile: React.FC = () => {
           icon={<FaUsers className="w-5 h-5 text-yellow-500" />}
           trend="+10% from last month"
         />
-        <KPICard
-          title="Pending Complaints"
-          value={12}
-          icon={<FaUsers className="w-5 h-5 text-red-500" />}
-        />
-        <KPICard
-          title="Pending Complaints"
+         <KPICard
+          title="Active Employees"
           value={12}
           icon={<FaUsers className="w-5 h-5 text-red-500" />}
           trend="-10% from last month"
         />
         <KPICard
-          title="Total Employees"
-          value="1,250"
+          title="Pending Leave Requests"
+          value={12}
+          icon={<FaUsers className="w-5 h-5 text-green-500" />}
+        />
+       
+        <KPICard
+          title="Upcoming retirements"
+          value="19"
           icon={<FaUsers className="w-5 h-5 text-blue-500" />}
           trend="+5.2% from last month"
         />
         <KPICard
-          title="Employees on Leave"
-          value={45}
+          title="Total Complaints"
+          value={35}
           icon={<FaUsers className="w-5 h-5 text-yellow-500" />}
           trend="+10% from last month"
         />
         <KPICard
           title="Pending Complaints"
-          value={12}
+          value={5}
           icon={<FaUsers className="w-5 h-5 text-red-500" />}
         />
         <KPICard
-          title="Pending Complaints"
-          value={12}
-          icon={<FaUsers className="w-5 h-5 text-red-500" />}
+          title="Transfer Pending"
+          value={3}
+          icon={<FaUsers className="w-5 h-5 text-green-500" />}
           trend="-10% from last month"
         />
       </div>
