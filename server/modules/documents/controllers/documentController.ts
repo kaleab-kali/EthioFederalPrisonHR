@@ -11,6 +11,8 @@ import { handleFileUpload } from '../../../config/handleFileUpload';
 // Create a new document with file upload
 const createDocument = async (req: Request, res: Response): Promise<void> => {
   try {
+    console.log('req.body: ', req.body);
+    console.log('req.files: ', req.files);
     if (!req.files || !req.files.documentFile) {
       res.status(400).json({ message: 'No file uploaded' });
       return;
