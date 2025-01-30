@@ -307,13 +307,13 @@ const createEvaluation = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const total = self * 0.7 + colleague * 0.3; // Calculate total score (weighted average)
+    const total = self + colleague; // Calculate total score (weighted average)
 
     const evaluation = {
       self,
       colleague,
       total,
-      remark,
+      remark:"remark",
       from: new Date(from), // Ensure from is a valid date
       to: new Date(to), // Ensure to is a valid date
     };

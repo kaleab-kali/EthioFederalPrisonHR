@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useLoading } from "../../../common/components/context/LoadingContext";
-import { submitDocumentForm, submitFamilyForm, submitHealthForm, submitRegistrationForm, submitTransferHandle, submitTransferRequestForm, submitWorkForm, updateEmployeeData } from "./api";
+import { submitDocumentForm, submitFamilyForm, submitHealthForm, submitPerformanceForm, submitRegistrationForm, submitTransferHandle, submitTransferRequestForm, submitWorkForm, updateEmployeeData } from "./api";
 
 // Mutation for creating an employee
 export function useSubmitRegistration() {
@@ -16,6 +16,33 @@ export function useSubmitRegistration() {
     mutationFn: async (data: any) => {
       setLoading(true);
       return await submitRegistrationForm(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to create employee");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("Employee created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useSubmitPerformance() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitPerformanceForm(data);
     },
     onError: (error: any) => {
       console.error("Error:", error);

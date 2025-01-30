@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { FaClipboardList } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaClipboardList, FaSearch } from "react-icons/fa";
 import "tailwindcss/tailwind.css";
 import { useSubmitRegistration } from "../services/mutation";
+import axios from "axios";
 
 interface IAppraisalForm {
   employeeId: string;
@@ -15,12 +16,8 @@ interface IAppraisalForm {
     workEfficiency: number;
     disciplinary: number;
   };
-  scoreOutOf30: number;
-  scoreOutOf70: number;
   totalScore: number;
 }
-
-const MAX_SCORE = 20;
 
 const AppraisalForm: React.FC = () => {
   const createAppraisalForm = useSubmitRegistration();
@@ -36,22 +33,67 @@ const AppraisalForm: React.FC = () => {
       workEfficiency: 0,
       disciplinary: 0,
     },
-    scoreOutOf30: 0,
-    scoreOutOf70: 0,
     totalScore: 0,
   });
+
+  const titleMap = [
+    "Constable",
+    "Assistant Sergeant",
+    "Deputy Sergeant",
+    "Sergeant",
+    "Chief Sergeant",
+    "Assistant Inspector",
+    "Deputy Inspector",
+    "Inspector",
+    "Chief Inspector",
+    "DeputyCommander",
+    "Commander",
+  ];
+
+  const fetchEmployeeData = async () => {
+    if (!form.employeeId) return;
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/employees/${form.employeeId}`
+      );
+      const employeeData = response.data;
+
+      const currentTitle = employeeData.employee.title;
+      const currentIndex = titleMap.indexOf(currentTitle);
+      const nextTitle =
+        currentIndex !== -1 && currentIndex < titleMap.length - 1
+          ? titleMap[currentIndex + 1]
+          : "";
+
+      setForm((prevForm) => ({
+        ...prevForm,
+        currentLevel: currentTitle,
+        nextLevel: nextTitle,
+        scores: {
+          ...prevForm.scores,
+          service: employeeData.employee.evaluation[0].total * 0.15,
+          attitude: employeeData.employee.evaluation[0].total * 0.25,
+          behaviour: employeeData.employee.evaluation[0].total * 0.25,
+          workEfficiency: employeeData.employee.evaluation[0].total * 0.25,
+        },
+      }));
+    } catch (error) {
+      console.error("Error fetching employee data", error);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    if (name in form.scores) {
-      const numericValue = Math.min(Number(value), MAX_SCORE);
-      const updatedScores = { ...form.scores, [name]: numericValue };
-      const maxScore = 100; // Maximum sum of positive attributes before scaling
-      const scaledMax = 30; // Desired scale
+    setForm((prevForm) => {
+      const updatedScores = {
+        ...prevForm.scores,
+        [name]: parseFloat(value) || 0,
+      };
 
-      const rawScore =
+      // Recalculate the total score whenever the scores change
+      const newTotalScore =
         updatedScores.education +
         updatedScores.service +
         updatedScores.attitude +
@@ -59,32 +101,11 @@ const AppraisalForm: React.FC = () => {
         updatedScores.workEfficiency -
         updatedScores.disciplinary;
 
-      // Normalize to be out of 30
-      const scoreOutOf30 = (rawScore / maxScore) * scaledMax;
-      // const scoreOutOf30 =
-      //   updatedScores.education +
-      //   updatedScores.service +
-      //   updatedScores.attitude +
-      //   updatedScores.behaviour +
-      //   updatedScores.workEfficiency -
-      //   updatedScores.disciplinary;
-      setForm({
-        ...form,
+      return {
+        ...prevForm,
         scores: updatedScores,
-        scoreOutOf30,
-        totalScore: scoreOutOf30 + form.scoreOutOf70,
-      });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
-  };
-
-  const handleScoreOutOf70Change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const scoreOutOf70 = Number(e.target.value);
-    setForm({
-      ...form,
-      scoreOutOf70,
-      totalScore: form.scoreOutOf30 + scoreOutOf70,
+        totalScore: newTotalScore,
+      };
     });
   };
 
@@ -101,20 +122,33 @@ const AppraisalForm: React.FC = () => {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="employeeId"
-              value={form.employeeId}
-              onChange={handleChange}
-              required
-              className="input-field"
-              placeholder="Employee ID"
-            />
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                name="employeeId"
+                value={form.employeeId}
+                onChange={(e) =>
+                  setForm({ ...form, employeeId: e.target.value })
+                }
+                required
+                className="input-field"
+                placeholder="Employee ID"
+              />
+              <button
+                type="button"
+                className="bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-700"
+                onClick={fetchEmployeeData}
+              >
+                <FaSearch />
+              </button>
+            </div>
             <input
               type="text"
               name="currentLevel"
               value={form.currentLevel}
-              onChange={handleChange}
+              onChange={(e) =>
+                setForm({ ...form, currentLevel: e.target.value })
+              }
               required
               className="input-field"
               placeholder="Current Level"
@@ -123,56 +157,105 @@ const AppraisalForm: React.FC = () => {
               type="text"
               name="nextLevel"
               value={form.nextLevel}
-              onChange={handleChange}
+              onChange={(e) => setForm({ ...form, nextLevel: e.target.value })}
               required
               className="input-field"
               placeholder="Next Level"
             />
           </div>
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {Object.keys(form.scores).map((score) => (
-              <div key={score}>
-                <label className="block text-sm font-medium text-gray-700 capitalize">
-                  {score} out of 20
-                </label>
-                <input
-                  type="number"
-                  name={score}
-                  value={form.scores[score as keyof IAppraisalForm["scores"]]}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                  max={MAX_SCORE}
-                />
-              </div>
-            ))}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Score out of 70
-            </label>
-            <input
-              type="number"
-              name="scoreOutOf70"
-              value={form.scoreOutOf70}
-              onChange={handleScoreOutOf70Change}
-              className="input-field"
-              min={0}
-              max={70}
-              required
-            />
-            {form.scoreOutOf70 > 70 && (
-              <p className="text-red-500 text-sm mt-1">
-                Score cannot be more than 70.
-              </p>
-            )}
+            {/* Education (out of 15) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Education (out of 10)
+              </label>
+              <input
+                type="number"
+                name="education"
+                value={form.scores.education}
+                onChange={handleChange}
+                className="input-field"
+                required
+                max={10}
+              />
+            </div>
+
+            {/* Service (Disabled) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Service (out of 15)
+              </label>
+              <input
+                type="number"
+                name="service"
+                value={form.scores.service.toFixed(2)}
+                disabled
+                className="input-field bg-gray-200 cursor-not-allowed"
+              />
+            </div>
+
+            {/* Attitude (Disabled) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Attitude (out of 25)
+              </label>
+              <input
+                type="number"
+                name="attitude"
+                value={form.scores.attitude.toFixed(2)}
+                disabled
+                className="input-field bg-gray-200 cursor-not-allowed"
+              />
+            </div>
+
+            {/* Behaviour (Disabled) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Behaviour (out of 25)
+              </label>
+              <input
+                type="number"
+                name="behaviour"
+                value={form.scores.behaviour.toFixed(2)}
+                disabled
+                className="input-field bg-gray-200 cursor-not-allowed"
+              />
+            </div>
+
+            {/* Work Efficiency (Disabled) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Work Efficiency (out of 25)
+              </label>
+              <input
+                type="number"
+                name="workEfficiency"
+                value={form.scores.workEfficiency.toFixed(2)}
+                disabled
+                className="input-field bg-gray-200 cursor-not-allowed"
+              />
+            </div>
+
+            {/* Disciplinary */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Disciplinary
+              </label>
+              <input
+                type="number"
+                name="disciplinary"
+                value={form.scores.disciplinary}
+                onChange={handleChange}
+                className="input-field"
+                required
+                max={10}
+              />
+            </div>
           </div>
 
           <div className="text-lg font-bold text-gray-700">
-            Score out of 30: {form.scoreOutOf30}
-          </div>
-          <div className="text-lg font-bold text-gray-700">
-            Total Score: {form.totalScore}
+            Total Score: {form.totalScore.toFixed(2)}
           </div>
           <button
             type="submit"
