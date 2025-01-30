@@ -3,12 +3,6 @@ import Employee from '../../employee/models/employeeModel';
 import LeaveInfoModel from '../models/leaveInfoModel';
 import { ILeaveInfo } from '../types/leaveInfo';
 import { IEmployee } from '../../employee/types/employeeTypes';
-// import LeaveInfoModel, { LeaveInfo } from '../models/leaveModel';
-// import Employee, { IEmployee } from '../models/employeeModel';
-// import NotificationService from '../services/notificationService';
-// import { getManagerIds } from '../services/employeeManagerService';
-// import cron from 'node-cron';
-//import { sendMail } from "../mail/sendEmail";
 
 const createLeaveInfo = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -456,90 +450,7 @@ const updateLeaveBalances = async (
   }
 };
 
-const hrLeaveApproval = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { leaveId, confirm } = req.body;
 
-    console.log('Leave ID:', leaveId);
-    console.log('Confirm:', confirm);
-
-    const leaveInfo: any = await LeaveInfoModel.findOne({ leaveId });
-
-    if (!leaveInfo) {
-      res.status(404).json({ message: 'Leave info not found' });
-      return;
-    }
-
-    if (leaveInfo.hrApproval) {
-      res.status(400).json({ message: 'Leave request already approved by HR' });
-      return;
-    }
-
-    if (!confirm) {
-      res.status(400).json({ message: 'HR approval confirmation required' });
-      return;
-    }
-
-    leaveInfo.hrApproval = true;
-
-    // Find the employee by the employeeId from the leaveInfo
-    const employee: any = await Employee.findOne({
-      empId: leaveInfo.employeeId,
-    });
-
-    if (!employee) {
-      res.status(404).json({ message: 'Employee not found' });
-      return;
-    }
-
-    // Find the latest year's leave balance
-    const latestLeaveBalance =
-      employee.leaveBalances[employee.leaveBalances.length - 1];
-
-    if (!latestLeaveBalance) {
-      res
-        .status(404)
-        .json({ message: 'Leave balances not found for the employee' });
-      return;
-    }
-
-    // Find the specific leave type balance within the latest year
-    const leaveTypeBalance = latestLeaveBalance.balances.find(
-      (balance: any) => balance.leaveType === leaveInfo.leaveType,
-    );
-
-    if (!leaveTypeBalance) {
-      res.status(404).json({
-        message: `Leave type ${leaveInfo.leaveType} not found for the employee`,
-      });
-      return;
-    }
-
-    // Update the leave balances
-    leaveTypeBalance.used += leaveInfo.days;
-    leaveTypeBalance.available -= leaveInfo.days;
-
-    // Save the updated leave info and employee leave balances
-    await leaveInfo.save();
-    await employee.save();
-
-    // await NotificationService.createNotification(
-    //   employee._id.toString(),
-    //   'Leave Request Approved by HR',
-    //   'Your leave request has been approved by HR. Enjoy your leave!',
-    // );
-
-    res.status(200).json({
-      message:
-        'Leave request approved by HR and leave balances updated successfully',
-      leaveInfo,
-      leaveBalances: employee.leaveBalances,
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
 
 const getLeavePermit = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -579,6 +490,5 @@ export {
   getAllLeaveBalances,
   getAllLeaveBalanceByYear,
   getLeaveInfoByEmployeeId,
-  hrLeaveApproval,
   getLeavePermit,
 };
