@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Document,
   Page,
@@ -9,137 +9,71 @@ import {
   pdf,
 } from "@react-pdf/renderer";
 import { FaUser, FaDownload } from "react-icons/fa";
+import moment from "moment";
+import { useFetchLeavePermit } from "../../leave/services/queries";
 
-
-interface Employee {
-  employeeId: string;
-  name: string;
-  position: string;
-  department: string;
-  leaveBalance: {
-    annual: number;
-    sick: number;
-    casual: number;
-  };
-  isEligibleForLeave: boolean;
-  leaveHistory: {
-    type: string;
-    startDate: string;
-    endDate: string;
-    days: number;
-    status: string;
-  }[];
-}
-
-// Dummy employee data (to be replaced with backend API call)
-const dummyEmployeeData: Employee = {
-  employeeId: "12345",
-  name: "John Doe",
-  position: "Software Engineer",
-  department: "Engineering",
-  leaveBalance: {
-    annual: 15,
-    sick: 10,
-    casual: 5,
-  },
-  isEligibleForLeave: true,
-  leaveHistory: [
-    {
-      type: "Annual",
-      startDate: "2023-10-01",
-      endDate: "2023-10-15",
-      days: 15,
-      status: "Approved",
-    },
-  ],
-};
-
-// Styles for the PDF document
 const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  logo: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-  },
-  companyName: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  page: { padding: 30 },
+  header: { flexDirection: "row", alignItems: "center", marginBottom: 20 },
+  logo: { width: 50, height: 50, marginRight: 10 },
+  companyName: { fontSize: 18, fontWeight: "bold" },
   horizontalLine: {
     borderBottomWidth: 1,
     borderBottomColor: "#000",
     marginBottom: 20,
   },
-  section: {
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  text: {
-    fontSize: 12,
-    marginBottom: 5,
-  },
-  signature: {
-    marginTop: 30,
-    fontSize: 12,
-    fontWeight: "bold",
-  },
+  section: { marginBottom: 20 },
+  title: { fontSize: 14, fontWeight: "bold", marginBottom: 10 },
+  text: { fontSize: 12, marginBottom: 5 },
+  signature: { marginTop: 30, fontSize: 12, fontWeight: "bold" },
 });
 
-// PDF Document Component
-const LeavePassPDF = ({
-  employee,
-  leaveDetails,
-}: {
-  employee: Employee;
-  leaveDetails: any;
-}) => (
+const LeavePassPDF = ({ employee, leaveDetails }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* Header */}
       <View style={styles.header}>
-        <Image src="/logo.png" style={styles.logo} />{" "}
-    
+        <Image src="/logo.png" style={styles.logo} />
         <Text style={styles.companyName}>Your Company Name</Text>
       </View>
       <View style={styles.horizontalLine} />
-
       <View style={styles.section}>
         <Text style={styles.text}>
-          This is to certify that {employee.name}, holding the position of{" "}
-          {employee.position} in the {employee.department} department, has been
+          This is to certify that {employee.employeePermit?.employee?.firstName}
+          , holding the position of{" "}
+          {employee.employeePermit?.employee?.position} in the{" "}
+          {employee.employeePermit?.employee?.department} department, has been
           granted leave for {leaveDetails.days} days, starting from{" "}
           {leaveDetails.startDate} to {leaveDetails.endDate}. The employee is
           expected to return to work on {leaveDetails.returnDate}.
         </Text>
       </View>
-
-      {/* Leave Balance Section */}
       <View style={styles.section}>
         <Text style={styles.title}>Leave Balance</Text>
         <Text style={styles.text}>
-          Annual Leave: {employee.leaveBalance.annual} days
+          Annual Leave:{" "}
+          {
+            employee.employeePermit?.employee?.leaveBalances[0]?.balances[6]
+              ?.credit
+          }{" "}
+          days
         </Text>
         <Text style={styles.text}>
-          Sick Leave: {employee.leaveBalance.sick} days
+          Sick Leave:{" "}
+          {
+            employee.employeePermit?.employee?.leaveBalances[0]?.balances[0]
+              ?.credit
+          }{" "}
+          days
         </Text>
         <Text style={styles.text}>
-          Casual Leave: {employee.leaveBalance.casual} days
+          Emergency Leave:{" "}
+          {
+            employee.employeePermit?.employee?.leaveBalances[0]?.balances[2]
+              ?.credit
+          }{" "}
+          days
         </Text>
       </View>
-
-      {/* Signature Section */}
       <View style={styles.section}>
         <Text style={styles.signature}>
           Approved By: ___________________________
@@ -149,31 +83,36 @@ const LeavePassPDF = ({
   </Document>
 );
 
-const LeavePermitComponent: React.FC = () => {
+const LeavePermitComponent = () => {
   const [employeeId, setEmployeeId] = useState("");
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const { data: employee, isLoading, error } = useFetchLeavePermit(employeeId);
   const [leaveDetails, setLeaveDetails] = useState({
-    type: "Annual",
+    type: "",
     startDate: "",
     endDate: "",
     days: 0,
     returnDate: "",
   });
 
-  const fetchEmployeeData = () => {
-    if (employeeId === dummyEmployeeData.employeeId) {
-      setEmployee(dummyEmployeeData);
+  useEffect(() => {
+    if (employee?.employeePermit?.upcomingLeaves?.length > 0) {
+      const upcomingLeave = employee.employeePermit.upcomingLeaves[0];
+      const startDate = moment(upcomingLeave.from);
+      const endDate = moment(upcomingLeave.to);
+      const days = endDate.diff(startDate, "days") + 1;
+
+      // Add one day to the endDate to calculate the returnDate
+      const returnDate = moment(endDate).add(1, "days").format("YYYY-MM-DD");
+
       setLeaveDetails({
-        type: "Annual",
-        startDate: "2023-10-01",
-        endDate: "2023-10-15",
-        days: 15,
-        returnDate: "2023-10-16",
+        type: upcomingLeave.leaveType || "",
+        startDate: startDate.format("YYYY-MM-DD"),
+        endDate: endDate.format("YYYY-MM-DD"),
+        days,
+        returnDate, // Updated returnDate with one day added
       });
-    } else {
-      alert("Employee not found!");
     }
-  };
+  }, [employee]);
 
   const handleDownloadPDF = async () => {
     if (employee) {
@@ -196,8 +135,6 @@ const LeavePermitComponent: React.FC = () => {
           <FaUser className="text-xl text-blue-500 mr-2" />
           <h2 className="text-xl font-semibold text-gray-800">Leave Permit</h2>
         </div>
-
-        {/* Employee ID Field */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Employee ID
@@ -209,35 +146,29 @@ const LeavePermitComponent: React.FC = () => {
             className="mt-1 block w-full px-2 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
             required
           />
-          <button
-            onClick={fetchEmployeeData}
-            className="mt-2 w-full flex justify-center py-1.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Fetch Employee Data
-          </button>
         </div>
-
-        {/* Display Employee Information */}
+        {isLoading && <p>Loading...</p>}
+        {error && <p className="text-red-500">Error fetching data.</p>}
         {employee && (
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-semibold text-gray-800">
                 Employee Information
               </h3>
-              <p className="text-sm text-gray-600">Name: {employee.name}</p>
               <p className="text-sm text-gray-600">
-                Position: {employee.position}
+                Name: {employee.employeePermit?.employee?.firstName}
               </p>
               <p className="text-sm text-gray-600">
-                Department: {employee.department}
+                Position: {employee.employeePermit?.employee?.position}
               </p>
               <p className="text-sm text-gray-600">
-                Leave Eligibility:{" "}
-                {employee.isEligibleForLeave ? "Eligible" : "Not Eligible"}
+                Department: {employee.employeePermit?.employee?.department}
               </p>
             </div>
-
-            {/* Leave Details */}
+          </div>
+        )}
+        {employee && (
+          <div className="space-y-4">
             <div>
               <h3 className="text-lg font-semibold text-gray-800">
                 Leave Details
@@ -254,17 +185,13 @@ const LeavePermitComponent: React.FC = () => {
                 Return Date: {leaveDetails.returnDate}
               </p>
             </div>
-
-            {/* Download Leave Pass Button */}
-            <div>
-              <button
-                onClick={handleDownloadPDF}
-                className="w-full flex justify-center py-1.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-              >
-                <FaDownload className="mr-2" />
-                Download Leave Pass
-              </button>
-            </div>
+            <button
+              onClick={handleDownloadPDF}
+              className="w-full flex justify-center py-1.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <FaDownload className="mr-2" />
+              Download Leave Pass
+            </button>
           </div>
         )}
       </div>

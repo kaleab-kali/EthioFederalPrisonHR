@@ -2,12 +2,25 @@ import React, { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { IEmployee } from '../../../../common/Types/Employee';
 import { useFetchAppraisalHistory } from '../../../appraisal/services/queries';
+import { EthDateTime } from 'ethiopian-calendar-date-converter';
 
 const EmployeeAppraisal: React.FC = () => {
   const employee = useOutletContext<IEmployee>();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const appraisals = useFetchAppraisalHistory(employee.empId)
   console.log(appraisals.data)
+  const convertToEthiopianDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const ethDate = EthDateTime.fromEuropeanDate(date);
+    return `${ethDate.year}/${ethDate.month}/${ethDate.date}`;
+  };
+  const formatDate = (date: Date | string) => {
+    // Ensure that the date is a valid Date object
+    const formattedDate = new Date(date);
+    return formattedDate instanceof Date && !isNaN(formattedDate.getTime())
+      ? formattedDate.toLocaleDateString()
+      : "Invalid date";
+  };
   const toggleDetails = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
@@ -64,7 +77,7 @@ const EmployeeAppraisal: React.FC = () => {
                   {appraisal.nextLevel}
                 </td>
                 <td className="py-4 px-6 border-b border-gray-200 text-sm">
-                  {appraisal.updatedAt}
+                  {convertToEthiopianDate(formatDate(appraisal.updatedAt))}
                 </td>
                 <td className="py-4 px-6 border-b border-gray-200 text-sm">
                   {renderRatingBadge(appraisal.totalScore)}
