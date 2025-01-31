@@ -1,36 +1,347 @@
-// // Step3.tsx
-// import { useFormContext } from 'react-hook-form';
-// import { required } from '../../../../common/utils/decorators/validators';
+// // // Step3.tsx
+// // import { useFormContext } from 'react-hook-form';
+// // import { required } from '../../../../common/utils/decorators/validators';
+
+// // interface Step3Props {
+// //   isMilitary: boolean | null;
+// // }
+
+// // const Step3: React.FC<Step3Props> = ({isMilitary}) => {
+// //   const { register, formState: { errors } } = useFormContext();
+
+// //   return (
+// //     <div className="space-y-6">
+// //       <h2 className="text-2xl font-bold text-gray-700">Marital Status & Emergency Contact</h2>
+// //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+// //         {/* Marital Status Field */}
+// //         <div className="form-group">
+// //           <label className="block font-medium text-gray-700">Marital Status:</label>
+// //           <input
+// //             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+// //             {...register('maritalStatus', { validate: required('Marital status is required') })}
+// //           />
+// //           {errors.maritalStatus && <p className="text-red-500 text-sm mt-1">{errors.maritalStatus?.message as string}</p>}
+// //         </div>
+
+// //         {/* Emergency Contact Field */}
+// //         <div className="form-group">
+// //           <label className="block font-medium text-gray-700">Emergency Contact:</label>
+// //           <input
+// //             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+// //             {...register('emergencyContact', { validate: required('Emergency contact is required') })}
+// //           />
+// //           {errors.emergencyContact && <p className="text-red-500 text-sm mt-1">{errors.emergencyContact?.message as string}</p>}
+// //         </div>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default Step3;
+
+// import { useFormContext } from "react-hook-form";
+// import { required } from "../../../../common/utils/decorators/validators";
+// import { convertToEthiopianDate } from "../../../../common/utils/dateUtils";
+// import { useTranslation } from "react-i18next";
 
 // interface Step3Props {
 //   isMilitary: boolean | null;
 // }
 
-// const Step3: React.FC<Step3Props> = ({isMilitary}) => {
-//   const { register, formState: { errors } } = useFormContext();
+// const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
+//   const { t } = useTranslation("registration");
+//   const {
+//     register,
+//     watch,
+//     formState: { errors },
+//   } = useFormContext();
+//   const maritalStatus = watch("maritalStatus");
 
 //   return (
 //     <div className="space-y-6">
-//       <h2 className="text-2xl font-bold text-gray-700">Marital Status & Emergency Contact</h2>
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-//         {/* Marital Status Field */}
-//         <div className="form-group">
-//           <label className="block font-medium text-gray-700">Marital Status:</label>
-//           <input
-//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-//             {...register('maritalStatus', { validate: required('Marital status is required') })}
-//           />
-//           {errors.maritalStatus && <p className="text-red-500 text-sm mt-1">{errors.maritalStatus?.message as string}</p>}
-//         </div>
+//       <h2 className="text-2xl font-bold text-gray-700">
+//         Marital Status & Emergency Contact
+//       </h2>
 
-//         {/* Emergency Contact Field */}
+//       {/* Marital Status Field */}
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 //         <div className="form-group">
-//           <label className="block font-medium text-gray-700">Emergency Contact:</label>
+//           <label className="block font-medium text-gray-700">
+//             Marital Status <span className="text-red-500">*</span>:
+//           </label>
+//           <select
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("maritalStatus", {
+//               validate: required("Marital status is required"),
+//             })}
+//           >
+//             <option value="">Select...</option>
+//             <option value="single">Single</option>
+//             {!isMilitary && <option value="married">Married</option>}
+//             {!isMilitary && <option value="widowed">Widowed</option>}
+//             {!isMilitary && <option value="divorced">Divorced</option>}
+//           </select>
+//           {errors.maritalStatus && (
+//             <p className="text-red-500 text-sm mt-1">
+//               {errors.maritalStatus?.message as string}
+//             </p>
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Conditionally Rendered Spouse Information */}
+//       {maritalStatus === "married" && (
+//         <>
+//           <h2 className="text-xl font-bold text-gray-700 mt-6">
+//             Spouse Information
+//           </h2>
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 First Name <span className="text-red-500">*</span>:
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.firstName", {
+//                   validate: required("First Name is required"),
+//                 })}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Middle Name (optional):
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.middleName")}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Last Name <span className="text-red-500">*</span>:
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.lastName", {
+//                   validate: required("Last Name is required"),
+//                 })}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Date of Birth:
+//               </label>
+//               <input
+//                 type="date"
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.dob")}
+//                 onChange={(e) => convertToEthiopianDate(e.target.value)} // convert to Ethiopian date on selection
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Phone Number <span className="text-red-500">*</span>:
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.phoneNumber", {
+//                   validate: required("Phone Number is required"),
+//                 })}
+//               />
+//             </div>
+//           </div>
+
+//           <h2 className="text-xl font-bold text-gray-700 mt-6">
+//             Spouse Address
+//           </h2>
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Region (optional):
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.address.region")}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Subcity (optional):
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.address.subcity")}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Woreda (optional):
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.address.woreda")}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 House Number (optional):
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.address.houseNumber")}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label className="block font-medium text-gray-700">
+//                 Leyu Bota (optional):
+//               </label>
+//               <input
+//                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//                 {...register("spouseInfo.address.leyuBota")}
+//               />
+//             </div>
+//           </div>
+//         </>
+//       )}
+
+//       {maritalStatus === "divorced" && (
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Divorce Date:
+//           </label>
 //           <input
 //             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-//             {...register('emergencyContact', { validate: required('Emergency contact is required') })}
+//             {...register("divorcedInfo.divorceDate")}
 //           />
-//           {errors.emergencyContact && <p className="text-red-500 text-sm mt-1">{errors.emergencyContact?.message as string}</p>}
+//         </div>
+//       )}
+
+//       {/* Emergency Contact Information */}
+//       <h2 className="text-2xl font-bold text-gray-700 mt-6">
+//         Emergency Contact
+//       </h2>
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             First Name <span className="text-red-500">*</span>:
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.info.firstName", {
+//               validate: required("First Name is required"),
+//             })}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Middle Name (optional):
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.info.middleName")}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Last Name <span className="text-red-500">*</span>:
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.info.lastName", {
+//               validate: required("Last Name is required"),
+//             })}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Relationship <span className="text-red-500">*</span>:
+//           </label>
+//           <select
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.info.relationship", {
+//               validate: required("Relationship is required"),
+//             })}
+//           >
+//             <option value="">Select...</option>
+//             <option value="parent">Parent</option>
+//             <option value="spouse">Spouse</option>
+//             <option value="child">Child</option>
+//             <option value="sibling">Sibling</option>
+//             <option value="friend">Friend</option>
+//             <option value="other">Other</option>
+//           </select>
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Phone Number <span className="text-red-500">*</span>:
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.info.phoneNumber", {
+//               validate: required("Phone Number is required"),
+//             })}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Email (optional):
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.info.email")}
+//           />
+//         </div>
+//       </div>
+
+//       {/* Emergency Contact Address */}
+//       <h2 className="text-2xl font-bold text-gray-700 mt-6">
+//         Emergency Contact Address
+//       </h2>
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Region (optional):
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.address.region")}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Subcity (optional):
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.address.subcity")}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Woreda (optional):
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.address.woreda")}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             House Number (optional):
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.address.houseNumber")}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label className="block font-medium text-gray-700">
+//             Leyu Bota (optional):
+//           </label>
+//           <input
+//             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+//             {...register("emergencyContact.address.leyuBota")}
+//           />
 //         </div>
 //       </div>
 //     </div>
@@ -42,12 +353,14 @@
 import { useFormContext } from "react-hook-form";
 import { required } from "../../../../common/utils/decorators/validators";
 import { convertToEthiopianDate } from "../../../../common/utils/dateUtils";
+import { useTranslation } from "react-i18next";
 
 interface Step3Props {
   isMilitary: boolean | null;
 }
 
 const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
+  const { t } = useTranslation("registration");
   const {
     register,
     watch,
@@ -58,26 +371,26 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-700">
-        Marital Status & Emergency Contact
+        {t("step3.maritalStatusAndEmergencyContact")}
       </h2>
 
       {/* Marital Status Field */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Marital Status <span className="text-red-500">*</span>:
+            {t("step3.maritalStatus")} <span className="text-red-500">*</span>:
           </label>
           <select
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
             {...register("maritalStatus", {
-              validate: required("Marital status is required"),
+              validate: required(t("step3.maritalStatusRequired")),
             })}
           >
-            <option value="">Select...</option>
-            <option value="single">Single</option>
-            {!isMilitary && <option value="married">Married</option>}
-            {!isMilitary && <option value="widowed">Widowed</option>}
-            {!isMilitary && <option value="divorced">Divorced</option>}
+            <option value="">{t("step3.select")}</option>
+            <option value="single">{t("step3.single")}</option>
+            {!isMilitary && <option value="married">{t("step3.married")}</option>}
+            {!isMilitary && <option value="widowed">{t("step3.widowed")}</option>}
+            {!isMilitary && <option value="divorced">{t("step3.divorced")}</option>}
           </select>
           {errors.maritalStatus && (
             <p className="text-red-500 text-sm mt-1">
@@ -91,23 +404,23 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
       {maritalStatus === "married" && (
         <>
           <h2 className="text-xl font-bold text-gray-700 mt-6">
-            Spouse Information
+            {t("step3.spouseInformation")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                First Name <span className="text-red-500">*</span>:
+                {t("step3.firstName")} <span className="text-red-500">*</span>:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                 {...register("spouseInfo.firstName", {
-                  validate: required("First Name is required"),
+                  validate: required(t("step3.firstNameRequired")),
                 })}
               />
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Middle Name (optional):
+                {t("step3.middleNameOptional")}:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -116,18 +429,18 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Last Name <span className="text-red-500">*</span>:
+                {t("step3.lastName")} <span className="text-red-500">*</span>:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                 {...register("spouseInfo.lastName", {
-                  validate: required("Last Name is required"),
+                  validate: required(t("step3.lastNameRequired")),
                 })}
               />
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Date of Birth:
+                {t("step3.dateOfBirth")}:
               </label>
               <input
                 type="date"
@@ -138,24 +451,24 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Phone Number <span className="text-red-500">*</span>:
+                {t("step3.phoneNumber")} <span className="text-red-500">*</span>:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                 {...register("spouseInfo.phoneNumber", {
-                  validate: required("Phone Number is required"),
+                  validate: required(t("step3.phoneNumberRequired")),
                 })}
               />
             </div>
           </div>
 
           <h2 className="text-xl font-bold text-gray-700 mt-6">
-            Spouse Address
+            {t("step3.spouseAddress")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Region (optional):
+                {t("step3.regionOptional")}:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -164,7 +477,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Subcity (optional):
+                {t("step3.subcityOptional")}:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -173,7 +486,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Woreda (optional):
+                {t("step3.woredaOptional")}:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -182,7 +495,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                House Number (optional):
+                {t("step3.houseNumberOptional")}:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -191,7 +504,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
             </div>
             <div className="form-group">
               <label className="block font-medium text-gray-700">
-                Leyu Bota (optional):
+                {t("step3.leyuBotaOptional")}:
               </label>
               <input
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -205,7 +518,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
       {maritalStatus === "divorced" && (
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Divorce Date:
+            {t("step3.divorceDate")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -216,23 +529,23 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
 
       {/* Emergency Contact Information */}
       <h2 className="text-2xl font-bold text-gray-700 mt-6">
-        Emergency Contact
+        {t("step3.emergencyContact")}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            First Name <span className="text-red-500">*</span>:
+            {t("step3.firstName")} <span className="text-red-500">*</span>:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
             {...register("emergencyContact.info.firstName", {
-              validate: required("First Name is required"),
+              validate: required(t("step3.firstNameRequired")),
             })}
           />
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Middle Name (optional):
+            {t("step3.middleNameOptional")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -241,48 +554,48 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Last Name <span className="text-red-500">*</span>:
+            {t("step3.lastName")} <span className="text-red-500">*</span>:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
             {...register("emergencyContact.info.lastName", {
-              validate: required("Last Name is required"),
+              validate: required(t("step3.lastNameRequired")),
             })}
           />
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Relationship <span className="text-red-500">*</span>:
+            {t("step3.relationship")} <span className="text-red-500">*</span>:
           </label>
           <select
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
             {...register("emergencyContact.info.relationship", {
-              validate: required("Relationship is required"),
+              validate: required(t("step3.relationshipRequired")),
             })}
           >
-            <option value="">Select...</option>
-            <option value="parent">Parent</option>
-            <option value="spouse">Spouse</option>
-            <option value="child">Child</option>
-            <option value="sibling">Sibling</option>
-            <option value="friend">Friend</option>
-            <option value="other">Other</option>
+            <option value="">{t("step3.select")}</option>
+            <option value="parent">{t("step3.parent")}</option>
+            <option value="spouse">{t("step3.spouse")}</option>
+            <option value="child">{t("step3.child")}</option>
+            <option value="sibling">{t("step3.sibling")}</option>
+            <option value="friend">{t("step3.friend")}</option>
+            <option value="other">{t("step3.other")}</option>
           </select>
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Phone Number <span className="text-red-500">*</span>:
+            {t("step3.phoneNumber")} <span className="text-red-500">*</span>:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
             {...register("emergencyContact.info.phoneNumber", {
-              validate: required("Phone Number is required"),
+              validate: required(t("step3.phoneNumberRequired")),
             })}
           />
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Email (optional):
+            {t("step3.emailOptional")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -293,12 +606,12 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
 
       {/* Emergency Contact Address */}
       <h2 className="text-2xl font-bold text-gray-700 mt-6">
-        Emergency Contact Address
+        {t("step3.emergencyContactAddress")}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Region (optional):
+            {t("step3.regionOptional")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -307,7 +620,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Subcity (optional):
+            {t("step3.subcityOptional")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -316,7 +629,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Woreda (optional):
+            {t("step3.woredaOptional")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -325,7 +638,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            House Number (optional):
+            {t("step3.houseNumberOptional")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
@@ -334,7 +647,7 @@ const Step3: React.FC<Step3Props> = ({ isMilitary }) => {
         </div>
         <div className="form-group">
           <label className="block font-medium text-gray-700">
-            Leyu Bota (optional):
+            {t("step3.leyuBotaOptional")}:
           </label>
           <input
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"

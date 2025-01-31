@@ -7,7 +7,6 @@ const EmployeeWorkExperience: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Work Experience</h2>
       <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-gray-100 text-left text-gray-600">

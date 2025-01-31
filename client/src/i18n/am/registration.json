@@ -1,0 +1,60 @@
+{
+    "step3": {
+        "maritalStatusAndEmergencyContact": "የትዳር ሁኔታ እና የአደጋ አደጋ አድራሻ",
+        "maritalStatus": "የትዳር ሁኔታ",
+        "maritalStatusRequired": "የትዳር ሁኔታ መሙላት አለበት",
+        "select": "ምረጥ...",
+        "single": "ያላገባ",
+        "married": "ያገባ",
+        "widowed": "የባል የሞተች",
+        "divorced": "የተፋታች",
+        "spouseInformation": "የባል/ሚስት መረጃ",
+        "firstName": "የመጀመሪያ ስም",
+        "firstNameRequired": "የመጀመሪያ ስም መሙላት አለበት",
+        "middleNameOptional": "የአባት ስም (አማራጭ)",
+        "lastName": "የአያት ስም",
+        "lastNameRequired": "የአያት ስም መሙላት አለበት",
+        "dateOfBirth": "የልደት ቀን",
+        "phoneNumber": "ስልክ ቁጥር",
+        "phoneNumberRequired": "ስልክ ቁጥር መሙላት አለበት",
+        "spouseAddress": "የባል/ሚስት አድራሻ",
+        "regionOptional": "ክልል (አማራጭ)",
+        "subcityOptional": "ክፍለ ከተማ (አማራጭ)",
+        "woredaOptional": "ወረዳ (አማራጭ)",
+        "houseNumberOptional": "የቤት ቁጥር (አማራጭ)",
+        "leyuBotaOptional": "ሌዩ ቦታ (አማራጭ)",
+        "divorceDate": "የፍች ቀን",
+        "emergencyContact": "የአደጋ አድራሻ",
+        "relationship": "ዝምድና",
+        "relationshipRequired": "ዝምድና መሙላት አለበት",
+        "parent": "ወላጅ",
+        "spouse": "ባል/ሚስት",
+        "child": "ልጅ",
+        "sibling": "ወንድም/እህት",
+        "friend": "ጓደኛ",
+        "other": "ሌላ",
+        "emailOptional": "ኢሜል (አማራጭ)",
+        "emergencyContactAddress": "የአደጋ አድራሻ"
+    },
+    "step0": {
+        "areYouCivilianOrMilitary": "የሲቪል አለም ነዎት ወይስ የሰራዊት?",
+        "civilian": "የሲቪል አለም",
+        "civilianDescription": "ለሲቪል ሰራተኞች",
+        "military": "የሰራዊት",
+        "militaryDescription": "ለሰራዊት ሰራተኞች"
+    },
+    "registrationForm": {
+        "steps": {
+            "civilMilitarySelection": "የሲቪል/ሰራዊት ምርጫ",
+            "basicInfo": "መሰረታዊ መረጃ",
+            "workInfo": "የስራ መረጃ",
+            "maritalEmergencyContact": "የትዳር ሁኔታ እና የአደጋ አድራሻ"
+        },
+        "buttons": {
+            "back": "ተመለስ",
+            "next": "ቀጣይ",
+            "submit": "አስገባ",
+            "submitting": "በማስገባት ላይ..."
+        }
+    }
+}

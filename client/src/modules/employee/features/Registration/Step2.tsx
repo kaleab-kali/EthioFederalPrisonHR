@@ -272,6 +272,7 @@
 
 
 import { useFormContext, useFieldArray } from 'react-hook-form';
+import { useTranslation } from "react-i18next";
 
 // Define TypeScript interfaces for the form structure
 interface Education {
@@ -363,10 +364,43 @@ const Step2: React.FC = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                 {...register(`education.${index}.institution`, { required: 'Institution is required' })}
               >
-                <option value="">Select Institution</option>
-                <option value="Addis Ababa University">Addis Ababa University</option>
-                <option value="Harvard University">Harvard University</option>
-                <option value="Oxford University">Oxford University</option>
+               <option value="">Select Institution</option>
+<option value="Addis Ababa University">Addis Ababa University</option>
+<option value="Adama Science and Technology University">Adama Science and Technology University</option>
+<option value="Addis Ababa Science and Technology University">Addis Ababa Science and Technology University</option>
+<option value="Addis Continental Institute of Public Health">Addis Continental Institute of Public Health</option>
+<option value="Adigrat University">Adigrat University</option>
+<option value="Admas University">Admas University</option>
+<option value="Ambo University">Ambo University</option>
+<option value="Arba Minch University">Arba Minch University</option>
+<option value="Arsi University">Arsi University</option>
+<option value="Axum University">Axum University</option>
+<option value="Bahir Dar University">Bahir Dar University</option>
+<option value="Bule Hora University">Bule Hora University</option>
+<option value="Debre Berhan University">Debre Berhan University</option>
+<option value="Debre Markos University">Debre Markos University</option>
+<option value="Debre Tabor University">Debre Tabor University</option>
+<option value="Dilla University">Dilla University</option>
+<option value="Dire Dawa University">Dire Dawa University</option>
+<option value="Gambella University">Gambella University</option>
+<option value="Haramaya University">Haramaya University</option>
+<option value="Hawassa University">Hawassa University</option>
+<option value="Jimma University">Jimma University</option>
+<option value="Jigjiga University">Jigjiga University</option>
+<option value="Madda Walabu University">Madda Walabu University</option>
+<option value="Mekelle University">Mekelle University</option>
+<option value="Mizan-Tepi University">Mizan-Tepi University</option>
+<option value="Samara University">Samara University</option>
+<option value="St. Mary's University">St. Mary's University</option>
+<option value="University of Gondar">University of Gondar</option>
+<option value="Wachemo University">Wachemo University</option>
+<option value="Wolaita Sodo University">Wolaita Sodo University</option>
+<option value="Wolkite University">Wolkite University</option>
+<option value="Wollo University">Wollo University</option>
+<option value="Wollega University">Wollega University</option>
+<option value="Unity University">Unity University</option>
+<option value="Rift Valley University">Rift Valley University</option>
+
               </select>
               {errors.education?.[index]?.institution && (
   <p className="text-red-500 text-sm mt-1">
@@ -406,9 +440,16 @@ const Step2: React.FC = () => {
                 {...register(`education.${index}.educationLevel`, { required: 'Education level is required' })}
               >
                 <option value="">Select Education Level</option>
-                <option value="Bachelor's Degree">Bachelor's Degree</option>
-                <option value="Master's Degree">Master's Degree</option>
-                <option value="Doctorate">Doctorate</option>
+<option value="8th Grade">8th Grade</option>
+<option value="10th Grade">10th Grade</option>
+<option value="12th Grade">12th Grade</option>
+<option value="TVET">TVET (Technical and Vocational Education and Training)</option>
+<option value="Diploma">Diploma</option>
+<option value="Bachelor's Degree">Bachelor's Degree</option>
+<option value="Master's Degree">Master's Degree</option>
+<option value="Doctorate">Doctorate (PhD)</option>
+<option value="Other">Other</option>
+
               </select>
               {errors.education?.[index]?.educationLevel && (
   <p className="text-red-500 text-sm mt-1">

@@ -11,7 +11,9 @@ import employeeRole_en from "./en/employeeRoleAssignment.json";
 import header_en from "./en/header.json";
 import sider_en from "./en/sidebar.json";
 import transfer_en from "./en/transfer.json";
-
+import registration_en from "./en/registration.json";
+import employeeProfile_en from "./en/employeeProfile.json";
+import dashbaord_en from "./en/dashboard.json";
 
 
 
@@ -20,6 +22,9 @@ import employeeRole_am from "./am/employeeRoleAssignment.json";
 import header_am from "./am/header.json";
 import sider_am from "./am/sidebar.json";
 import transfer_am from "./am/transfer.json";
+import registration_am from "./am/registration.json";
+import employeeProfile_am from "./am/employeeProfile.json";
+import dashbaord_am from "./am/dashboard.json";
 
 
 
@@ -32,6 +37,9 @@ const resources = {
     adminPassChange: adminPassChange_en,
     employeeRole: employeeRole_en,
     transfer: transfer_en,
+    registration: registration_en,
+    employeeProfile: employeeProfile_en,
+    dashboard: dashbaord_en,
   },
   am: {
     commen: common_am,
@@ -40,6 +48,9 @@ const resources = {
     adminPassChange: adminPassChange_am,
     employeeRole: employeeRole_am,
     transfer: transfer_am,
+    registration: registration_am,
+    employeeProfile: employeeProfile_am,
+    dashboard: dashbaord_am,
   },
 };
 
@@ -48,7 +59,7 @@ i18n.use(LanguageDetector).use(initReactI18next).init({
   resources,
   lng: "en", // default language
   fallbackLng: "en",
-  ns: ["common","employeeRole", "adminPassChange","header","sider","transfer"], // Define namespaces
+  ns: ["common","employeeRole", "adminPassChange","header","sider","transfer","registration", "employeeProfile","dashboard"], // Define namespaces
   defaultNS: "common",
   fallbackNS: "common",
   interpolation: {

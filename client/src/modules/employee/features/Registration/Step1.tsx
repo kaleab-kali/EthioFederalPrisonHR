@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { required } from "../../../../common/utils/decorators/validators";
+import { useTranslation } from "react-i18next";
 
-// Define types for the cascading dropdown data
 interface RegionData {
   [key: string]: string[];
 }
@@ -11,18 +11,55 @@ interface WoredaData {
   [key: string]: string[];
 }
 
-// Dummy data for cascading dropdowns
+// Real Ethiopian data for cascading dropdowns
 const regionData: RegionData = {
-  "Region 1": ["Subcity 1A", "Subcity 1B"],
-  "Region 2": ["Subcity 2A", "Subcity 2B"],
+  "Addis Ababa": [
+    "Addis Ketema",
+    "Akaky Kaliti",
+    "Arada",
+    "Bole",
+    "Gulele",
+    "Kirkos",
+    "Kolfe Keranio",
+    "Lideta",
+    "Nifas Silk-Lafto",
+    "Yeka",
+  ],
+  "Oromia": ["Adama", "Bishoftu", "Shashamane", "Jimma"],
+  "Amhara": ["Bahir Dar", "Gondar", "Dessie", "Debre Birhan"],
+  "Tigray": ["Mekelle", "Shire", "Adigrat", "Axum"],
+  "Sidama": ["Hawassa"],
+  "SNNPR": ["Arba Minch", "Wolaita Sodo", "Hossana"],
+  "Afar": ["Semera", "Logiya"],
+  "Benishangul-Gumuz": ["Assosa"],
+  "Gambela": ["Gambela"],
+  "Harari": ["Harar"],
+  "Somali": ["Jijiga"],
 };
 
 const woredaData: WoredaData = {
-  "Subcity 1A": ["Woreda 1A1", "Woreda 1A2"],
-  "Subcity 1B": ["Woreda 1B1", "Woreda 1B2"],
-  "Subcity 2A": ["Woreda 2A1", "Woreda 2A2"],
-  "Subcity 2B": ["Woreda 2B1", "Woreda 2B2"],
+  "Addis Ketema": ["Woreda 01", "Woreda 02", "Woreda 03"],
+  "Akaky Kaliti": ["Woreda 04", "Woreda 05", "Woreda 06"],
+  "Arada": ["Woreda 07", "Woreda 08"],
+  "Bole": ["Woreda 09", "Woreda 10", "Woreda 11"],
+  "Gulele": ["Woreda 12", "Woreda 13", "Woreda 14"],
+  "Kirkos": ["Woreda 15", "Woreda 16", "Woreda 17"],
+  "Kolfe Keranio": ["Woreda 18", "Woreda 19", "Woreda 20"],
+  "Lideta": ["Woreda 21", "Woreda 22"],
+  "Nifas Silk-Lafto": ["Woreda 23", "Woreda 24", "Woreda 25"],
+  "Yeka": ["Woreda 26", "Woreda 27", "Woreda 28"],
+  "Adama": ["Woreda 01", "Woreda 02"],
+  "Bishoftu": ["Woreda 03", "Woreda 04"],
+  "Shashamane": ["Woreda 05", "Woreda 06"],
+  "Jimma": ["Woreda 07", "Woreda 08"],
+  "Mekelle": ["Woreda 01", "Woreda 02"],
+  "Hawassa": ["Woreda 01", "Woreda 02"],
+  "Bahir Dar": ["Woreda 01", "Woreda 02"],
+  "Gondar": ["Woreda 03", "Woreda 04"],
+  "Jijiga": ["Woreda 05", "Woreda 06"],
 };
+
+
 
 // Dummy data for dropdowns
 const positionOptions = ["Manager", "Engineer", "Technician", "HR"];
@@ -75,10 +112,20 @@ const Step1: React.FC<Step1Props> = ({ isMilitary }) => {
         >
           {isMilitary ? (
             <>
-              <option value="Private">Private</option>
-              <option value="Sergeant">Sergeant</option>
-              <option value="Lieutenant">Lieutenant</option>
-              <option value="Captain">Captain</option>
+              <option value="Constable">ኮንስታብል</option>
+              <option value="Assistant Sergeant">ረዳት ሳጅን</option>
+              <option value="Deputy Sergeant">ምክትል ሳጅን</option>
+              <option value="Sergeant">ሳጅን</option>
+              <option value="Chief Sergeant">ዋና ሳጅን</option>
+              <option value="Assistant Inspector">ረዳት ኢንስፔክተር</option>
+              <option value="Deputy Inspector">ምክትል ኢንስፔክተር</option>
+              <option value="Inspector">ኢንስፔክተር</option>
+              <option value="Chief Inspector">ዋና ኢንስፔክተር</option>
+              <option value="DeputyCommander">ምክትል ኮማንደር</option>
+              <option value="Commander">ኮማንደር</option>
+              <option value="Assistant Commissioner">ረዳት ኮሚሽነር</option>
+              <option value="Deputy Commissioner">ምክትል ኮሚሽነር</option>
+              <option value="Commissioner General">ኮሚሽነር ጀነራል</option>
             </>
           ) : (
             <>
