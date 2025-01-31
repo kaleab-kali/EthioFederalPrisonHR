@@ -18,7 +18,11 @@ import {
   updateTitleData,
   submitSalaryLimitForm,
   updateSalaryLimitData,
+  submitChangeRole,
+  submitChangePassword,
+  submitAddPassword,
 } from "./api";
+import { useAuth } from "../../../common/components/context/AuthContex";
 
 // Mutation for creating an Department
 export function useSubmitCenter() {
@@ -48,6 +52,86 @@ export function useSubmitCenter() {
   });
 }
 
+export function useSubmitChangeRole() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitChangeRole(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to change Role");
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("Role created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["employee"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useSubmitAddPassword() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+  const {user}=useAuth()
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitAddPassword(data,user?.centerName || '');
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to change Password", error);
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("password created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["employee"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
+
+export function useSubmitChangePassword() {
+  const { setLoading } = useLoading();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      setLoading(true);
+      return await submitChangePassword(data);
+    },
+    onError: (error: any) => {
+      console.error("Error:", error);
+      console.log(process.env.REACT_APP_API_URL + "heheheheh");
+
+      toast.error(error.message || "Failed to change Password", error);
+      setLoading(false);
+    },
+    onSuccess: () => {
+      toast.success("password created successfully");
+      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["employee"] });
+    },
+    onSettled: () => {
+      setLoading(false);
+    },
+  });
+}
 export function useUpdateCenter(
   options?: UseMutationOptions<void, Error, { id: string; data: any }, unknown>
 ) {

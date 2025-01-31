@@ -9,6 +9,7 @@ import {
 import { LuArrowDownUp, LuDownload } from "react-icons/lu";
 import { IComplaintList } from "../types/Complaint";
 import { useAllComplaints } from "../services/queries";
+import { useAuth } from "../../../common/components/context/AuthContex";
 
 const data: IComplaintList[] = [
   {
@@ -145,7 +146,9 @@ const columns = [
 
 const ComplaintList = () => {
   const [data, setData] = useState<IComplaintList[]>([]);
-  const dataQuery = useAllComplaints();
+    const { user } = useAuth();
+
+  const dataQuery = useAllComplaints(user?.centerName ?? '');
   console.log("Data" + dataQuery.data);
   useEffect(() => {
     if (Array.isArray(dataQuery.data?.complaints)) {

@@ -15,7 +15,8 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import { useAllEmployees } from "../services/queries";
+import { useAllEmployees, useFetchEmployee } from "../services/queries";
+import { useAuth } from "../../../common/components/context/AuthContex";
 const columnHelper = createColumnHelper<IEmployeeListTable>();
 const getColumns = (handleAction: (row: Row<IEmployeeListTable>) => void) => [
   columnHelper.accessor("title", {
@@ -67,7 +68,8 @@ const getColumns = (handleAction: (row: Row<IEmployeeListTable>) => void) => [
 const EmployeeListTable: React.FC = () => {
   const navigate = useNavigate();
   const [emplyees, setEmployees] = useState<IEmployeeListTable[]>([]);
-  const employeesQuery = useAllEmployees();
+  const {user} = useAuth()
+  const employeesQuery = useFetchEmployee(user?.centerName || '');
   console.log("employees" + employeesQuery.data);
    useEffect(() => {
      if (employeesQuery.data) {

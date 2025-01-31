@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { MdOutlineAppRegistration, MdAccountBalance } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "./context/AuthContex";
 
 // structure and permissions for each item
 const menuItems = [
@@ -23,7 +24,7 @@ const menuItems = [
     icon: FaTachometerAlt,
     route: "/home/dashboard",
     submenus: [],
-    allowedRoles: ["admin", "user", "manager"],
+    allowedRoles: ["admin", "hq-admin", "hrManager"],
   },
   {
     name: "Organization",
@@ -33,58 +34,58 @@ const menuItems = [
         name: "Departments",
         icon: FaBuilding,
         route: "/organization/departments",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Center",
         icon: FaBuilding,
         route: "/organization/centers",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Position",
         icon: FaBuilding,
         route: "/organization/positions",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "leave Types",
         icon: FaBuilding,
         route: "/organization/leaveTypes",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Title",
         icon: FaBuilding,
         route: "/organization/titles",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Salary Limit",
         icon: FaUsers,
         route: "/organization/salaryLimit",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Role",
         icon: FaBuilding,
         route: "/organization/role",
-        allowedRoles: ["admin"],
+        allowedRoles: ["hq-admin"],
       },
       {
         name: "Password",
         icon: FaBuilding,
         route: "/organization/password",
-        allowedRoles: ["admin"],
+        allowedRoles: ["hq-admin", "admin"],
       },
       {
         name: "Calender",
         icon: FaBuilding,
         route: "/organization/calender",
-        allowedRoles: ["admin"],
+        allowedRoles: ["hq-admin"],
       },
     ],
-    allowedRoles: ["admin", "manager"],
+    allowedRoles: ["hq-admin", "hrManager","admin"],
   },
   {
     name: "Employees",
@@ -94,84 +95,82 @@ const menuItems = [
         name: "List",
         icon: FaUserTie,
         route: "/employee/list",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager","hrStaff"],
       },
       {
         name: "Registration",
         icon: MdOutlineAppRegistration,
         route: "/employee/registration",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager","hrstaff"],
       },
       {
         name: "Transfer",
         icon: MdOutlineAppRegistration,
         route: "/employee/transfer",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Photo Capture",
         icon: MdOutlineAppRegistration,
         route: "/employee/picture",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager", "hrStaff"],
       },
       {
         name: "Work Experience",
         icon: MdOutlineAppRegistration,
         route: "/employee/workExperience",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager", "hrStaff"],
       },
       {
         name: "Document Tracking",
         icon: MdOutlineAppRegistration,
         route: "/employee/document",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager", "documentStaff"],
       },
       {
         name: "Martial Status",
         icon: MdOutlineAppRegistration,
         route: "/employee/martialStatus",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager", "hrStaff"],
       },
       {
         name: "Health Record",
         icon: MdOutlineAppRegistration,
         route: "/employee/healthRecord",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager", "hrStaff"],
       },
       {
         name: "Material Record",
         icon: MdOutlineAppRegistration,
         route: "/employee/materialRecord",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Leave Permit",
         icon: MdOutlineAppRegistration,
         route: "/employee/leavePass",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Performance",
         icon: MdOutlineAppRegistration,
         route: "/employee/performanceEvaluation",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Accept Transfer",
         icon: MdOutlineAppRegistration,
         route: "/employee/acceptTransfer",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Complaint",
         icon: MdOutlineAppRegistration,
         route: "/employee/complaint",
-        allowedRoles: ["admin", "manager"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
-      
-
     ],
-    allowedRoles: ["admin", "manager"],
+    allowedRoles: ["hq-admin", "hrManager", "documentStaff", "hrStaff"],
   },
   {
     name: "Leaves",
@@ -181,16 +180,16 @@ const menuItems = [
         name: "Request Leave",
         icon: FaCalendarAlt,
         route: "/leave/request",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrStaff"],
       },
       {
         name: "Leave Balance",
         icon: MdAccountBalance,
         route: "/leave/balance",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrStaff"],
       },
     ],
-    allowedRoles: ["admin", "user"],
+    allowedRoles: ["hq-admin", "hrStaff"],
   },
   {
     name: "Attendance",
@@ -200,22 +199,22 @@ const menuItems = [
         name: "Daily",
         icon: FaClipboardList,
         route: "/attendance/daily",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrStaff"],
       },
       {
         name: "Weekly",
         icon: FaClipboardList,
         route: "/attendance/weekly",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrStaff"],
       },
       {
         name: "Missing",
         icon: FaExclamationTriangle,
         route: "/attendance/missing",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrStaff"],
       },
     ],
-    allowedRoles: ["admin", "user"],
+    allowedRoles: ["hq-admin", "hrStaff","employee", "hrManager"],
   },
   {
     name: "Appraisal",
@@ -225,22 +224,22 @@ const menuItems = [
         name: "Candidates",
         icon: FaUsers,
         route: "/appraisal/candidates",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Form",
         icon: FaClipboardList,
         route: "/appraisal/form",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Approved List",
         icon: FaClipboardList,
         route: "/appraisal/approved",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
     ],
-    allowedRoles: ["admin", "user"],
+    allowedRoles: ["hq-admin", "hrManager"],
   },
   // Reward
   {
@@ -251,16 +250,16 @@ const menuItems = [
         name: "Salary Raise",
         icon: FaMoneyBill,
         route: "/reward/salaryRaise",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Service Reward",
         icon: FaMoneyBill,
         route: "/reward/serviceReward",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
     ],
-    allowedRoles: ["admin", "user"],
+    allowedRoles: ["hq-admin", "hrManager"],
   },
   // Retirement
   {
@@ -271,16 +270,16 @@ const menuItems = [
         name: "Request Number",
         icon: FaClipboardList,
         route: "/retirement/requestNumber",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrStaff"],
       },
       {
         name: "Form",
         icon: FaClipboardList,
         route: "/retirement/form",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrStaff"],
       },
     ],
-    allowedRoles: ["admin", "user"],
+    allowedRoles: ["hq-admin", "hrStaff"],
   },
   // Complaint
   {
@@ -291,16 +290,16 @@ const menuItems = [
         name: "Application",
         icon: FaExclamationTriangle,
         route: "/complaint/registration",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
       {
         name: "Received Candidates",
         icon: FaUsers,
         route: "/complaint/list",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "hrManager"],
       },
     ],
-    allowedRoles: ["admin", "user"],
+    allowedRoles: ["hq-admin", "hrManager"],
   },
   {
     name: "Documents",
@@ -310,16 +309,16 @@ const menuItems = [
         name: "Incoming",
         icon: FaExclamationTriangle,
         route: "/centerDocument/incoming",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "documentStaff"],
       },
       {
         name: "Outgoing",
         icon: FaUsers,
         route: "/centerDocument/outgoing",
-        allowedRoles: ["admin", "user"],
+        allowedRoles: ["hq-admin", "documentStaff"],
       },
     ],
-    allowedRoles: ["admin", "user"],
+    allowedRoles: ["hq-admin", "documentStaff"],
   },
 ];
 
@@ -347,8 +346,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
       setOpenMenu(null);
     }
   };
-
-
+const { user, logout } = useAuth();
+const handleLogout = () => {
+  logout();
+  console.log("Logging out...");
+};
   const handleBlur = (event: React.FocusEvent) => {
     const currentTarget = event.currentTarget;
 
@@ -438,7 +440,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                         <li key={submenu.name}>
                           <NavLink
                             to={submenu.route}
-                            // onClick={() => setOpenMenu(null)} 
+                            // onClick={() => setOpenMenu(null)}
                             className={({ isActive }) =>
                               `block p-2 text-sm text-gray-600 hover:bg-blue-50 rounded ${
                                 isActive ? "bg-blue-100" : ""
@@ -452,6 +454,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, userRole }) => {
                           </NavLink>
                         </li>
                       ))}
+                    <button onClick={handleLogout}>logout</button>
                   </ul>
                 )}
               </li>

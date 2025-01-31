@@ -30,22 +30,22 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-app.use('/api/employees', employeeRoute);
-app.use('/api/centers', centerRoute);
-app.use('/api/leavebalances', leaveBalanceRoute);
-app.use('/api/leaveinfo', leaveInfoRoute);
-app.use('/api/documents', documentRoute);
+app.use('/api/employees', employeeRoute);//
+app.use('/api/centers', centerRoute);//
+app.use('/api/leavebalances', leaveBalanceRoute);//
+app.use('/api/leaveinfo', leaveInfoRoute);//
+app.use('/api/documents', documentRoute);//
 app.use('/api/retirements', retirementsRoute);
-app.use('/api/complaint', complaintRoute);
-app.use('/api/appraisal', appraisalRoute);
-app.use('/api/appraisalHistory', appraisalHistoryRoute);
-app.use('/api/salaryRaise', salaryRaiseRoute);
-app.use('/api/salaryLimit', salaryLimitRoute);
+app.use('/api/complaint', complaintRoute);//
+app.use('/api/appraisal', appraisalRoute);//
+app.use('/api/appraisalHistory', appraisalHistoryRoute);//
+app.use('/api/salaryRaise', salaryRaiseRoute);//
+app.use('/api/salaryLimit', salaryLimitRoute);//
 //dynamics
-app.use('/api/org/title', titleRoute);
-app.use('/api/org/position', positionRoute);
-app.use('/api/org/department', departmentRoute);
-app.use('/api/dashboard', dashboardRoute);
+app.use('/api/org/title', titleRoute);//
+app.use('/api/org/position', positionRoute);//
+app.use('/api/org/department', departmentRoute);//
+app.use('/api/dashboard', dashboardRoute);//
 app.listen(port, () => {
   console.log(colors.cyan(`Server is running on port ${port}`));
 });

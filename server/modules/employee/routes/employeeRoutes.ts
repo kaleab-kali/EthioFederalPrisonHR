@@ -27,7 +27,7 @@ const router = Router();
 
 // for center hrmanager and staff exceptinal
 router.get('/:centerName', authenticate,checkHrRole, getEmployees);
-router.get('/', authenticate, checkHqExclusiveRole, getEmployees);
+router.get('/', authenticate, checkHqAdminRole, getEmployees);
 router.get('/:empId', getEmployeeById);
 router.put('/:empId', authenticate, checkHrRole, updateEmployee);
 router.post('/assign-credentials/:centerName',authenticate,checkAdminRole, assignCredentials);

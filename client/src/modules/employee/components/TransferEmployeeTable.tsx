@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAllEmployees } from "../services/queries";
+import { useAllEmployees, useFetchEmployee } from "../services/queries";
 import { useAllCenters } from "../../admin/services/queries";
 import { useSubmitTransferRequest } from "../services/mutation";
+import { useAuth } from "../../../common/components/context/AuthContex";
 
 interface Employee {
   id: number;
@@ -17,7 +18,9 @@ const TransferEmployeeTable: React.FC = () => {
   const { t } = useTranslation("transfer");
   const [searchTerm, setSearchTerm] = useState("");
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const employeesQuery = useAllEmployees();
+    const {user} = useAuth()
+
+  const employeesQuery = useFetchEmployee(user?.centerName || '');
     console.log("employees" + employeesQuery.data);
      useEffect(() => {
        if (employeesQuery.data) {

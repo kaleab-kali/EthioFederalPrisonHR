@@ -6,6 +6,8 @@ import {
 import toast from "react-hot-toast";
 import { useLoading } from "../../../common/components/context/LoadingContext";
 import { submitDocumentForm, submitFamilyForm, submitHealthForm, submitPerformanceForm, submitRegistrationForm, submitTransferHandle, submitTransferRequestForm, submitWorkForm, updateEmployeeData } from "./api";
+import { useAuth } from "../../../common/components/context/AuthContex";
+
 
 // Mutation for creating an employee
 export function useSubmitRegistration() {
@@ -38,11 +40,12 @@ export function useSubmitRegistration() {
 export function useSubmitPerformance() {
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (data: any) => {
       setLoading(true);
-      return await submitPerformanceForm(data);
+      return await submitPerformanceForm(data, user?.centerName || "");
     },
     onError: (error: any) => {
       console.error("Error:", error);
@@ -65,11 +68,12 @@ export function useSubmitPerformance() {
 export function useSubmitWork() {
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
+    const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (data: any) => {
       setLoading(true);
-      return await submitWorkForm(data);
+      return await submitWorkForm(data, user?.centerName || "");
     },
     onError: (error: any) => {
       console.error("Error:", error);
@@ -92,13 +96,14 @@ export function useSubmitWork() {
 export function useSubmitDocument() {
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
+    const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (data: FormData) => {
     data.forEach((value, key) => console.log(key, value));
 
       setLoading(true);
-      return await submitDocumentForm(data);
+      return await submitDocumentForm(data, user?.centerName || "");
     },
     onError: (error: any) => {
       console.error("Error:", error);
@@ -121,14 +126,16 @@ export function useSubmitDocument() {
 export function useSubmitFamily(
   options?: UseMutationOptions<void, Error, { id: string; data: any }, unknown>
 ) {
+    const { user } = useAuth();
+
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+    mutationFn: async ({ id, data }: { id: string; data: any }, ) => {
       setLoading(true);
       console.log("Data before mutation:", data);
-      return await submitFamilyForm(id, data);
+      return await submitFamilyForm(id, data, user?.centerName || '');
     },
     onError: (error: any) => {
       console.error("Error:", error);
@@ -155,12 +162,13 @@ export function useSubmitHealth(
 ) {
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
+    const { user } = useAuth();
 
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
       setLoading(true);
       console.log("Data before mutation:", data);
-      return await submitHealthForm(id, data);
+      return await submitHealthForm(id, data, user?.centerName || "");
     },
     onError: (error: any) => {
       console.error("Error:", error);
@@ -185,11 +193,12 @@ export function useSubmitHealth(
 export function useSubmitTransferRequest() {
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (data: any) => {
       setLoading(true);
-      return await submitTransferRequestForm(data);
+      return await submitTransferRequestForm(data, user?.centerName || "");
     },
     onError: (error: any) => {
       console.error("Error:", error);
@@ -212,11 +221,12 @@ export function useSubmitTransferRequest() {
 export function useSubmitTransferHandle() {
   const { setLoading } = useLoading();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (data: any) => {
       setLoading(true);
-      return await submitTransferHandle(data);
+      return await submitTransferHandle(data, user?.centerName || "");
     },
     onError: (error: any) => {
       console.error("Error:", error);

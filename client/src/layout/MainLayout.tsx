@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '../common/components/Header';
 import Sidebar from '../common/components/Sidebar';
+import { useAuth } from '../common/components/context/AuthContex';
 
 const MainLayout: React.FC = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-    const userRole = 'admin';
+    const {user} = useAuth()
+    const userRole = user?.role || '';
 
   const handleToggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);

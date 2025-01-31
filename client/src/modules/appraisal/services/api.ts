@@ -1,51 +1,93 @@
-import axios from "axios";
-
-// Base API instance
-const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}`, // Adjust the base URL to your backend endpoint
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+import {
+  BASE_URL,
+  fetchWithAuth,
+  handleError,
+} from "../../Auth/service/sharedApi";
 
 // Fetch Appraisal data
 export const fetchAppraisalData = async (id: string) => {
-  const { data } = await api.get(`/api/appraisal/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/appraisal/${id}`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllAppraisals = async () => {
-  const { data } = await api.get(`/api/appraisal/all`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/appraisal/all`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
+// Fetch Appraisal History data
 export const fetchAppraisalHistoryData = async (id: string) => {
-  const { data } = await api.get(`/api/appraisalHistory/employee/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(
+      `${BASE_URL}/api/appraisalHistory/employee/${id}`
+    );
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllAppraisalHistories = async () => {
-  const { data } = await api.get(`/api/appraisalHistory/`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/appraisalHistory/`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
+
+// Create Appraisal
 export const createAppraisal = async (formData: any) => {
-  const { data } = await api.post("/api/appraisal/");
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/appraisal/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-// Submit registration form
+
+// Submit Appraisal History form
 export const submitRegistrationForm = async (formData: any) => {
-  const { data } = await api.post("/api/appraisalHistory/", formData);
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/appraisalHistory/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 // Update Appraisal data
 export const updateAppraisalData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/api/appraisal/${id}`, updatedData);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/appraisal/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-
-export default api;

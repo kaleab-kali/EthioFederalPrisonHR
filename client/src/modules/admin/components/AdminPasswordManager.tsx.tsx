@@ -1,68 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { useTranslation } from "react-i18next";
+import { useAllEmployees } from "../../employee/services/queries";
+import { useSubmitAddPassword, useSubmitChangePassword } from "../services/mutation"; // Import separate mutation hooks
 
 interface Employee {
   id: number;
-  name: string;
+  empId: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: string;
   department: string;
+  userName: string;
   title: string;
   hasPassword: boolean;
 }
 
-const employees: Employee[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "Manager",
-    department: "HR",
-    title: "Senior Manager",
-    hasPassword: true,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "Developer",
-    department: "Engineering",
-    title: "Software Engineer",
-    hasPassword: false,
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    email: "michael@example.com",
-    role: "Designer",
-    department: "Marketing",
-    title: "Graphic Designer",
-    hasPassword: true,
-  },
-  // Additional employees here...
-];
-
 const AdminPasswordManager: React.FC = () => {
-  const { t} = useTranslation("adminPassChange");
+  const { t } = useTranslation("adminPassChange");
   const [searchTerm, setSearchTerm] = useState("");
+  const { data: employeesData } = useAllEmployees();
+
   const [filteredEmployees, setFilteredEmployees] =
-    useState<Employee[]>(employees);
+    useState<Employee[]>(employeesData);
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedTitle, setSelectedTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([]);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [userName, setUserName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  // Separate mutation hooks for adding and updating passwords
+  const addPassword = useSubmitAddPassword();
+  const updatePassword = useSubmitChangePassword();
 
   useEffect(() => {
     setFilteredEmployees(
-      employees.filter(
+      employeesData?.filter(
         (employee) =>
-          (employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (employee.firstName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
             employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
             employee.role.toLowerCase().includes(searchTerm.toLowerCase())) &&
           (selectedDepartment
@@ -73,8 +55,8 @@ const AdminPasswordManager: React.FC = () => {
     );
   }, [searchTerm, selectedDepartment, selectedTitle]);
 
-  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
-  const currentEmployees = filteredEmployees.slice(
+  const totalPages = Math.ceil(filteredEmployees?.length / itemsPerPage);
+  const currentEmployees = filteredEmployees?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -88,7 +70,7 @@ const AdminPasswordManager: React.FC = () => {
   };
 
   const handleSelectAll = () => {
-    if (selectedEmployees.length === currentEmployees.length) {
+    if (selectedEmployees?.length === currentEmployees?.length) {
       setSelectedEmployees([]);
     } else {
       setSelectedEmployees(currentEmployees);
@@ -100,15 +82,45 @@ const AdminPasswordManager: React.FC = () => {
       alert(t("passwordMismatch"));
       return;
     }
-    selectedEmployees.forEach((employee) => {
-      alert(
-        t(employee.hasPassword ? "passwordUpdated" : "passwordAdded", {
-          name: employee.name,
-        })
-      );
-    });
+
+    // Determine if it's an add or update action
+    const isUpdate = selectedEmployees.some((emp) => emp.hasPassword);
+
+    // Call the appropriate API based on the action
+    if (isUpdate) {
+      // Update password API
+      selectedEmployees.forEach((employee) => {
+        updatePassword.mutate({
+          userName: employee.userName,
+          newPassword: newPassword,
+        });
+      });
+    } else {
+      // Add password API
+      selectedEmployees.forEach((employee) => {
+        addPassword.mutate({
+          employeeId: employee.empId,
+          userName: employee.userName,
+          newPassword: newPassword,
+        });
+      });
+    }
+
     setIsModalOpen(false);
     setSelectedEmployees([]);
+    setNewPassword("");
+    setConfirmPassword("");
+    setUserName("");
+  };
+
+  const handleOpenModal = () => {
+    // Pre-fill userName if updating, otherwise leave it blank
+    if (selectedEmployees.some((emp) => emp.hasPassword)) {
+      setUserName(selectedEmployees[0].userName); // Assuming only one employee is selected for update
+    } else {
+      setUserName("");
+    }
+    setIsModalOpen(true);
   };
 
   return (
@@ -153,7 +165,9 @@ const AdminPasswordManager: React.FC = () => {
                 <input
                   type="checkbox"
                   onChange={handleSelectAll}
-                  checked={selectedEmployees.length === currentEmployees.length}
+                  checked={
+                    selectedEmployees?.length === currentEmployees?.length
+                  }
                 />
               </th>
               <th className="text-left py-3 px-4">{t("name")}</th>
@@ -163,7 +177,7 @@ const AdminPasswordManager: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {currentEmployees.map((employee) => (
+            {currentEmployees?.map((employee) => (
               <tr key={employee.id} className="border-t border-gray-200">
                 <td className="py-3 px-4">
                   <input
@@ -172,7 +186,9 @@ const AdminPasswordManager: React.FC = () => {
                     onChange={() => handleEmployeeSelection(employee)}
                   />
                 </td>
-                <td className="py-3 px-4">{employee.name}</td>
+                <td className="py-3 px-4">
+                  {employee.firstName + " " + employee.lastName}
+                </td>
                 <td className="py-3 px-4">{employee.email}</td>
                 <td className="py-3 px-4">{employee.role}</td>
                 <td className="py-3 px-4">{employee.department}</td>
@@ -205,9 +221,9 @@ const AdminPasswordManager: React.FC = () => {
 
         <div className="mt-4">
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleOpenModal}
             className="px-6 py-2 bg-blue-500 text-white rounded-lg"
-            disabled={selectedEmployees.length === 0}
+            disabled={selectedEmployees?.length === 0}
           >
             {selectedEmployees.some((emp) => emp.hasPassword)
               ? t("updatePassword")
@@ -224,6 +240,16 @@ const AdminPasswordManager: React.FC = () => {
                   ? t("updatePassword")
                   : t("addPassword")}
               </Dialog.Title>
+              <div className="mb-4">
+                <label className="block mb-1">{t("userName")}</label>
+                <input
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+                  disabled={selectedEmployees.some((emp) => emp.hasPassword)} // Disable if updating
+                />
+              </div>
               <div className="mb-4">
                 <label className="block mb-1">{t("newPassword")}</label>
                 <input

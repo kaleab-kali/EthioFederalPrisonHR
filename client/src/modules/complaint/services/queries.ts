@@ -1,15 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllComplaints } from "./api";
+import { getAllComplaints, getComplaintById } from "./api";
 
-export const useFetchComplaint = (id: string) =>
+export const useFetchComplaint = (id: string, centerName: string) =>
   useQuery({
     queryKey: ["complaint", id],
-    queryFn: () => getAllComplaints(),
-    enabled: !!id, 
+    queryFn: () => getComplaintById(id, centerName),
+    enabled: !!id,
   });
-export function useAllComplaints() {
+export function useAllComplaints(centerName: string) {
   return useQuery({
     queryKey: ["complaint"],
-    queryFn: getAllComplaints,
+    queryFn: async () => {
+      const data = await getAllComplaints(centerName);
+      return data;
+    },
   });
 }

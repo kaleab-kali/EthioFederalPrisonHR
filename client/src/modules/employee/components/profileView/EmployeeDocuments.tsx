@@ -4,14 +4,17 @@ import { DocumentRecord, IEmployee } from "../../../../common/Types/Employee";
 import { useFetchDocument } from "../../services/queries";
 import { LuDownload } from "react-icons/lu";
 import { EthDateTime } from "ethiopian-calendar-date-converter";
+import { useAuth } from "../../../../common/components/context/AuthContex";
 
 const EmployeeDocuments: React.FC = () => {
+    const { user } = useAuth();
+
   const employee = useOutletContext<IEmployee>();
   const {
     data: documentData,
     isLoading,
     error,
-  } = useFetchDocument(employee.empId);
+  } = useFetchDocument(employee.empId, user?.centerName || "");
   const [inActiveIndex, setInActiveIndex] = useState<number | null>(null);
   const [outActiveIndex, setOutActiveIndex] = useState<number | null>(null);
 

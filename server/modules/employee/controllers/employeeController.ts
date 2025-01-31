@@ -121,6 +121,10 @@ const loginUser = async (req: Request, res: Response) => {
       res.status(400).json({ message: 'Invalid credentials' });
       return;
     }
+    if (employee.passwordChanged === false) {
+       res.status(403).json({ message: 'Password change required' });
+       return;
+    }
 
     const isMatch =
       employee && (await bcrypt.compare(password, employee.password));
@@ -130,15 +134,16 @@ const loginUser = async (req: Request, res: Response) => {
     }
     console.log(isMatch);
     const token = generateToken(employee?.id, employee?.role);
-
+    
     res.status(200).json({
-      employee: {
         id: employee?.id,
+        empId: employee?.empId,
         name: employee?.firstName,
         email: employee?.email,
         token: token,
         role: employee?.role,
-      },
+        centerName: employee?.centerName,
+      
     });
     return;
   } catch (error) {
@@ -209,9 +214,9 @@ const changePasswordController = async (
 ): Promise<void> => {
   try {
     const { userName, newPassword } = req.body;
-
+    console.log(userName, newPassword);
     // Validate new password
-    if (newPassword.length < 12) {
+    if (newPassword.length < 8) {
       res
         .status(400)
         .json({ message: "Password must be at least 12 characters long" });
@@ -219,7 +224,7 @@ const changePasswordController = async (
     }
 
     const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!regex.test(newPassword)) {
       res
         .status(400)

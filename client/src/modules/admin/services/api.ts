@@ -1,152 +1,353 @@
-import axios from "axios";
+import { BASE_URL, fetchWithAuth, handleError } from "../../Auth/service/sharedApi";
 
-// Base API instance
-const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}`, // Adjust the base URL to your backend endpoint
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
+// Fetch Center data
 export const fetchCenterData = async (id: string) => {
-  const { data } = await api.get(`/api/centers/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/centers/${id}`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllCenters = async () => {
-  const { data } = await api.get(`/api/centers/`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/centers/`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-// Submit registration form
+
+export const submitChangeRole = async (formData: any) => {
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/employees/change-role`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const submitAddPassword = async (formData: any, centerName: string) => {
+  try {
+    const data = await fetchWithAuth(
+      `${BASE_URL}/api/employees/assign-credentials/${centerName}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const submitChangePassword = async (formData: any) => {
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/employees/change-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+// Submit Center form
 export const submitCenterForm = async (formData: any) => {
-  const { data } = await api.post("/api/centers/", formData);
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/centers/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 // Update Center data
 export const updateCenterData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/api/centers/${id}`, updatedData);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/centers/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 // Fetch Department data
 export const fetchDepartmentData = async (id: string) => {
-  const { data } = await api.get(`/api/org/department/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/department/${id}`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllDepartments = async () => {
-  const { data } = await api.get(`/api/org/department/`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/department/`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-// Submit registration form
+
+// Submit Department form
 export const submitDepartmentForm = async (formData: any) => {
-  const { data } = await api.post("/api/org/department/", formData);
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/department/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 // Update Department data
 export const updateDepartmentData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/api/org/department/${id}`, updatedData);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/department/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
+// Fetch Title data
 export const fetchTitleData = async (id: string) => {
-  const { data } = await api.get(`/api/org/title/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/title/${id}`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllTitles = async () => {
-  const { data } = await api.get(`/api/org/title/`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/title/`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-// Submit registration form
+
+// Submit Title form
 export const submitTitleForm = async (formData: any) => {
-  const { data } = await api.post("/api/org/title/", formData);
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/title/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 // Update Title data
 export const updateTitleData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/api/org/title/${id}`, updatedData);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/title/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
+// Fetch Position data
 export const fetchPositionData = async (id: string) => {
-  const { data } = await api.get(`/api/org/position/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/position/${id}`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllPositions = async () => {
-  const { data } = await api.get(`/api/org/position/`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/position/`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-// Submit registration form
+
+// Submit Position form
 export const submitPositionForm = async (formData: any) => {
-  const { data } = await api.post("/api/org/position/", formData);
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/position/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 // Update Position data
 export const updatePositionData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/api/org/position/${id}`, updatedData);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/org/position/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
+// Fetch Leave data
 export const fetchLeaveData = async (id: string) => {
-  const { data } = await api.get(`/api/leavebalances/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/leavebalances/${id}`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllLeaves = async () => {
-  const { data } = await api.get(`/api/leavebalances/`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/leavebalances/`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-// Submit registration form
+
+// Submit Leave form
 export const submitLeaveForm = async (formData: any) => {
-  const { data } = await api.post("/api/leavebalances/", formData);
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/leavebalances/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 // Update Leave data
 export const updateLeaveData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/api/leavebalances/${id}`, updatedData);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/leavebalances/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
-//salary limit
-
+// Fetch Salary Limit data
 export const fetchSalaryLimitData = async (id: string) => {
-  const { data } = await api.get(`/api/salaryLimit/${id}`);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/salaryLimit/${id}`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 export const getAllSalaryLimit = async () => {
-  const { data } = await api.get(`/api/salaryLimit/`);
-  console.log(JSON.stringify(data));
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/salaryLimit/`);
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-// Submit registration form
+
+// Submit Salary Limit form
 export const submitSalaryLimitForm = async (formData: any) => {
-  const { data } = await api.post("/api/salaryLimit/", formData);
-  console.log(process.env.REACT_APP_API_URL + "heheheheh");
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/salaryLimit/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
-// Update Leave data
+// Update Salary Limit data
 export const updateSalaryLimitData = async (id: string, updatedData: any) => {
-  const { data } = await api.put(`/api/salaryLimit/${id}`, updatedData);
-  return data;
+  try {
+    const data = await fetchWithAuth(`${BASE_URL}/api/salaryLimit/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
 };
-
-export default api;
