@@ -10,12 +10,18 @@ import  {authenticate}   from '../../employee/middlewares/authunticate';
 const router: Router = express.Router();
 
 // Create appraisal information
-router.post("/", authenticate, checkHqExclusiveRole, createAppraisalHistory);
+router.post("/", 
+  // authenticate, checkHqExclusiveRole, 
+  createAppraisalHistory);
 
 // Get appraisal information for a specific employee by ID
-router.get("/employee/:employeeId", authenticate, checkHqExclusiveRole, getAppraisalHistoryByEmployeeId);
+router.get("/employee/:employeeId", 
+  // authenticate, checkHqExclusiveRole, 
+  getAppraisalHistoryByEmployeeId);
 
 // Get all appraisal information
-router.get("/", authenticate, checkHqExclusiveRole, getAllAppraisalHistory);
+router.get("/", 
+  // authenticate, checkHqExclusiveRole, 
+  getAllAppraisalHistory);
 
 export default router;

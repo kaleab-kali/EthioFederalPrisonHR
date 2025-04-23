@@ -17,9 +17,17 @@ router.use(fileUpload());
 // Routes
 // COMMENT FOR MESEKIR
 //All routes need centerName
-router.post('/:centerName', authenticate, checkHrRole, createComplaint);
-router.patch('/status/:complaintId/:centerName',authenticate, checkHrRole, updateComplaintStatus);
-router.get('/:centerName', authenticate, checkHrRole, getAllComplaints);
-router.get('/:complaintId/:centerName', authenticate, checkHrRole, getComplaintById);
+router.post('/:centerName', 
+  // authenticate, checkHrRole, 
+  createComplaint);
+router.patch('/status/:complaintId/:centerName',
+  // authenticate, checkHrRole, 
+  updateComplaintStatus);
+router.get('/:centerName', 
+  // authenticate, checkHrRole, 
+  getAllComplaints);
+router.get('/:complaintId/:centerName', 
+  // authenticate, checkHrRole, 
+  getComplaintById);
 
 export default router;

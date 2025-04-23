@@ -13,7 +13,9 @@ import  {authenticate}   from '../../employee/middlewares/authunticate';
 const router: Router = express.Router();
 
 // Create an Title registration
-router.post('/', authenticate, checkHqExclusiveRole, createTitle);
+router.post('/', 
+  // authenticate, checkHqExclusiveRole, 
+  createTitle);
 
 // Get all Titles
 router.get('/', getAllTitles);
@@ -22,9 +24,13 @@ router.get('/', getAllTitles);
 router.get('/:id', getTitleById);
 
 // Update an Title by ID
-router.put('/:id', authenticate, checkHqExclusiveRole, updateTitle);
+router.put('/:id', 
+  // authenticate, checkHqExclusiveRole, 
+  updateTitle);
 
 // Delete an Title by ID
-router.delete('/:id', authenticate, checkHqExclusiveRole, deleteTitle);
+router.delete('/:id', 
+  // authenticate, checkHqExclusiveRole, 
+  deleteTitle);
 
 export default router;
