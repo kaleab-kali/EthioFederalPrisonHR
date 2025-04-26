@@ -10,7 +10,8 @@ const api = axios.create({
 
 // Fetch employee data
 export const fetchEmployeeData = async (id: string) => {
-  const { data } = await api.get(`/api/employees/${id}`);
+  console.log("Fetching employee data for ID:", id); // Debugging line
+  const { data } = await api.get(`/api/employees/emp/${id}`);
   return data;
 };
 

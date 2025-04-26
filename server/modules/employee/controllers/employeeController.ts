@@ -23,16 +23,18 @@ const getEmployees = async (req: Request, res: Response) => {
 };
 
 const getEmployeeById = async (req: Request, res: Response): Promise<void> => {
+  const { empId } = req.params; // Get the employee ID from the URL parameter
+  console.log(empId);
   try {
     const { empId } = req.params; // Get the employee ID from the URL parameter
-
+    console.log(empId);
     // Find the employee by ID
     const employee = await Employee.findOne({ empId });
     if (!employee) {
       res.status(404).json({ message: 'Employee not found' });
       return;
     }
-
+    console.log(employee);
     // Return the employee data
     res.status(200).json({
       message: 'Employee retrieved successfully',

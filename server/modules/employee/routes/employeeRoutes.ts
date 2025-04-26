@@ -29,10 +29,10 @@ const router = Router();
 router.get('/:centerName', 
   // authenticate,checkHrRole, 
   getEmployees);
+  router.get('/emp/:empId', getEmployeeById);
 router.get('/', 
   // authenticate, checkHqExclusiveRole, 
   getEmployees);
-router.get('/:empId', getEmployeeById);
 router.put('/:empId', 
   // authenticate, checkHrRole, 
   updateEmployee);

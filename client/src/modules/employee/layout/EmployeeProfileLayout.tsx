@@ -317,8 +317,10 @@ const EmployeeProfileLayout: React.FC = () => {
   const [profileCardData, setProfileCardData] =
     useState<ProfileCardEmployeeInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  console.log(employeeId);
   const employeeQuery = useFetchEmployee(employeeId || "");
-
+  console.log(JSON.stringify(employeeQuery.data));
+  console.log(employeeData);
   useEffect(() => {
     if (employeeId) {
       const fetchEmployeeData = async () => {
