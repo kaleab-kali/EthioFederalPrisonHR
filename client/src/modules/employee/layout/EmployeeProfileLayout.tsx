@@ -15,7 +15,6 @@
 //   manager: string;
 // }
 
-
 // const extractProfileCardInfo = (
 //   employee: IEmployee
 // ): ProfileCardEmployeeInfo => ({
@@ -87,7 +86,16 @@ import ProfileCard from "../components/profileView/ProfileCard";
 import Breadcrumb from "../components/BreadCrumb";
 import { IEmployee } from "../../../common/Types/Employee";
 import { useFetchEmployee } from "../services/queries";
-import { Document, Page, Text, View, Image, StyleSheet, pdf , Font} from '@react-pdf/renderer';
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  pdf,
+  Font,
+} from "@react-pdf/renderer";
 
 interface ProfileCardEmployeeInfo {
   picture: string;
@@ -109,7 +117,6 @@ const extractProfileCardInfo = (
   manager: employee.emergencyContact?.info?.firstName ?? "",
 });
 
-
 // Font.register({
 //   family: 'Poppins',
 //   fonts: [
@@ -123,193 +130,192 @@ const extractProfileCardInfo = (
 //     },
 //   ],
 // });
-
-
+Font.register({
+  family: "NotoSansEthiopic",
+  fonts: [
+    {
+      src: "/fonts/NotoSansEthiopic-Regular.ttf", // Path to the regular font file
+      fontWeight: "normal",
+    },
+    {
+      src: "/fonts/NotoSansEthiopic-Bold.ttf", // Path to the bold font file
+      fontWeight: "bold",
+    },
+  ],
+});
 
 // PDF Styles
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'column',
+    flexDirection: "column",
     padding: 30,
-    // fontFamily: 'Poppins', // Use Poppins font
+    fontFamily: "NotoSansEthiopic", // Use Poppins font
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'baseline',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "flex-start",
     marginBottom: 20,
   },
   logo: {
     width: 50,
     height: 50,
-    marginHorizontal: 20, // Space between logo and text
+    marginHorizontal: 20,
   },
   headerText: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+    flexDirection: "column",
+    alignItems: "flex-start",
     marginLeft: 20, // Space between logo and text
   },
   englishText: {
     fontSize: 10,
-    fontWeight: 'bold',
-    textAlign: 'left',
+    fontWeight: "bold",
+    textAlign: "left",
   },
   amharicText: {
     fontSize: 10,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    direction: 'rtl', // Right-to-left for Amharic text
-    // fontFamily: 'Poppins', // Ensure Poppins supports Amharic characters
+    fontWeight: "bold",
+    textAlign: "left",
+    direction: "rtl", // Right-to-left for Amharic text
+    fontFamily: "NotoSansEthiopic", // Ensure Poppins supports Amharic characters
   },
   horizontalLine: {
     borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    borderBottomColor: "#000",
     marginBottom: 20,
   },
   registrationHeading: {
     fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 20,
   },
   fieldContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start', // Align field name and value to the left
     marginBottom: 10,
   },
   fieldName: {
     fontSize: 12,
     fontWeight: 'bold',
-    width: '40%', // Fixed width for field names
+    width: 120, // Fixed width for field names
   },
   fieldValue: {
     fontSize: 12,
-    width: '60%', // Fixed width for field values
+    fontWeight: 'normal',
+    flex: 1, // Allow the value to take up the remaining space
   },
 });
 
 const EmploymentProfilePDF = ({ employee }: { employee: IEmployee }) => (
   <Document>
-  <Page size="A4" style={styles.page}>
-    {/* Header */}
-    <View style={styles.header}>
-      <Image src="/fpp.jpg" style={styles.logo} />
-      <View style={styles.headerText}>
-        <Text style={styles.englishText}>
-          Federal Democratic Republic of Ethiopia
-        </Text>
-        <Text style={styles.englishText}>
-          Ministry of Justice
-        </Text>
-        <Text style={styles.englishText}>
-          Federal Prison Police Commission
-        </Text>
-        {/* <Text style={styles.amharicText}>
-          የኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ
-        </Text>
-        <Text style={styles.amharicText}>
-          የፍትህ ሚኒስቴር
-        </Text>
-        <Text style={styles.amharicText}>
-          የፌዴራል እስር ቤቶች ፖሊስ ኮሚሽን
-        </Text> */}
+    <Page size="A4" style={styles.page}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.amharicText}>
+          <Text style={styles.amharicText}>የኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ</Text>
+          <Text style={styles.amharicText}>የፍትህ ሚኒስቴር</Text>
+          <Text style={styles.amharicText}>የፌዴራል እስር ቤቶች ፖሊስ ኮሚሽን</Text>
+        </View>
+        <Image src="/fpp.jpg" style={styles.logo} />
+        <View style={styles.headerText}>
+          <Text style={styles.englishText}>
+            Federal Democratic Republic of Ethiopia
+          </Text>
+          <Text style={styles.englishText}>Ministry of Justice</Text>
+          <Text style={styles.englishText}>
+            Federal Prison Police Commission
+          </Text>
+        </View>
       </View>
-    </View>
 
-    {/* Horizontal Line */}
-    <View style={styles.horizontalLine} />
+      {/* Horizontal Line */}
+      <View style={styles.horizontalLine} />
 
-    {/* Registration Heading */}
-    <Text style={styles.registrationHeading}>Registration Form</Text>
+      {/* Registration Heading */}
+      <Text style={styles.registrationHeading}>Registration Form</Text>
 
-    {/* Fields */}
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>First Name:</Text>
-      <Text style={styles.fieldValue}>{employee.firstName}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Last Name:</Text>
-      <Text style={styles.fieldValue}>{employee.lastName}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Employee ID:</Text>
-      <Text style={styles.fieldValue}>{employee.empId}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Title:</Text>
-      <Text style={styles.fieldValue}>{employee.title}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Status:</Text>
-      <Text style={styles.fieldValue}>{employee.status}</Text>
-    </View>
-  </Page>
-</Document>
+      {/* Fields */}
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>First Name:</Text>
+        <Text style={styles.fieldValue}>{employee.firstName}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Last Name:</Text>
+        <Text style={styles.fieldValue}>{employee.lastName}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Employee ID:</Text>
+        <Text style={styles.fieldValue}>{employee.empId}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Title:</Text>
+        <Text style={styles.fieldValue}>{employee.title}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Status:</Text>
+        <Text style={styles.fieldValue}>{employee.status}</Text>
+      </View>
+    </Page>
+  </Document>
 );
 
 const FullProfilePDF = ({ employee }: { employee: IEmployee }) => (
   <Document>
-  <Page size="A4" style={styles.page}>
-    {/* Header */}
-    <View style={styles.header}>
-      <Image src="/fpp.jpg" style={styles.logo} />
-      <View style={styles.headerText}>
-        <Text style={styles.englishText}>
-          Federal Democratic Republic of Ethiopia
-        </Text>
-        <Text style={styles.englishText}>
-          Ministry of Justice
-        </Text>
-        <Text style={styles.englishText}>
-          Federal Prison Police Commission
-        </Text>
-        <Text style={styles.amharicText}>
-          የኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ
-        </Text>
-        <Text style={styles.amharicText}>
-          የፍትህ ሚኒስቴር
-        </Text>
-        <Text style={styles.amharicText}>
-          የፌዴራል እስር ቤቶች ፖሊስ ኮሚሽን
-        </Text>
+    <Page size="A4" style={styles.page}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Image src="/fpp.jpg" style={styles.logo} />
+        <View style={styles.headerText}>
+          <Text style={styles.englishText}>
+            Federal Democratic Republic of Ethiopia
+          </Text>
+          <Text style={styles.englishText}>Ministry of Justice</Text>
+          <Text style={styles.englishText}>
+            Federal Prison Police Commission
+          </Text>
+          <Text style={styles.amharicText}>የኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ</Text>
+          <Text style={styles.amharicText}>የፍትህ ሚኒስቴር</Text>
+          <Text style={styles.amharicText}>የፌዴራል እስር ቤቶች ፖሊስ ኮሚሽን</Text>
+        </View>
       </View>
-    </View>
 
-    {/* Horizontal Line */}
-    <View style={styles.horizontalLine} />
+      {/* Horizontal Line */}
+      <View style={styles.horizontalLine} />
 
-    {/* Registration Heading */}
-    <Text style={styles.registrationHeading}>Registration Form</Text>
+      {/* Registration Heading */}
+      <Text style={styles.registrationHeading}>Registration Form</Text>
 
-    {/* Fields */}
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>First Name:</Text>
-      <Text style={styles.fieldValue}>{employee.firstName}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Last Name:</Text>
-      <Text style={styles.fieldValue}>{employee.lastName}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Employee ID:</Text>
-      <Text style={styles.fieldValue}>{employee.empId}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Title:</Text>
-      <Text style={styles.fieldValue}>{employee.title}</Text>
-    </View>
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldName}>Status:</Text>
-      <Text style={styles.fieldValue}>{employee.status}</Text>
-    </View>
-  </Page>
-</Document>
+      {/* Fields */}
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>First Name:</Text>
+        <Text style={styles.fieldValue}>{employee.firstName}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Last Name:</Text>
+        <Text style={styles.fieldValue}>{employee.lastName}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Employee ID:</Text>
+        <Text style={styles.fieldValue}>{employee.empId}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Title:</Text>
+        <Text style={styles.fieldValue}>{employee.title}</Text>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldName}>Status:</Text>
+        <Text style={styles.fieldValue}>{employee.status}</Text>
+      </View>
+    </Page>
+  </Document>
 );
 
 const EmployeeProfileLayout: React.FC = () => {
   const { employeeId } = useParams<{ employeeId: string }>();
   const [employeeData, setEmployeeData] = useState<IEmployee | null>(null);
-  const [profileCardData, setProfileCardData] = useState<ProfileCardEmployeeInfo | null>(null);
+  const [profileCardData, setProfileCardData] =
+    useState<ProfileCardEmployeeInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const employeeQuery = useFetchEmployee(employeeId || "");
 
@@ -332,7 +338,10 @@ const EmployeeProfileLayout: React.FC = () => {
     }
   }, [employeeId, employeeQuery.data]);
 
-  const handleDownloadPDF = async (pdfDocument: JSX.Element, fileName: string) => {
+  const handleDownloadPDF = async (
+    pdfDocument: JSX.Element,
+    fileName: string
+  ) => {
     const blob = await pdf(pdfDocument).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");

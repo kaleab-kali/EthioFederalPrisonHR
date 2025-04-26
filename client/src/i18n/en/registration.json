@@ -1,0 +1,60 @@
+{
+    "step3": {
+        "maritalStatusAndEmergencyContact": "Marital Status & Emergency Contact",
+        "maritalStatus": "Marital Status",
+        "maritalStatusRequired": "Marital status is required",
+        "select": "Select...",
+        "single": "Single",
+        "married": "Married",
+        "widowed": "Widowed",
+        "divorced": "Divorced",
+        "spouseInformation": "Spouse Information",
+        "firstName": "First Name",
+        "firstNameRequired": "First Name is required",
+        "middleNameOptional": "Middle Name (optional)",
+        "lastName": "Last Name",
+        "lastNameRequired": "Last Name is required",
+        "dateOfBirth": "Date of Birth",
+        "phoneNumber": "Phone Number",
+        "phoneNumberRequired": "Phone Number is required",
+        "spouseAddress": "Spouse Address",
+        "regionOptional": "Region (optional)",
+        "subcityOptional": "Subcity (optional)",
+        "woredaOptional": "Woreda (optional)",
+        "houseNumberOptional": "House Number (optional)",
+        "leyuBotaOptional": "Leyu Bota (optional)",
+        "divorceDate": "Divorce Date",
+        "emergencyContact": "Emergency Contact",
+        "relationship": "Relationship",
+        "relationshipRequired": "Relationship is required",
+        "parent": "Parent",
+        "spouse": "Spouse",
+        "child": "Child",
+        "sibling": "Sibling",
+        "friend": "Friend",
+        "other": "Other",
+        "emailOptional": "Email (optional)",
+        "emergencyContactAddress": "Emergency Contact Address"
+    },
+    "step0": {
+        "areYouCivilianOrMilitary": "Are you a Civilian or in the Military?",
+        "civilian": "Civilian",
+        "civilianDescription": "For Civilian Employees",
+        "military": "Military",
+        "militaryDescription": "For Military Personnel"
+    },
+    "registrationForm": {
+        "steps": {
+            "civilMilitarySelection": "Civil/Military Selection",
+            "basicInfo": "Basic Info",
+            "workInfo": "Work Info",
+            "maritalEmergencyContact": "Marital & Emergency Contact"
+        },
+        "buttons": {
+            "back": "Back",
+            "next": "Next",
+            "submit": "Submit",
+            "submitting": "Submitting..."
+        }
+    }
+}
