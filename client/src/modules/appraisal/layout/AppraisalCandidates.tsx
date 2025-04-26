@@ -108,13 +108,13 @@ const AppraisalCandidates = () => {
      useEffect(() => {
        if (dataQuery.data) {
          const mappedData = dataQuery.data.map((appraisal: any) => ({
-           empID: appraisal.empId,
-           empName: appraisal.empName,
-           previousTitle: appraisal.previousTitle,
-           appraisalTitle: appraisal.appraisalTitle,
-           workYears: appraisal.workYears,
+           empID: appraisal.employeeId,
+           empName: appraisal.fullName,
+           previousTitle: appraisal.currentLevel,
+           appraisalTitle: appraisal.desiredLevel,
+           workYears: appraisal.yearsOfWork,
            department: appraisal.department,
-           position: appraisal.position,
+           position: appraisal.positionOfWork,
          }));
          setData(mappedData);
        }

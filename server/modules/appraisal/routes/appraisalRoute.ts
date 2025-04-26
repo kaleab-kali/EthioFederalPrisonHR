@@ -10,9 +10,9 @@ import  {authenticate}   from '../../employee/middlewares/authunticate';
 const router = express.Router();
 
 // Get all appraisals
-router.get("/all", authenticate, checkHqExclusiveRole, getAllAppraisals);
+router.get("/all", getAllAppraisals);
 
 // create new appraisal
-router.post("/", authenticate, checkHqExclusiveRole, createAppraisal);
+router.post("/", createAppraisal);
 
 export default router;

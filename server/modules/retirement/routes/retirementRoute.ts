@@ -8,7 +8,7 @@ import  {authenticate}   from '../../employee/middlewares/authunticate';
 
 const router = Router();
 
-router.get('/', authenticate, checkHqExclusiveRole, getRequestedRetirements);
-router.post('/', authenticate, checkHqExclusiveRole, createRetirementRequest);
+router.get('/',   getRequestedRetirements);
+router.post('/',   createRetirementRequest);
 
 export default router;
