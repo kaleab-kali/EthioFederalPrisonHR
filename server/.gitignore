@@ -10,6 +10,7 @@
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
@@ -26,7 +27,7 @@
 /server/.env
 /server/.env.local
 /server/.env.development.local
-
+/server/dist
 # frontend specific
 /frontend/node_modules
 /frontend/.pnp

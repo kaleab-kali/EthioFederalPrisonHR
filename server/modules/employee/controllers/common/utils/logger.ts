@@ -1,2 +1,2 @@
 // Logging utility
-export const logger = (msg) => { console.log(msg); };
+export const logger = (msg: any): void => { console.log(msg); };

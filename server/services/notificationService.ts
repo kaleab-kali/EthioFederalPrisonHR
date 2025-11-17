@@ -1,2 +1,2 @@
 // Notification service logic
-export const sendNotification = (userId, message) => { return 'Notification sent'; };
+export const sendNotification = (userId: string, message: string): string => { return 'Notification sent'; };
