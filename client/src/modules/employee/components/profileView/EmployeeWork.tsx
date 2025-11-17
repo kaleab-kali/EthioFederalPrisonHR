@@ -1,13 +1,24 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { IEmployee } from "../../../../common/Types/Employee";
+import { EthDateTime } from "ethiopian-calendar-date-converter";
 
 const EmployeeWorkExperience: React.FC = () => {
   const employee = useOutletContext<IEmployee>();
-
+  const convertToEthiopianDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const ethDate = EthDateTime.fromEuropeanDate(date);
+    return `${ethDate.year}/${ethDate.month}/${ethDate.date}`;
+  };
+  const formatDate = (date: Date | string) => {
+    // Ensure that the date is a valid Date object
+    const formattedDate = new Date(date);
+    return formattedDate instanceof Date && !isNaN(formattedDate.getTime())
+      ? formattedDate.toLocaleDateString()
+      : "Invalid date";
+  };
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Work Experience</h2>
       <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-gray-100 text-left text-gray-600">
@@ -24,10 +35,10 @@ const EmployeeWorkExperience: React.FC = () => {
               <td className="p-4">{experience.companyName}</td>
               <td className="p-4">{experience.position}</td>
               <td className="p-4">
-                {new Date(experience.startDate).toDateString()}
+                {convertToEthiopianDate(formatDate(experience.startDate))}
               </td>
               <td className="p-4">
-                {new Date(experience.endDate).toDateString()}
+                {convertToEthiopianDate(formatDate(experience.endDate))}
               </td>
 
               <td className="p-4">{experience.description}</td>

@@ -1,0 +1,45 @@
+{
+    "dashboard": {
+      "title": "ዳሽቦርድ",
+      "kpi": {
+        "totalEmployees": "ጠቅላላ ሰራተኞች",
+        "employeesOnLeave": "በፈቃድ ላይ ያሉ ሰራተኞች",
+        "activeEmployees": "ንቁ ሰራተኞች",
+        "pendingLeaveRequests": "በጥበቃ ላይ ያሉ ፈቃዶች",
+        "upcomingRetirements": "የሚመጡ ጡረታዎች",
+        "totalComplaints": "ጠቅላላ ቅሬታዎች",
+        "pendingComplaints": "በጥበቃ ላይ ያሉ ቅሬታዎች",
+        "transferPending": "በመተላለፍ ላይ ያሉ",
+        "trend": "+{{percent}}% ከያዝነው ወር"
+      },
+      "bento": {
+        "employeeDistribution": {
+          "title": "የሰራተኞች ስርጭት",
+          "placeholder": "ፓይ ቻርት እዚህ ይታያል"
+        },
+        "militaryRankDistribution": {
+          "title": "የሰራዊት ደረጃ ስርጭት",
+          "placeholder": "ፓይ ቻርት እዚህ ይታያል"
+        },
+        "recentActivity": {
+          "title": "የቅርብ ተግባራት",
+          "task1": "የፕሮጀክቱን ሰነድ አዘምን",
+          "task2": "የግብይት ገጽ UI አስተካከል",
+          "timestamp1": "በጥቂት ሰከንዶች በፊት",
+          "timestamp2": "ከ5 ደቂቃዎች በፊት"
+        },
+        "complaintStatus": {
+          "title": "የቅሬታ ሁኔታ",
+          "open": "ክፍት",
+          "resolved": "ተፈትቷል",
+          "resolvedCount": "{{resolved}} ከ{{total}} ቅሬታዎች ተፈትተዋል",
+          "viewDetails": "ዝርዝር ይመልከቱ",
+          "newComplaint": "አዲስ ቅሬታ"
+        },
+        "upcomingAppraisals": {
+          "title": "የሚመጡ ግምገማዎች",
+          "description": "ለዓመታዊ ግብ በትክክል እየሄድን ነው"
+        }
+      }
+    }
+  }

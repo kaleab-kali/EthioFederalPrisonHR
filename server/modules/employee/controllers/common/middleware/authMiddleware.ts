@@ -1,2 +1,4 @@
 // Authentication middleware
-export const authMiddleware = (req, res, next) => { next(); };
+import { Request, Response, NextFunction } from 'express';
+
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => { next(); };

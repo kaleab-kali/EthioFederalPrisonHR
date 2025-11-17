@@ -1,0 +1,45 @@
+{
+    "dashboard": {
+      "title": "Dashboard",
+      "kpi": {
+        "totalEmployees": "Total Employees",
+        "employeesOnLeave": "Employees on Leave",
+        "activeEmployees": "Active Employees",
+        "pendingLeaveRequests": "Pending Leave Requests",
+        "upcomingRetirements": "Upcoming Retirements",
+        "totalComplaints": "Total Complaints",
+        "pendingComplaints": "Pending Complaints",
+        "transferPending": "Transfer Pending",
+        "trend": "+{{percent}}% from last month"
+      },
+      "bento": {
+        "employeeDistribution": {
+          "title": "Employee Distribution",
+          "placeholder": "Pie Chart Here"
+        },
+        "militaryRankDistribution": {
+          "title": "Military Rank Distribution",
+          "placeholder": "Pie Chart Here"
+        },
+        "recentActivity": {
+          "title": "Recent Activity",
+          "task1": "Update the project documentation",
+          "task2": "Fix the login page UI",
+          "timestamp1": "a few moments ago",
+          "timestamp2": "5 minutes ago"
+        },
+        "complaintStatus": {
+          "title": "Complaint Status",
+          "open": "Open",
+          "resolved": "Resolved",
+          "resolvedCount": "{{resolved}} of {{total}} complaints resolved",
+          "viewDetails": "View Details",
+          "newComplaint": "New Complaint"
+        },
+        "upcomingAppraisals": {
+          "title": "Upcoming Appraisals",
+          "description": "On track for annual goal"
+        }
+      }
+    }
+  }

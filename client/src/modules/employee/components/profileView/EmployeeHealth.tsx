@@ -1,3 +1,4 @@
+import { EthDateTime } from "ethiopian-calendar-date-converter";
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
@@ -23,6 +24,18 @@ const EmployeeHealth: React.FC = () => {
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+  const convertToEthiopianDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const ethDate = EthDateTime.fromEuropeanDate(date);
+    return `${ethDate.year}/${ethDate.month}/${ethDate.date}`;
+  };
+  const formatDate = (date: Date | string) => {
+    // Ensure that the date is a valid Date object
+    const formattedDate = new Date(date);
+    return formattedDate instanceof Date && !isNaN(formattedDate.getTime())
+      ? formattedDate.toLocaleDateString()
+      : "Invalid date";
+  };
 
   const renderHealthTable = (records: HealthRecord[]) => (
     <table className="min-w-full bg-white border-collapse border border-gray-300 mt-4">
@@ -43,7 +56,7 @@ const EmployeeHealth: React.FC = () => {
         {records.map((record, index) => (
           <tr key={index} className="hover:bg-blue-50">
             <td className="py-3 px-4 border-b border-gray-200 text-sm">
-              {new Date(record.coverageEndDate).toLocaleDateString()}
+              {convertToEthiopianDate(formatDate(record.coverageEndDate))}
             </td>
             <td className="py-3 px-4 border-b border-gray-200 text-sm">
               {record.hospitalName}

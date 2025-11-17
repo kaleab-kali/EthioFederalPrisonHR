@@ -156,6 +156,18 @@ const menuItems = [
         route: "/employee/performanceEvaluation",
         allowedRoles: ["admin", "manager"],
       },
+      {
+        name: "Accept Transfer",
+        icon: MdOutlineAppRegistration,
+        route: "/employee/acceptTransfer",
+        allowedRoles: ["admin", "manager"],
+      },
+      {
+        name: "Complaint",
+        icon: MdOutlineAppRegistration,
+        route: "/employee/complaint",
+        allowedRoles: ["admin", "manager"],
+      },
       
 
     ],
@@ -285,6 +297,25 @@ const menuItems = [
         name: "Received Candidates",
         icon: FaUsers,
         route: "/complaint/list",
+        allowedRoles: ["admin", "user"],
+      },
+    ],
+    allowedRoles: ["admin", "user"],
+  },
+  {
+    name: "Documents",
+    icon: FaExclamationTriangle,
+    submenus: [
+      {
+        name: "Incoming",
+        icon: FaExclamationTriangle,
+        route: "/centerDocument/incoming",
+        allowedRoles: ["admin", "user"],
+      },
+      {
+        name: "Outgoing",
+        icon: FaUsers,
+        route: "/centerDocument/outgoing",
         allowedRoles: ["admin", "user"],
       },
     ],

@@ -23,16 +23,18 @@ const getEmployees = async (req: Request, res: Response) => {
 };
 
 const getEmployeeById = async (req: Request, res: Response): Promise<void> => {
+  const { empId } = req.params; // Get the employee ID from the URL parameter
+  console.log(empId);
   try {
     const { empId } = req.params; // Get the employee ID from the URL parameter
-
+    console.log(empId);
     // Find the employee by ID
     const employee = await Employee.findOne({ empId });
     if (!employee) {
       res.status(404).json({ message: 'Employee not found' });
       return;
     }
-
+    console.log(employee);
     // Return the employee data
     res.status(200).json({
       message: 'Employee retrieved successfully',
@@ -170,6 +172,88 @@ const assignCredentials = async (req: Request, res: Response) => {
   }
 };
 
+const changeRole = async (req: Request, res: Response): Promise<void> => {
+  const { employeeId, newRole } = req.body;
+
+  try {
+    // Validate input
+    if (!employeeId || !newRole) {
+      res.status(400).json({ message: 'employeeId and newRole are required' });
+      return;
+    }
+
+    // Update the employee's role
+    const updatedEmployee = await Employee.findOneAndUpdate(
+      { empId: employeeId },
+      { role: newRole },
+      { new: true }
+    );
+
+    // Check if employee exists
+    if (!updatedEmployee) {
+      res.status(404).json({ message: 'Employee not found' });
+      return;
+    }
+
+    res.status(200).json({
+      message: 'Role updated successfully',
+      employee: updatedEmployee,
+    });
+  } catch (error) {
+    console.error(error); // Optional: log the error for debugging
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const changePasswordController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { userName, newPassword } = req.body;
+
+    // Validate new password
+    if (newPassword.length < 12) {
+      res
+        .status(400)
+        .json({ message: "Password must be at least 12 characters long" });
+      return;
+    }
+
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+    if (!regex.test(newPassword)) {
+      res
+        .status(400)
+        .json({
+          message:
+            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        });
+      return;
+    }
+
+    // Check if employee exists
+    const employee = await Employee.findOne({ userName });
+    if (!employee) {
+      res.status(404).json({ message: "Employee not found" });
+      return;
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update the password and set passwordChanged to true
+    employee.password = hashedPassword;
+    employee.passwordChanged = true;
+    await employee.save();
+
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 const handleTransfer = async (req: Request, res: Response) => {
   const { employeeId, status, rejectionReason } = req.body;
@@ -258,13 +342,13 @@ const createEvaluation = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const total = self * 0.7 + colleague * 0.3; // Calculate total score (weighted average)
+    const total = self + colleague; // Calculate total score (weighted average)
 
     const evaluation = {
       self,
       colleague,
       total,
-      remark,
+      remark:"remark",
       from: new Date(from), // Ensure from is a valid date
       to: new Date(to), // Ensure to is a valid date
     };
@@ -318,8 +402,9 @@ const addWorkExperience = async (req: Request, res: Response): Promise<void> => 
 
     // Find the employee by ID
     const employee = await Employee.findOne({empId: employeeId});
+    console.log(employeeId)
     if (!employee) {
-      res.status(404).json({ message: 'Employee not found' });
+      res.status(404).json({ message: 'Employee not found1' });
       return
     }
 
@@ -340,6 +425,6 @@ export {
   addEmployee,
   loginUser,getAllEmpsWithAcceptedTransferStatus,getAllEmpsWithPendingTransferStatus,
   assignCredentials, requestTransfer, handleTransfer, createEvaluation, getEvaluationById,
-  addWorkExperience
+  addWorkExperience, changePasswordController, changeRole 
   
 };

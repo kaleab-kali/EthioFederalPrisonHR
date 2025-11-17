@@ -78,13 +78,6 @@ const dummyEmployees: IEmployee[] = [
         presentDays: 20
       }
     ],
-    performance: [
-      {
-        date: "2023-08-01",
-        result30: 28,
-        result70: 65
-      }
-    ],
     leaveRecords: [
       {
         dateFrom: '2024-10-01',
@@ -161,13 +154,6 @@ const dummyEmployees: IEmployee[] = [
         presentDays: 21
       }
     ],
-    performance: [
-      {
-        date: "2023-08-01",
-        result30: 27,
-        result70: 63
-      }
-    ],
     leaveRecords: [
       {
         dateFrom: '2024-10-01',
@@ -242,13 +228,6 @@ const dummyEmployees: IEmployee[] = [
         date: "2023-09-01",
         totalDays: 22,
         presentDays: 22
-      }
-    ],
-    performance: [
-      {
-        date: "2023-08-01",
-        result30: 30,
-        result70: 68
       }
     ],
     leaveRecords: [

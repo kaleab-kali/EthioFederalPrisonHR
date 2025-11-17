@@ -55,11 +55,11 @@ export const getSalaryRaises = async (): Promise<SalaryRaiseDocument[]> => {
 };
 
 export const updateSalaryRaiseRecord = async (
-    id: string,
+    employeeId: string,
     status: string,
     newSalary?: number
   ): Promise<{ salaryRaise: SalaryRaiseDocument; employee: IEmployee | null }> => {
-    const salaryRaise = await SalaryRaise.findOne({ employeeId: id });
+    const salaryRaise = await SalaryRaise.findOne({ empId: employeeId });
     if (!salaryRaise) {
       throw new Error("Salary raise request not found");
     }

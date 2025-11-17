@@ -24,6 +24,8 @@ import LeavePermitComponent from './components/LeavePermitComponent';
 import EmployeeWorkExperience from './components/profileView/EmployeeWork';
 import EmployeeFamily from './components/profileView/EmployeeFamily';
 import PerformanceForm from './features/PerformanceEvaluation/PerformanceForm';
+import AcceptTransferTable from './features/Transfer/AcceptTransferTable';
+import ComplaintUpdateForm from './features/Complaint/ComplaintForm';
 
 
 const EmployeeModule: React.FC = () => {
@@ -55,6 +57,7 @@ const EmployeeModule: React.FC = () => {
       <Route path="/registration" element={<RegistrationForm />} />
       <Route path="/remove" element={<EmployeeComponent />} />
       <Route path="/transfer" element={<TransferEmployeeTable />} />
+      <Route path="/acceptTransfer" element={<AcceptTransferTable />} />
       <Route path="/picture" element={<EmployeePhotoCapture />} />
 
       <Route path="/workExperience" element={<WorkExperienceForm />} />
@@ -63,6 +66,7 @@ const EmployeeModule: React.FC = () => {
       <Route path="/martialStatus" element={<FamilyRecordForm />} />
       <Route path="/leavePass" element={<LeavePermitComponent />} />
       <Route path="/performanceEvaluation" element={<PerformanceForm />} />
+      <Route path="/complaint" element={<ComplaintUpdateForm />} />
 
     </Routes>
 

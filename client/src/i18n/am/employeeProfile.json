@@ -1,0 +1,14 @@
+{
+    "employeeProfile": {
+    "Basic Info": "መሰረታዊ መረጃ",
+    "Education": "ትምህርት",
+    "Leave": "ፈቃድ",
+    "Attendance": "መገኘት",
+    "Appraisal": "ግምገማ",
+    "health": "ጤና",
+    "Family": "ቤተሰብ",
+    "Performance": "አፈፃፀም",
+    "Documents": "ሰነዶች",
+    "Work Experience": "የስራ ልምድ"
+  }
+}

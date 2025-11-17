@@ -10,7 +10,8 @@ const api = axios.create({
 
 // Fetch employee data
 export const fetchEmployeeData = async (id: string) => {
-  const { data } = await api.get(`/api/employees/${id}`);
+  console.log("Fetching employee data for ID:", id); // Debugging line
+  const { data } = await api.get(`/api/employees/emp/${id}`);
   return data;
 };
 
@@ -27,6 +28,11 @@ export const getAllEmployees = async () => {
 // Submit registration form
 export const submitRegistrationForm = async (formData: any) => {
   const { data } = await api.post("/api/employees/", formData);
+  console.log(process.env.REACT_APP_API_URL + "heheheheh");
+  return data;
+};
+export const submitPerformanceForm = async (formData: any) => {
+  const { data } = await api.post("/api/employees/evaluation/", formData);
   console.log(process.env.REACT_APP_API_URL + "heheheheh");
   return data;
 };

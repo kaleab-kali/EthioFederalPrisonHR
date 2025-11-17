@@ -145,10 +145,13 @@ export interface AttendanceRecord {
   presentDays: number;
 }
 
-export interface PerformanceRecord {
-  date: string;
-  result30: number;
-  result70: number;
+export interface Evaluation {
+  self: number;
+  colleague: number;
+  total: number;
+  remark: string;
+  from: Date;
+  to: Date;
 }
 
 export interface LeaveRecord {
@@ -264,7 +267,7 @@ export interface IEmployee {
   password: string;
   role: string; // Assuming Roles is a type or enum
   retirementDate?: Date;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
   skinColor: string;
   noseStructure: string;
   eyeColor: string;
@@ -277,7 +280,7 @@ export interface IEmployee {
   rejectionReason?: string;
   appraisalRecords?: Appraisal[];
   attendanceRecords?: AttendanceRecord[];
-  performance?: PerformanceRecord[];
+  evaluation?: Evaluation[];
   leaveRecords?: LeaveRecord[];
   documentRecords?: DocumentRecord[];
 }

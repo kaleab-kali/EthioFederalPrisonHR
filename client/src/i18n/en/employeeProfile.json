@@ -1,0 +1,14 @@
+{
+    "employeeProfile": {
+        "Basic Info": "Basic Info",
+        "Education": "Education",
+        "Leave": "Leave",
+        "Attendance": "Attendance",
+        "Appraisal": "Appraisal",
+        "health": "Health",
+        "Family": "Family",
+        "Performance": "Performance",
+        "Documents": "Documents",
+        "Work Experience": "Work Experience"
+    }
+}

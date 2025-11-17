@@ -14,6 +14,11 @@ export const fetchLeaveData = async (id: string) => {
   return data;
 };
 
+export const fetchLeavePermit = async (id: string) => {
+  const { data } = await api.get(`/api/leaveinfo/leavePermit/${id}`);
+  return data;
+};
+
 export const getAllLeaves = async () => {
   const { data } = await api.get(`/api/leaveinfo/`);
   console.log(JSON.stringify(data));
