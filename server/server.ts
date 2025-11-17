@@ -23,7 +23,13 @@ import dashboardRoute from './modules/dashboard/routes/dashboardRoute'
 
 const app = express();
 const port = 5000;
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ 
+  origin: [
+    'http://localhost:3000',
+    'https://ethio-federal-prison-hr.vercel.app'
+  ],
+  credentials: true
+}));
 
 connectDB();
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
